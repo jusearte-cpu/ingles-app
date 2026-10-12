@@ -10,8 +10,12 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
 - **Etapa 2** — recorrido funcional: ✅ esencialmente completa en modo local.
   Diagnóstico rápido, grabación de audio, portafolio, banco de evaluación
   separado del de práctica, exportar/eliminar datos — todo probado en el
-  navegador. Pendiente: diagnóstico largo (varias sesiones) y auth real (necesita
-  que crees una cuenta de Supabase, ver `docs/decisions-log.md`).
+  navegador. Pendiente: diagnóstico largo (varias sesiones).
+- **Conexión a la nube (Supabase + Vercel):** 🟡 código listo, cuentas
+  pendientes de tu parte. Esquema de Postgres, login por enlace mágico,
+  middleware de sesión y script de migración ya escritos — solo falta que
+  crees las cuentas (no puedo hacerlo yo). Ver
+  [`docs/SETUP-CLOUD.md`](docs/SETUP-CLOUD.md), 10-15 minutos.
 - **Etapa 3** — Pre-A1/A1/A2: 🟡 iniciada, lejos de completa. 4 unidades reales
   (de ~20-30 que tendría el nivel completo según la matriz), que prueban que el
   motor escala entre niveles y que el reciclaje de aprendizajes funciona de
@@ -53,6 +57,7 @@ y reinicia `npm run dev`.
 | [`docs/05-screens-and-ux.md`](docs/05-screens-and-ux.md) | Pantallas, navegación, accesibilidad, idioma de apoyo |
 | [`docs/06-roadmap.md`](docs/06-roadmap.md) | Etapas 1–6, dependencias, criterios de aceptación |
 | [`docs/decisions-log.md`](docs/decisions-log.md) | Supuestos reversibles tomados y decisiones que sí requieren tu input |
+| [`docs/SETUP-CLOUD.md`](docs/SETUP-CLOUD.md) | Pasos exactos para activar Supabase + Vercel (10-15 min de tu parte) |
 
 ## Cómo retomar el trabajo en una sesión nueva
 

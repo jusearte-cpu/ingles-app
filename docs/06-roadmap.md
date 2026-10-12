@@ -85,6 +85,29 @@ considerarla terminada):
 sincronización real entre dispositivos y tutor de IA real se necesita lo descrito en
 `docs/decisions-log.md` (cuentas de Supabase/Vercel, clave de Anthropic).
 
+## Preparación de nube (adelantado de Etapa 2, no bloqueado por cuentas)
+
+Todo lo que se podía construir sin credenciales reales ya está listo, probado en
+cuanto a que no rompe el modo local (build limpio, middleware es no-op sin
+Supabase configurado):
+
+- `db/schema.supabase.sql` — esquema Postgres real (con `user_id` + Row Level
+  Security) derivado exactamente del esquema SQLite actual, no del diseño
+  aspiracional de Etapa 1.
+- `src/lib/supabase/` (cliente de navegador y de servidor) + `src/middleware.ts`
+  (refresca sesión, no-op sin credenciales) + `/login` (enlace mágico, sin
+  contraseña) + `/auth/callback`.
+- `scripts/migrate-to-supabase.ts` — lleva el progreso local a Supabase una vez
+  exista el proyecto. **Sin probar contra un proyecto real** (no hay forma de
+  probarlo sin credenciales) — revisar antes de correr.
+- `docs/SETUP-CLOUD.md` — guía paso a paso de lo único que falta: las cuentas.
+
+**Explícitamente NO hecho todavía:** mover la lectura/escritura de datos de
+SQLite a Postgres. Es un cambio mecánico pero que necesita un proyecto real
+contra el cual probarse antes de darse por bueno — escribirlo a ciegas sería
+aparentar una integración que no se verificó, justo lo que este proyecto existe
+para evitar.
+
 **Criterios de aceptación de la sección 15 ya verificados:** 2 (persistencia tras
 reinicio), 3 (actividades reales, no de relleno), 4 (grabaciones se guardan y
 recuperan — portafolio probado), 5 (porcentajes de registros reales), 6 (completado

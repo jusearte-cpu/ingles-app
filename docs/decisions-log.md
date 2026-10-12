@@ -14,23 +14,31 @@ nada de fondo.
 | Variedad de inglés por defecto (audio generado) | Inglés general americano | Es la opción más disponible por defecto en la mayoría de motores de voz; la exposición gradual a otras variedades (incluida británica) está en el currículo igual, independientemente de la voz de producción | Alta — configurable, y el onboarding te pregunta tu preferencia real |
 | Idioma de apoyo inicial | Mayoritariamente español, decreciente con el nivel | Pedido explícito del encargo | Alta — ajustable manualmente en todo momento |
 
-## Lo que sí necesito que resuelvas (no ahora, cuando quieras avanzar a Etapa 2 con infraestructura real)
+## Lo que sí necesito que resuelvas — ya preparado, solo falta esto de tu parte
 
-Esto **no bloquea** el diseño ni el desarrollo local/mock, pero sí bloquea la
-sincronización real entre dispositivos y las respuestas reales de IA:
+Todo el código está listo (schema de Postgres, cliente de Supabase, login por
+enlace mágico, middleware de sesión, script de migración) — ver
+[`docs/SETUP-CLOUD.md`](SETUP-CLOUD.md) para los pasos exactos. Lo único que
+de verdad bloquea es lo que no puedo hacer yo:
 
-1. **Crear una cuenta en Supabase** (plan gratuito alcanza) — no puedo crear cuentas
-   en tu nombre.
-2. **Crear una cuenta en Vercel** (plan gratuito alcanza) para desplegar en una
-   dirección HTTPS real.
+1. **Crear una cuenta en Supabase** (plan gratuito alcanza) y correr
+   `db/schema.supabase.sql` — no puedo crear cuentas en tu nombre.
+2. **Crear una cuenta en Vercel** y conectar el repositorio para una
+   dirección HTTPS real (necesita que el código esté en GitHub — otra cuenta
+   que te toca crear si no la tienes).
 3. **Obtener una clave de API de Anthropic** (tutor de IA) y, si quieres voz de
    calidad en vez del sintetizador del navegador, una clave del proveedor de TTS/STT
    que prefieras.
 4. **Un techo de gasto mensual con el que te sientas cómodo** para el punto 3 (hoy
    asumo un valor conservador en `config/thresholds.json`, editable).
 
-Cuando tengas lo anterior (o parte de ello), lo conectamos sin rediseñar nada — es
-exactamente para eso que existen los adaptadores de `01-architecture.md`.
+Con el paso 1 completo, ya puedes entrar con tu correo por enlace mágico (sin
+contraseña — ni esta app ni yo manejamos una contraseña tuya). Lo que sigue
+después de eso (mover la lectura/escritura de datos de SQLite a Postgres) es
+trabajo de desarrollo que haremos juntos una vez existan credenciales reales
+contra las que probar — no tiene sentido escribirlo a ciegas sin poder
+verificarlo, eso sería justo el tipo de "aparentar completitud" que este
+proyecto pide evitar.
 
 ## Supuesto adicional tomado durante la Etapa 2
 

@@ -45,12 +45,24 @@ persona — se revisita solo si Supabase impone una limitación real.
 Para pasar de "funciona en mi máquina" a "accesible desde una dirección segura y
 sincronizada entre dispositivos", se necesitan cuentas externas. **No puedo crear
 cuentas en tu nombre** (es una acción que tengo prohibida); esto es trabajo tuyo cuando
-quieras avanzar a despliegue real:
+quieras avanzar a despliegue real. El código del lado de la app ya está escrito y
+esperando — ver [`docs/SETUP-CLOUD.md`](SETUP-CLOUD.md) para los pasos exactos:
 
-1. Cuenta en Supabase (proyecto gratuito alcanza de sobra para un usuario).
-2. Cuenta en Vercel (plan gratuito alcanza).
+1. Cuenta en Supabase (proyecto gratuito alcanza de sobra para un usuario). Ya existe
+   [`db/schema.supabase.sql`](../db/schema.supabase.sql) listo para pegar en su SQL
+   Editor, y login por enlace mágico (`/login`, `src/lib/supabase/`,
+   `src/middleware.ts`) ya implementado — hoy inactivo porque no hay credenciales,
+   no porque falte código.
+2. Cuenta en Vercel (plan gratuito alcanza) + cuenta en GitHub si no tienes una ya
+   (Vercel despliega desde un repositorio git).
 3. Clave de API de Anthropic (para el tutor de IA) y, si decides usar voz de calidad,
    clave de OpenAI o el proveedor de TTS/STT que prefieras.
+
+**Lo que el código nuevo todavía NO hace:** leer/escribir en Postgres en vez de
+SQLite. Eso es un cambio mecánico (mismo modelo de datos, mismo `drizzle-orm`, distinto
+driver) pero deliberadamente no lo hice a ciegas sin un proyecto real contra el cual
+probarlo — sería fingir una integración "completa" sin verificarla, justo lo que este
+proyecto existe para evitar. Se hace en cuanto haya credenciales.
 
 Mientras tanto, la Etapa 2 se construye y se prueba en **modo local**: Next.js corriendo
 en tu máquina. **Ajuste frente al plan original:** en vez de Postgres local vía Docker,
