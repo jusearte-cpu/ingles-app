@@ -1,8 +1,13 @@
 # 04 — Modelo de datos
 
-Esquema relacional (Postgres / Supabase). El SQL ejecutable está en
-[`db/schema.sql`](../db/schema.sql); aquí se explica el *por qué* de cada grupo de
-tablas y cómo se relacionan con el modelo de progreso (`03-progress-and-evaluation-model.md`).
+Esquema relacional (Postgres / Supabase). [`db/schema.sql`](../db/schema.sql) es el
+diseño completo de Etapa 1 (incluye tablas para funcionalidad aún no construida:
+perfiles, materiales, tutor de IA con historial, etc.). **Para activar Supabase hoy,
+usa [`db/schema.supabase.sql`](../db/schema.supabase.sql)** — el subconjunto que
+coincide exactamente con lo que la app realmente implementa ahora mismo (ver
+`docs/SETUP-CLOUD.md`), con `user_id` y Row Level Security agregados. Aquí se explica
+el *por qué* de cada grupo de tablas y cómo se relacionan con el modelo de progreso
+(`03-progress-and-evaluation-model.md`).
 
 ## Grupos de entidades
 
