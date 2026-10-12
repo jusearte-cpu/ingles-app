@@ -43,11 +43,14 @@ quieras avanzar a despliegue real:
    clave de OpenAI o el proveedor de TTS/STT que prefieras.
 
 Mientras tanto, la Etapa 2 se construye y se prueba en **modo local**: Next.js corriendo
-en tu máquina contra una base Postgres local (o el emulador local de Supabase), con los
-adaptadores de IA en modo *mock* (respuestas de ejemplo, claramente marcadas como tales
-en pantalla) cuando no hay clave configurada. Esto cumple el requisito de la sección 9:
-*"Si no hay conexión o credenciales, informa qué funciones están disponibles. Nunca
-simules que una respuesta fue analizada por IA."*
+en tu máquina. **Ajuste frente al plan original:** en vez de Postgres local vía Docker,
+la Etapa 2 usa SQLite (vía Drizzle ORM) — cero dependencias externas, arranca al
+instante, y el modelo de datos es el mismo (ver `src/db/schema.ts` vs `db/schema.sql`).
+Al conectar Supabase, se migra a Postgres sin cambiar la forma del modelo. Los
+adaptadores de IA quedan en modo *mock* (respuestas de ejemplo, claramente marcadas como
+tales en pantalla) cuando no hay clave configurada. Esto cumple el requisito de la
+sección 9: *"Si no hay conexión o credenciales, informa qué funciones están disponibles.
+Nunca simules que una respuesta fue analizada por IA."*
 
 ## Control de costo de IA
 

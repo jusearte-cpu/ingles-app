@@ -18,26 +18,49 @@ implementable con el esquema de `04-data-model.md`.
 
 ## Etapa 2 — Recorrido funcional de una unidad
 
-**Qué incluye:**
-- Proyecto Next.js + TypeScript inicializado, conectado a Supabase (local o
-  proyecto gratuito).
-- Autenticación (un usuario).
-- Diagnóstico rápido (versión corta, ~15-20 min) funcionando de principio a fin.
-- Una unidad completa (la de ejemplo: A1.1.1 "Nice to meet you") con las cuatro
-  habilidades principales, los 10 pasos, entrega de evidencias reales.
-- Corrección (rúbrica real para esa unidad), repaso programado, una evaluación de
-  nivel mínima.
-- Progreso persistente: cerrar sesión y volver desde otro navegador/dispositivo
-  debe mostrar el mismo estado.
-- Adaptadores de IA en modo mock si no hay credenciales, claramente etiquetado en
-  pantalla.
+**Estado: 🟡 en curso.** Lo siguiente ya funciona de extremo a extremo en local
+(probado manualmente paso a paso en el navegador, con reinicio del servidor para
+confirmar persistencia real en `data/local.db`):
 
-**Dependencias:** ninguna externa obligatoria para empezar (modo local/mock). Para
-probar sincronización real entre dispositivos vas a necesitar el proyecto de
-Supabase creado por ti (ver `01-architecture.md`).
+- ✅ Proyecto Next.js + TypeScript + Tailwind, corriendo local (`npm run dev`).
+- ✅ Una unidad completa (A1.1.1 "Nice to meet you") con los 10 pasos, cubriendo
+  listening (TTS del navegador), reading/writing, grammar, y speaking por texto.
+- ✅ Entrega de evidencias reales (`attempts` + `evidence_records`, append-only) y
+  cálculo honesto de estado por objetivo (`insufficient_evidence` / `demonstrated` /
+  `not_demonstrated`) — verificado: completar los 10 pasos dio 100% de "recorrido
+  completado" pero 0% de "competencias demostradas", exactamente como exige el
+  encargo.
+- ✅ Repaso programado (SM-2 simplificado) y pantalla de Repaso con techo diario.
+- ✅ Progreso persistente: sobrevive a un reinicio del servidor (SQLite en disco).
+- ✅ Adaptador de IA en modo mock, etiquetado explícitamente en pantalla ("⚠
+  Revisión automática por reglas (sin IA real)").
 
-**Criterios de aceptación específicos (subconjunto de la sección 15 del encargo):**
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13.
+**Pendiente dentro de la Etapa 2** (no bloquea lo anterior, pero falta para
+considerarla terminada):
+- Diagnóstico inicial (corto y completo) — todavía no implementado; hoy se entra
+  directo a la unidad de ejemplo.
+- Autenticación real — hoy es de un solo usuario implícito, sin pantalla de login
+  (ver nota de alcance en `docs/decisions-log.md`). Llega con la conexión a
+  Supabase Auth.
+- Grabación de audio real (speaking) — hoy el "paso de producción" acepta texto; la
+  interfaz ya avisa que la grabación llega en una próxima iteración.
+- Evaluación de nivel mínima formal (hoy solo hay práctica, no un banco de
+  evaluación separado para esta unidad).
+- Export/eliminación de datos (criterios 12 de la sección 15).
+- Migración de `drizzle-kit push` real: se detectó un bug de `drizzle-kit@0.24.2`
+  contra `better-sqlite3` en este entorno (falla con "This statement does not
+  return data"); se resolvió con DDL manual en `src/db/migrate.ts`. Si se actualiza
+  `drizzle-kit` más adelante, vale la pena reintentar `db:push` y simplificar.
+
+**Dependencias:** ninguna externa obligatoria (modo local/mock, ya construido). Para
+sincronización real entre dispositivos y tutor de IA real se necesita lo descrito en
+`docs/decisions-log.md` (cuentas de Supabase/Vercel, clave de Anthropic).
+
+**Criterios de aceptación de la sección 15 ya verificados:** 2 (persistencia tras
+reinicio), 3 (actividades reales, no de relleno), 5 (porcentajes de registros
+reales), 6 (completado ≠ demostrado, verificado explícitamente), 8 (repasos desde
+intentos reales), 13 (progreso explicado con evidencia, no inventado). Pendientes:
+1 (multi-dispositivo real — necesita Supabase), 4, 7, 9, 10, 11, 12.
 
 ## Etapa 3 — Fundamentos, A1 y A2
 

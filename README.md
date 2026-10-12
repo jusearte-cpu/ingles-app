@@ -6,11 +6,27 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
 
 ## Estado del proyecto
 
-- **Etapa actual:** Etapa 1 — diseño verificable (completa, ver `docs/`).
-- **Siguiente etapa:** Etapa 2 — recorrido funcional de una unidad completa (código).
+- **Etapa 1** — diseño verificable: ✅ completa (ver `docs/`).
+- **Etapa 2** — recorrido funcional de una unidad: 🟡 en curso. Funciona de extremo a
+  extremo en local (ver abajo): diagnóstico aún no implementado, auth real pendiente
+  (ver `docs/decisions-log.md`), grabación de audio pendiente (por ahora
+  speaking/writing se hacen por texto).
 - Ver [`docs/06-roadmap.md`](docs/06-roadmap.md) para el plan completo por etapas y
   [`docs/decisions-log.md`](docs/decisions-log.md) para supuestos tomados y decisiones
   pendientes.
+
+## Cómo correr en local
+
+```bash
+npm install
+npm run db:migrate   # crea data/local.db (SQLite) con el esquema
+npm run db:seed       # siembra la unidad de ejemplo "Nice to meet you"
+npm run dev           # http://localhost:3000
+```
+
+Sin ninguna clave de API configurada, el tutor de IA usa un proveedor *mock* basado
+en reglas, siempre etiquetado como tal en pantalla (nunca se presenta como una
+evaluación de IA real). Ver `.env.example` y `docs/01-architecture.md`.
 
 ## Mapa de la documentación de diseño
 

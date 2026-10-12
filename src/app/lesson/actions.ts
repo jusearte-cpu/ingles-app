@@ -1,0 +1,170 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { keywordGrade, exactGrade } from "@/lib/graders";
+import { recordAttemptAndEvidence } from "@/lib/record-evidence";
+import { initializeSpacedRepetition } from "@/lib/spaced-repetition";
+import { getTutorProvider } from "@/lib/ai";
+
+function revalidateUnit(unitId: string) {
+  revalidatePath(`/lesson/${unitId}`);
+  revalidatePath("/today");
+  revalidatePath("/map");
+  revalidatePath("/progress");
+}
+
+export async function submitListeningAnswers(
+  unitId: string,
+  activityId: string,
+  objectiveId: string,
+  answers: { questionId: string; response: string; expectedKeywords: string[] }[],
+) {
+  const graded = answers.map((a) => keywordGrade(a.response, a.expectedKeywords, 1));
+  const satisfactory = graded.every((g) => g.satisfactory);
+  const combinedText = answers.map((a) => `${a.questionId}: ${a.response}`).join(" | ");
+
+  const result = recordAttemptAndEvidence({
+    activityId,
+    responseText: combinedText,
+    evidence: [
+      {
+        objectiveId,
+        rubricId: "listening.a1.v1",
+        satisfactory,
+        usedTranscript: false,
+      },
+    ],
+  });
+  revalidateUnit(unitId);
+  return { satisfactory, graded, result };
+}
+
+export async function submitGuidedPractice(
+  unitId: string,
+  activityId: string,
+  objectiveId: string,
+  answers: { sentenceId: string; response: string; answer: string }[],
+) {
+  const correctCount = answers.filter((a) => exactGrade(a.response, a.answer)).length;
+  const satisfactory = correctCount === answers.length;
+  const combinedText = answers.map((a) => `${a.sentenceId}: ${a.response}`).join(" | ");
+
+  const result = recordAttemptAndEvidence({
+    activityId,
+    responseText: combinedText,
+    evidence: [
+      {
+        objectiveId,
+        rubricId: "grammar.a1.v1",
+        satisfactory,
+        isUnaided: false,
+      },
+    ],
+  });
+  revalidateUnit(unitId);
+  return { satisfactory, correctCount, total: answers.length, result };
+}
+
+export async function submitUnaidedRetrieval(
+  unitId: string,
+  activityId: string,
+  objectiveIds: string[],
+  responseText: string,
+  expectedKeywords: string[],
+) {
+  const { satisfactory, matched } = keywordGrade(responseText, expectedKeywords, 2);
+
+  const result = recordAttemptAndEvidence({
+    activityId,
+    responseText,
+    evidence: objectiveIds.map((objectiveId) => ({
+      objectiveId,
+      rubricId: "speaking.a1.v1",
+      satisfactory,
+      isUnaided: true,
+    })),
+  });
+  revalidateUnit(unitId);
+  return { satisfactory, matched, result };
+}
+
+export async function submitProduction(
+  unitId: string,
+  activityId: string,
+  objectiveIds: string[],
+  responseText: string,
+) {
+  const provider = getTutorProvider();
+  const feedback = await provider.giveFeedback({
+    unitTitle: "Nice to meet you",
+    stepName: "Producción",
+    learnerResponse: responseText,
+    objectiveStatements: [],
+  });
+
+  const satisfactory = feedback.taskFulfilled && feedback.meaningErrors.length === 0;
+
+  const result = recordAttemptAndEvidence({
+    activityId,
+    responseText,
+    evidence: objectiveIds.map((objectiveId) => ({
+      objectiveId,
+      rubricId: "writing.a1.v1",
+      satisfactory,
+      isUnaided: true,
+      criticalFailure: !feedback.taskFulfilled,
+    })),
+  });
+  revalidateUnit(unitId);
+  return { feedback, result };
+}
+
+export async function submitCommunicativeTask(
+  unitId: string,
+  activityId: string,
+  originObjectiveId: string,
+  repetitionObjectiveId: string,
+  originResponse: string,
+  repetitionResponse: string,
+  expectedOriginKeywords: string[],
+  expectedRepetitionKeywords: string[],
+) {
+  const originGrade = keywordGrade(originResponse, expectedOriginKeywords, 1);
+  const repetitionGrade = keywordGrade(repetitionResponse, expectedRepetitionKeywords, 1);
+
+  const result = recordAttemptAndEvidence({
+    activityId,
+    responseText: `origin: ${originResponse} | repetition: ${repetitionResponse}`,
+    evidence: [
+      {
+        objectiveId: originObjectiveId,
+        rubricId: "speaking.a1.v1",
+        satisfactory: originGrade.satisfactory,
+        isUnaided: true,
+        isTransferTask: true,
+      },
+      {
+        objectiveId: repetitionObjectiveId,
+        rubricId: "speaking.a1.v1",
+        satisfactory: repetitionGrade.satisfactory,
+        isUnaided: true,
+        isTransferTask: true,
+        criticalFailure: repetitionResponse.trim().length === 0,
+      },
+    ],
+  });
+  revalidateUnit(unitId);
+  return { originGrade, repetitionGrade, result };
+}
+
+export async function completeReviewScheduling(
+  unitId: string,
+  objectiveIds: string[],
+  intervalDays: number,
+) {
+  for (const id of objectiveIds) {
+    initializeSpacedRepetition(id, intervalDays);
+  }
+  revalidateUnit(unitId);
+  revalidatePath("/review");
+}

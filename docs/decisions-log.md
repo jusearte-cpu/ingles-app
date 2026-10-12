@@ -32,6 +32,13 @@ sincronización real entre dispositivos y las respuestas reales de IA:
 Cuando tengas lo anterior (o parte de ello), lo conectamos sin rediseñar nada — es
 exactamente para eso que existen los adaptadores de `01-architecture.md`.
 
+## Supuesto adicional tomado durante la Etapa 2
+
+| Decisión | Qué asumí | Por qué | Qué tan reversible |
+|---|---|---|---|
+| "Acceso" en la Etapa 2 local | Sin pantalla de login todavía: un solo usuario implícito en el esquema SQLite (sin columnas `user_id`) | Construir una autenticación local propia que luego se descarta al conectar Supabase Auth sería trabajo desechable; mejor esperar e implementar auth real una sola vez | Alta — no hay nada que migrar "desde" un sistema de auth falso, porque no se construyó uno |
+| SQLite en vez de Postgres/Docker para Etapa 2 | `drizzle-kit push` tiene un bug confirmado contra `better-sqlite3` en este entorno; se aplicó el DDL a mano en `src/db/migrate.ts` | Desbloquear el desarrollo sin perder tiempo depurando una herramienta de terceros | Alta — incluso así, el modelo de datos es el mismo; migrar a Postgres es cambiar el driver, no el diseño |
+
 ## Cómo cambiar un supuesto
 
 Dímelo en cualquier momento ("cambia la ubicación del proyecto a X", "no quiero usar
