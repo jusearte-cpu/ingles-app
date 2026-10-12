@@ -379,7 +379,10 @@ function CommunicativeTaskStep({ unitId, activity }: { unitId: string; activity:
       )}
       {stage === "done" && result && (
         <ResultBanner ok={result.originGrade.satisfactory && result.repetitionGrade.satisfactory}>
-          <p>Decir tu origen: {result.originGrade.satisfactory ? "logrado" : "no quedó claro"}.</p>
+          <p>
+            {activity.content.firstTaskLabel ?? "Primera respuesta"}:{" "}
+            {result.originGrade.satisfactory ? "logrado" : "no quedó claro"}.
+          </p>
           <p>
             Pedir repetición:{" "}
             {result.repetitionGrade.satisfactory ? "logrado" : "no se detectó una petición clara de repetición"}.

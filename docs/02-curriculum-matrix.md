@@ -1,5 +1,10 @@
 # 02 — Matriz curricular (Pre-A1 → C1)
 
+> **Estado de implementación:** este documento es el *diseño* completo. Lo que
+> realmente existe como código y contenido probado (4 unidades en Pre-A1/A1/A2,
+> ver `06-roadmap.md` § Etapa 3) es una fracción pequeña de lo descrito aquí.
+> No asumas que algo está construido solo porque está en esta matriz.
+
 ## Cómo leer este documento
 
 Esta matriz cubre los **siete niveles** (Pre-A1, A1, A2, B1, B2, C1, y C2 como

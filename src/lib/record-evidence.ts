@@ -9,6 +9,7 @@ export interface EvidenceInput {
   satisfactory: boolean;
   isUnaided?: boolean;
   isTransferTask?: boolean;
+  isAssessment?: boolean;
   criticalFailure?: boolean;
   usedTranscript?: boolean;
 }
@@ -50,7 +51,7 @@ export function recordAttemptAndEvidence(params: {
         satisfactory: e.satisfactory,
         isUnaided: e.isUnaided ?? false,
         isTransferTask: e.isTransferTask ?? false,
-        isAssessment: false,
+        isAssessment: e.isAssessment ?? false,
         criticalFailure: e.criticalFailure ?? false,
         usedTranscript: e.usedTranscript ?? false,
         createdAt: now,

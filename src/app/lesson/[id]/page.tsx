@@ -14,7 +14,9 @@ export default function LessonPage({
   if (!data) notFound();
 
   const { unit } = data;
-  const activities = data.activities.filter((a) => a.type !== "spaced_review");
+  const activities = data.activities.filter(
+    (a) => a.type !== "spaced_review" && a.pool !== "assessment",
+  );
   const totalSteps = activities.length;
   const currentStep = Math.min(
     Math.max(parseInt(searchParams.step ?? "1", 10) || 1, 1),

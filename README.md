@@ -7,10 +7,18 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
 ## Estado del proyecto
 
 - **Etapa 1** — diseño verificable: ✅ completa (ver `docs/`).
-- **Etapa 2** — recorrido funcional de una unidad: 🟡 en curso. Funciona de extremo a
-  extremo en local: unidad completa, diagnóstico rápido, grabación de audio,
-  portafolio, exportar/eliminar datos. Pendiente: diagnóstico completo (versión
-  larga), auth real, banco de evaluación de nivel — ver `docs/06-roadmap.md`.
+- **Etapa 2** — recorrido funcional: ✅ esencialmente completa en modo local.
+  Diagnóstico rápido, grabación de audio, portafolio, banco de evaluación
+  separado del de práctica, exportar/eliminar datos — todo probado en el
+  navegador. Pendiente: diagnóstico largo (varias sesiones) y auth real (necesita
+  que crees una cuenta de Supabase, ver `docs/decisions-log.md`).
+- **Etapa 3** — Pre-A1/A1/A2: 🟡 iniciada, lejos de completa. 4 unidades reales
+  (de ~20-30 que tendría el nivel completo según la matriz), que prueban que el
+  motor escala entre niveles y que el reciclaje de aprendizajes funciona de
+  verdad (el objetivo "pedir repetición" se reutiliza en las 4 unidades, en
+  contextos distintos). El resto de módulos de estos tres niveles no existe
+  todavía — ver `docs/06-roadmap.md` para el detalle exacto, sin inflar.
+- **Etapas 4-6** (B1, B2, C1, C2) — sin empezar.
 - Ver [`docs/06-roadmap.md`](docs/06-roadmap.md) para el plan completo por etapas y
   [`docs/decisions-log.md`](docs/decisions-log.md) para supuestos tomados y decisiones
   pendientes.
@@ -20,7 +28,7 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
 ```bash
 npm install
 npm run db:migrate   # crea data/local.db (SQLite) con el esquema
-npm run db:seed       # siembra la unidad de ejemplo "Nice to meet you"
+npm run db:seed       # siembra las unidades de ejemplo + banco de diagnóstico/evaluación
 npm run dev           # http://localhost:3000
 ```
 

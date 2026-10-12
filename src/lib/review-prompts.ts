@@ -28,4 +28,52 @@ export const REVIEW_PROMPTS: Record<string, { prompt: string; expectedKeywords: 
     prompt: "Completa: 'She ___ from Brazil.' — ¿qué forma de to be va ahí?",
     expectedKeywords: ["is"],
   },
+  "obj-prea1-1-1": {
+    prompt: "Escribe en inglés cómo se saluda y cómo se despide.",
+    expectedKeywords: ["hello", "bye"],
+  },
+  "obj-prea1-1-2": {
+    prompt: "Escribe en inglés el número 15.",
+    expectedKeywords: ["fifteen"],
+  },
+  "obj-prea1-1-3": {
+    prompt: "Deletrea la palabra DOG en inglés (con guiones).",
+    expectedKeywords: ["d-o-g", "d", "o", "g"],
+  },
+  "obj-prea1-1-4": {
+    prompt: "¿Qué se necesita entender cuando alguien deletrea su nombre? (una palabra)",
+    expectedKeywords: ["letters", "name"],
+  },
+  "obj-a1-2-1": {
+    prompt: "Escribe en inglés una frase sobre tu rutina diaria.",
+    expectedKeywords: ["i"],
+  },
+  "obj-a1-2-2": {
+    prompt: "Completa: 'He ___ (watch) TV every night.'",
+    expectedKeywords: ["watches"],
+  },
+  "obj-a1-2-3": {
+    prompt: "¿Qué tipo de información escuchaste sobre la rutina de otra persona en esta unidad?",
+    expectedKeywords: ["wake up", "evening", "work"],
+  },
+  "obj-a1-2-4": {
+    prompt: "Escribe una frase usando 'usually' o 'never'.",
+    expectedKeywords: ["usually", "never", "always", "sometimes"],
+  },
+  "obj-a2-1-1": {
+    prompt: "Escribe en inglés, en pasado, una frase sobre algo que hiciste el fin de semana pasado.",
+    expectedKeywords: ["i"],
+  },
+  "obj-a2-1-2": {
+    prompt: "Completa: 'They ___ (have) dinner together.' (pasado)",
+    expectedKeywords: ["had"],
+  },
+  "obj-a2-1-3": {
+    prompt: "¿Qué conectores se usan para narrar eventos en orden? (escribe al menos uno)",
+    expectedKeywords: ["first", "then", "after that", "finally"],
+  },
+  "obj-a2-1-4": {
+    prompt: "Escribe una frase corta usando el conector 'then'.",
+    expectedKeywords: ["then"],
+  },
 };

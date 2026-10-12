@@ -53,6 +53,22 @@ confirmar persistencia real en `data/local.db`):
   eliminar datos (`/settings`, borra evidencia/intentos/portafolio/diagnósticos
   pero no el contenido del curso) — ambos probados en el navegador.
 
+**Añadido en una tercera pasada** (probado en el navegador):
+- ✅ Banco de evaluación separado del de práctica: 3 ítems de "Comprobación de
+  nivel A1.1" (`pool = 'assessment'`), con enunciados nuevos (no los mismos ítems
+  de práctica con nombres cambiados), una sola oportunidad por ítem, condiciones
+  declaradas, y evidencia marcada `is_assessment = true`. Pantalla nueva
+  `/assessments`. Corregí de paso un bug real: `isAssessment` estaba *hardcodeado*
+  a `false` en `record-evidence.ts` — nunca se habría distinguido evaluación de
+  práctica hasta ahora.
+- ✅ El motor dejó de estar atado a una sola unidad (`UNIT_ID` hardcodeado): Hoy,
+  Mapa y Progreso ahora recorren todas las unidades sembradas, agrupan por
+  nivel/módulo, y recomiendan el siguiente paso pendiente en orden de nivel.
+- ✅ Corregido un problema real de layout: con más de 4 pantallas, la barra
+  inferior en móvil se desbordaba y "Portafolio"/"Config" quedaban inaccesibles.
+  Ahora hay 4 accesos fijos + un menú "Más" (tal como estaba diseñado en
+  `05-screens-and-ux.md`, sección de navegación, pero no implementado hasta ahora).
+
 **Pendiente dentro de la Etapa 2** (no bloquea lo anterior, pero falta para
 considerarla terminada):
 - Diagnóstico **completo** (versión larga en varias sesiones) — solo existe la
@@ -60,8 +76,6 @@ considerarla terminada):
 - Autenticación real — hoy es de un solo usuario implícito, sin pantalla de login
   (ver nota de alcance en `docs/decisions-log.md`). Llega con la conexión a
   Supabase Auth.
-- Evaluación de nivel mínima formal (hoy solo hay práctica, no un banco de
-  evaluación separado para esta unidad — el diagnóstico sí usa un banco propio).
 - Migración de `drizzle-kit push` real: se detectó un bug de `drizzle-kit@0.24.2`
   contra `better-sqlite3` en este entorno (falla con "This statement does not
   return data"); se resolvió con DDL manual en `src/db/migrate.ts`. Si se actualiza
@@ -86,9 +100,42 @@ se ha probado con un proveedor de IA real todavía).
 
 ## Etapa 3 — Fundamentos, A1 y A2
 
-Contenido y evaluaciones completas de Pre-A1, A1 y A2 según
-`02-curriculum-matrix.md`, probando cobertura (script de verificación de objetivos
-sin actividad/evaluación) y funcionamiento real con usuarios de prueba (tú).
+**Estado: 🟡 iniciada, lejos de completa.** La matriz curricular completa de
+`02-curriculum-matrix.md` para Pre-A1, A1 y A2 pide, en total, 11 módulos con
+varias unidades cada uno. Lo que existe hoy, con contenido real (no relleno) y
+probado en el navegador:
+
+- Pre-A1 · Módulo 1 · Unidad 1 — "Hello! Spelling and numbers" (alfabeto,
+  deletreo, números 0-20, saludos, primera introducción de "pedir repetición").
+- A1 · Módulo 1 · Unidad 1 — "Nice to meet you" (presentarse, origen).
+- A1 · Módulo 1 · Unidad 2 — "My daily routine" (presente simple, rutinas,
+  frecuencia).
+- A2 · Módulo 1 · Unidad 1 — "Last weekend" (pasado simple, narración,
+  conectores).
+
+Eso es **4 unidades de las ~20-30 que tendría Pre-A1-A2 completo** según la
+matriz. Las unidades reciclan deliberadamente el objetivo "pedir que me
+repitan" (introducido en Pre-A1, retomado como transferencia en las otras 3
+unidades, en contextos distintos cada vez) — es una prueba real de que el
+reciclaje y la complejidad creciente que pide el encargo funcionan con el motor
+actual, no solo una promesa de diseño.
+
+**Lo que falta para que la Etapa 3 esté realmente completa** (no es poco —
+dimensiona la magnitud real del trabajo, no una lista corta):
+- El resto del Módulo 1 y los Módulos 2-4 de A1 (vivienda, comida, tecnología
+  cotidiana, trabajo simple, según `02-curriculum-matrix.md`).
+- Los Módulos 2-5 de A2 (viajes, salud, restaurante, planes, tecnología).
+- El resto de Pre-A1 (Módulo 2).
+- Evaluaciones de nivel formales por módulo/nivel (hoy solo existe una
+  comprobación de ejemplo para A1.1).
+- El script de verificación de cobertura (`docs/02-curriculum-matrix.md`
+  promete uno que detecte objetivos sin actividad/evaluación) — todavía no
+  existe como script ejecutable, solo como mecanismo de diseño.
+
+Autoría de contenido de este tipo (diálogos, gramática en contexto,
+pronunciación, tareas) es trabajo genuinamente artesanal — no se puede generar
+en bloque sin revisar cada unidad. A este ritmo, completar Pre-A1-A2 es muchas
+sesiones más de trabajo, no algo que quepa en una sola continuación.
 
 ## Etapa 4 — B1 y B2
 

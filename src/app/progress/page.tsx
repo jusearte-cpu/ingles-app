@@ -3,11 +3,17 @@ export const dynamic = "force-dynamic";
 import { db } from "@/db/client";
 import { attempts, spacedRepetitionItems, spacedRepetitionHistory } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
-import { getAllObjectives, getUnitWithActivities } from "@/lib/queries";
+import { getAllObjectives, getAllUnitsWithActivities, LEVEL_ORDER } from "@/lib/queries";
 import { recomputeObjectiveStatus } from "@/lib/evaluation";
 import { loadThresholds } from "@/lib/thresholds";
 
-const UNIT_ID = "unit-a1-1-1";
+const NEEDS_ATTEMPT = new Set([
+  "contextualized_input",
+  "guided_practice",
+  "unaided_retrieval",
+  "production",
+  "communicative_task",
+]);
 
 const STATUS_LABEL: Record<string, string> = {
   demonstrated: "Demostrado",
@@ -22,7 +28,7 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 export default function ProgressPage() {
-  const data = getUnitWithActivities(UNIT_ID);
+  const unitsWithActivities = getAllUnitsWithActivities();
   const objectives = getAllObjectives();
   const thresholds = loadThresholds().competency_demonstrated;
 
@@ -35,19 +41,10 @@ export default function ProgressPage() {
   const competenciasDemostradas =
     objectives.length === 0 ? null : demonstratedCount / objectives.length;
 
-  const interactiveActivityIds =
-    data?.activities
-      .filter((a) =>
-        [
-          "contextualized_input",
-          "guided_practice",
-          "unaided_retrieval",
-          "production",
-          "communicative_task",
-        ].includes(a.type),
-      )
-      .map((a) => a.id) ?? [];
-
+  const allActivities = unitsWithActivities.flatMap((u) => u.activities);
+  const interactiveActivityIds = allActivities
+    .filter((a) => NEEDS_ATTEMPT.has(a.type))
+    .map((a) => a.id);
   const attemptedActivityIds = new Set(
     interactiveActivityIds.length
       ? db
@@ -58,15 +55,17 @@ export default function ProgressPage() {
           .map((r) => r.activityId)
       : [],
   );
-  const reviewScheduled = objectives.some((o) =>
-    db
-      .select()
-      .from(spacedRepetitionItems)
-      .where(eq(spacedRepetitionItems.objectiveId, o.id))
-      .get(),
-  );
-  const totalObligatory = interactiveActivityIds.length + 1; // +1 por el paso de repaso
-  const completedObligatory = attemptedActivityIds.size + (reviewScheduled ? 1 : 0);
+  const reviewScheduledCount = unitsWithActivities.filter(({ activities }) => {
+    const ids = Array.from(new Set(activities.flatMap((a) => a.objectiveIds)));
+    return (
+      ids.length > 0 &&
+      ids.every((id) =>
+        db.select().from(spacedRepetitionItems).where(eq(spacedRepetitionItems.objectiveId, id)).get(),
+      )
+    );
+  }).length;
+  const totalObligatory = interactiveActivityIds.length + unitsWithActivities.length; // +1 repaso por unidad
+  const completedObligatory = attemptedActivityIds.size + reviewScheduledCount;
   const recorridoCompletado = totalObligatory === 0 ? null : completedObligatory / totalObligatory;
 
   const historyWindowMs = 8 * 7 * 86_400_000;
@@ -77,6 +76,16 @@ export default function ProgressPage() {
     .all()
     .filter((h) => now - new Date(h.reviewedAt).getTime() <= historyWindowMs);
   const retentionPassed = recentHistory.filter((h) => h.result !== "failed").length;
+
+  const resultsByLevel = new Map<string, typeof objectiveResults>();
+  for (const r of objectiveResults) {
+    const list = resultsByLevel.get(r.objective.levelCode) ?? [];
+    list.push(r);
+    resultsByLevel.set(r.objective.levelCode, list);
+  }
+  const orderedLevels = Array.from(resultsByLevel.keys()).sort(
+    (a, b) => LEVEL_ORDER.indexOf(a) - LEVEL_ORDER.indexOf(b),
+  );
 
   return (
     <div className="space-y-8">
@@ -91,12 +100,12 @@ export default function ProgressPage() {
         <IndicatorCard
           title="Recorrido completado"
           value={recorridoCompletado}
-          detail={`${completedObligatory}/${totalObligatory} actividades obligatorias de la unidad vigente`}
+          detail={`${completedObligatory}/${totalObligatory} actividades obligatorias del itinerario vigente`}
         />
         <IndicatorCard
           title="Competencias demostradas"
           value={competenciasDemostradas}
-          detail={`${demonstratedCount}/${objectives.length} objetivos de esta unidad`}
+          detail={`${demonstratedCount}/${objectives.length} objetivos del contenido implementado`}
         />
         <IndicatorCard
           title="Retención reciente"
@@ -111,29 +120,32 @@ export default function ProgressPage() {
         />
       </div>
 
-      <div>
-        <h2 className="mb-3 text-lg font-medium">Capacidades demostradas (detalle)</h2>
-        <div className="space-y-3">
-          {objectiveResults.map((r) => (
-            <div key={r.objective.id} className={`rounded-md border p-3 ${STATUS_COLOR[r.status]}`}>
-              <div className="flex items-center justify-between">
-                <p className="font-medium">
-                  {r.objective.stableCode} — {r.objective.canDoStatement}
-                </p>
-                <span className="whitespace-nowrap rounded-full bg-white/60 px-2 py-0.5 text-xs">
-                  {STATUS_LABEL[r.status]}
-                </span>
+      <div className="space-y-6">
+        <h2 className="text-lg font-medium">Capacidades demostradas (detalle)</h2>
+        {orderedLevels.map((level) => (
+          <div key={level} className="space-y-3">
+            <h3 className="text-sm font-semibold uppercase text-ink/50">{level}</h3>
+            {(resultsByLevel.get(level) ?? []).map((r) => (
+              <div key={r.objective.id} className={`rounded-md border p-3 ${STATUS_COLOR[r.status]}`}>
+                <div className="flex items-center justify-between">
+                  <p className="font-medium">
+                    {r.objective.stableCode} — {r.objective.canDoStatement}
+                  </p>
+                  <span className="whitespace-nowrap rounded-full bg-white/60 px-2 py-0.5 text-xs">
+                    {STATUS_LABEL[r.status]}
+                  </span>
+                </div>
+                {r.reasons.length > 0 && (
+                  <ul className="mt-2 list-disc pl-5 text-sm">
+                    {r.reasons.map((reason, i) => (
+                      <li key={i}>{reason}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              {r.reasons.length > 0 && (
-                <ul className="mt-2 list-disc pl-5 text-sm">
-                  {r.reasons.map((reason, i) => (
-                    <li key={i}>{reason}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ))}
       </div>
 
       <p className="text-xs text-ink/50">

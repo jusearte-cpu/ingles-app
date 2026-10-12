@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { MobileNav } from "./MobileNav";
 
 export const metadata: Metadata = {
   title: "Inglés — mi curso",
@@ -11,6 +12,7 @@ const NAV = [
   { href: "/today", label: "Hoy" },
   { href: "/map", label: "Mapa" },
   { href: "/review", label: "Repaso" },
+  { href: "/assessments", label: "Evaluaciones" },
   { href: "/progress", label: "Progreso" },
   { href: "/portfolio", label: "Portafolio" },
   { href: "/settings", label: "Config" },
@@ -42,17 +44,7 @@ export default function RootLayout({
             </nav>
           </header>
           <main className="flex-1 px-4 py-6">{children}</main>
-          <nav className="fixed inset-x-0 bottom-0 flex justify-around border-t border-black/10 bg-paper py-2 text-sm sm:hidden">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded px-3 py-2 active:bg-accentSoft"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <MobileNav />
         </div>
       </body>
     </html>

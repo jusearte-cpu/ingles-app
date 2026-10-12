@@ -17,6 +17,16 @@ Todas las integraciones de IA están detrás de interfaces (`LLMProvider`, `TTSP
 `STTProvider`) para que cambiar de proveedor sea un cambio de configuración, no una
 reescritura. Esto responde directamente al pedido de "integraciones sustituibles".
 
+**Construido en Etapa 2 (local):** grabación de audio real vía `MediaRecorder` del
+navegador (`src/app/lesson/[id]/AudioRecorder.tsx`), subida a una ruta propia
+(`src/app/api/recordings/route.ts`) que guarda el archivo en el filesystem del
+servidor (`data/recordings/`) y lo sirve de vuelta solo por esa misma ruta — nunca
+una URL pública directa. Es el equivalente funcional de un bucket privado, a escala
+de un servidor local de un solo usuario. Limitación honesta: el filesystem local no
+tiene control de acceso propio más allá de "quién puede llegar a este servidor" —
+con Supabase Storage esto se vuelve un control de acceso real por usuario (URLs
+firmadas), sin cambiar el contrato de la ruta (recibe bytes, devuelve una ruta).
+
 ## Por qué Supabase y no una base casera
 
 El requisito "mismo progreso en computador, celular y tablet" exige una base de datos
