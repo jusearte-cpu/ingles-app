@@ -35,18 +35,33 @@ confirmar persistencia real en `data/local.db`):
 - ✅ Adaptador de IA en modo mock, etiquetado explícitamente en pantalla ("⚠
   Revisión automática por reglas (sin IA real)").
 
+**Añadido en una segunda pasada de la Etapa 2** (probado en el navegador):
+- ✅ Diagnóstico rápido (7 ítems: reading, listening, grammar, vocabulary,
+  writing), banco separado del de práctica/evaluación de la unidad. Speaking
+  queda explícitamente "pendiente de evaluar" — nunca inferido de respuestas
+  escritas. Entrada desde `/today` y ruta `/diagnostic`.
+- ✅ Grabación de audio real (speaking) vía `MediaRecorder` + ruta
+  `/api/recordings`, con reproducción para auto-comparación. Si se envía solo
+  audio (sin texto), se guarda en el portafolio pero **no** se crea evidencia
+  automática de competencia — no hay transcripción conectada para evaluarlo de
+  forma fiable (ver `docs/01-architecture.md`). Nota: el entorno de pruebas de
+  este asistente bloquea el acceso real al micrófono, así que esta función se
+  probó por código y por el camino de error (sin micrófono); falta que el
+  propio usuario la pruebe con un micrófono real.
+- ✅ Pantalla de Portafolio (`/portfolio`) listando grabaciones guardadas.
+- ✅ Exportar datos (`/api/export`, JSON con currículo + evidencia + progreso) y
+  eliminar datos (`/settings`, borra evidencia/intentos/portafolio/diagnósticos
+  pero no el contenido del curso) — ambos probados en el navegador.
+
 **Pendiente dentro de la Etapa 2** (no bloquea lo anterior, pero falta para
 considerarla terminada):
-- Diagnóstico inicial (corto y completo) — todavía no implementado; hoy se entra
-  directo a la unidad de ejemplo.
+- Diagnóstico **completo** (versión larga en varias sesiones) — solo existe la
+  versión rápida.
 - Autenticación real — hoy es de un solo usuario implícito, sin pantalla de login
   (ver nota de alcance en `docs/decisions-log.md`). Llega con la conexión a
   Supabase Auth.
-- Grabación de audio real (speaking) — hoy el "paso de producción" acepta texto; la
-  interfaz ya avisa que la grabación llega en una próxima iteración.
 - Evaluación de nivel mínima formal (hoy solo hay práctica, no un banco de
-  evaluación separado para esta unidad).
-- Export/eliminación de datos (criterios 12 de la sección 15).
+  evaluación separado para esta unidad — el diagnóstico sí usa un banco propio).
 - Migración de `drizzle-kit push` real: se detectó un bug de `drizzle-kit@0.24.2`
   contra `better-sqlite3` en este entorno (falla con "This statement does not
   return data"); se resolvió con DDL manual en `src/db/migrate.ts`. Si se actualiza
@@ -57,10 +72,17 @@ sincronización real entre dispositivos y tutor de IA real se necesita lo descri
 `docs/decisions-log.md` (cuentas de Supabase/Vercel, clave de Anthropic).
 
 **Criterios de aceptación de la sección 15 ya verificados:** 2 (persistencia tras
-reinicio), 3 (actividades reales, no de relleno), 5 (porcentajes de registros
-reales), 6 (completado ≠ demostrado, verificado explícitamente), 8 (repasos desde
-intentos reales), 13 (progreso explicado con evidencia, no inventado). Pendientes:
-1 (multi-dispositivo real — necesita Supabase), 4, 7, 9, 10, 11, 12.
+reinicio), 3 (actividades reales, no de relleno), 4 (grabaciones se guardan y
+recuperan — portafolio probado), 5 (porcentajes de registros reales), 6 (completado
+≠ demostrado, verificado explícitamente), 7 (sin evidencia oral automática no se
+inventa nivel de speaking, ni en el diagnóstico ni en la unidad), 8 (repasos desde
+intentos reales), 9 (condiciones de escucha declaradas, banco de diagnóstico
+separado del de práctica), 12 (exportar probado), 13 (progreso explicado con
+evidencia, no inventado). Pendientes: 1 (multi-dispositivo real — necesita
+Supabase), 10 (privacidad de archivos — hoy el filesystem local no tiene control de
+acceso propio, depende de que el servidor sea solo tuyo; con Supabase Storage se
+resuelve con URLs firmadas), 11 (manejo de errores de red/servicios externos — no
+se ha probado con un proveedor de IA real todavía).
 
 ## Etapa 3 — Fundamentos, A1 y A2
 

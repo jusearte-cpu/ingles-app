@@ -9,6 +9,7 @@ import {
   submitCommunicativeTask,
   completeReviewScheduling,
 } from "../actions";
+import { AudioRecorder } from "./AudioRecorder";
 
 type Activity = {
   id: string;
@@ -243,11 +244,17 @@ function UnaidedRetrievalStep({ unitId, activity }: { unitId: string; activity: 
 function ProductionStep({ unitId, activity }: { unitId: string; activity: Activity }) {
   const [pending, startTransition] = useTransition();
   const [response, setResponse] = useState("");
+  const [audioPath, setAudioPath] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<any>(null);
+  const [audioMessage, setAudioMessage] = useState<string | null>(null);
 
   return (
     <div className="space-y-3">
       <p>{activity.content.prompt}</p>
+      <AudioRecorder onSaved={(path) => setAudioPath(path)} />
+      <p className="text-xs text-ink/50">
+        — o, si no tienes/quieres usar micrófono, escribe tu respuesta abajo —
+      </p>
       <textarea
         className="w-full rounded border border-black/20 px-3 py-2"
         rows={3}
@@ -255,17 +262,30 @@ function ProductionStep({ unitId, activity }: { unitId: string; activity: Activi
         onChange={(e) => setResponse(e.target.value)}
       />
       <button
-        disabled={pending}
+        disabled={pending || (!response.trim() && !audioPath)}
         onClick={() =>
           startTransition(async () => {
-            const r = await submitProduction(unitId, activity.id, activity.objectiveIds, response);
-            setFeedback(r.feedback);
+            const r = await submitProduction(
+              unitId,
+              activity.id,
+              activity.objectiveIds,
+              response,
+              audioPath ?? undefined,
+            );
+            if (r.audioOnly) {
+              setAudioMessage(r.message ?? null);
+              setFeedback(null);
+            } else {
+              setFeedback(r.feedback);
+              setAudioMessage(null);
+            }
           })
         }
         className="rounded-md bg-ink px-4 py-2 text-white disabled:opacity-50"
       >
         Enviar
       </button>
+      {audioMessage && <ResultBanner ok={true}>{audioMessage}</ResultBanner>}
       {feedback && (
         <ResultBanner ok={feedback.taskFulfilled}>
           <p className="font-medium">

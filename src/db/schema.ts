@@ -123,6 +123,34 @@ export const spacedRepetitionHistory = sqliteTable(
   },
 );
 
+export const diagnosticSessions = sqliteTable("diagnostic_sessions", {
+  id: text("id").primaryKey(),
+  kind: text("kind").notNull().default("quick"),
+  status: text("status").notNull().default("in_progress"),
+  startedAt: text("started_at").notNull(),
+  completedAt: text("completed_at"),
+});
+
+export const diagnosticItems = sqliteTable("diagnostic_items", {
+  id: text("id").primaryKey(),
+  skill: text("skill").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  content: text("content", { mode: "json" }).notNull(),
+});
+
+export const diagnosticResponses = sqliteTable("diagnostic_responses", {
+  id: text("id").primaryKey(),
+  sessionId: text("session_id")
+    .notNull()
+    .references(() => diagnosticSessions.id),
+  itemId: text("item_id")
+    .notNull()
+    .references(() => diagnosticItems.id),
+  responseText: text("response_text").notNull(),
+  satisfactory: integer("satisfactory", { mode: "boolean" }).notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
 export const portfolioItems = sqliteTable("portfolio_items", {
   id: text("id").primaryKey(),
   kind: text("kind").notNull(),

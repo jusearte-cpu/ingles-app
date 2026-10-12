@@ -12,6 +12,8 @@ const NAV = [
   { href: "/map", label: "Mapa" },
   { href: "/review", label: "Repaso" },
   { href: "/progress", label: "Progreso" },
+  { href: "/portfolio", label: "Portafolio" },
+  { href: "/settings", label: "Config" },
 ];
 
 export default function RootLayout({

@@ -8,9 +8,9 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
 
 - **Etapa 1** — diseño verificable: ✅ completa (ver `docs/`).
 - **Etapa 2** — recorrido funcional de una unidad: 🟡 en curso. Funciona de extremo a
-  extremo en local (ver abajo): diagnóstico aún no implementado, auth real pendiente
-  (ver `docs/decisions-log.md`), grabación de audio pendiente (por ahora
-  speaking/writing se hacen por texto).
+  extremo en local: unidad completa, diagnóstico rápido, grabación de audio,
+  portafolio, exportar/eliminar datos. Pendiente: diagnóstico completo (versión
+  larga), auth real, banco de evaluación de nivel — ver `docs/06-roadmap.md`.
 - Ver [`docs/06-roadmap.md`](docs/06-roadmap.md) para el plan completo por etapas y
   [`docs/decisions-log.md`](docs/decisions-log.md) para supuestos tomados y decisiones
   pendientes.

@@ -89,6 +89,30 @@ create table if not exists spaced_repetition_history (
   reviewed_at text not null
 );
 
+create table if not exists diagnostic_sessions (
+  id text primary key,
+  kind text not null default 'quick',
+  status text not null default 'in_progress',
+  started_at text not null,
+  completed_at text
+);
+
+create table if not exists diagnostic_items (
+  id text primary key,
+  skill text not null,
+  sort_order integer not null default 0,
+  content text not null
+);
+
+create table if not exists diagnostic_responses (
+  id text primary key,
+  session_id text not null references diagnostic_sessions(id),
+  item_id text not null references diagnostic_items(id),
+  response_text text not null,
+  satisfactory integer not null,
+  created_at text not null
+);
+
 create table if not exists portfolio_items (
   id text primary key,
   kind text not null,

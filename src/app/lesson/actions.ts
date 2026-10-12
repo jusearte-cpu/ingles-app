@@ -1,10 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { nanoid } from "nanoid";
 import { keywordGrade, exactGrade } from "@/lib/graders";
 import { recordAttemptAndEvidence } from "@/lib/record-evidence";
 import { initializeSpacedRepetition } from "@/lib/spaced-repetition";
 import { getTutorProvider } from "@/lib/ai";
+import { db } from "@/db/client";
+import { portfolioItems, attempts } from "@/db/schema";
 
 function revalidateUnit(unitId: string) {
   revalidatePath(`/lesson/${unitId}`);
@@ -93,7 +96,45 @@ export async function submitProduction(
   activityId: string,
   objectiveIds: string[],
   responseText: string,
+  audioPath?: string,
 ) {
+  // Sin texto: no hay forma fiable de evaluar contenido/pronunciación sin una
+  // transcripción conectada (no hay una en modo local/mock). Se guarda la
+  // grabación en el portafolio para comparar más adelante, pero NO se inventa
+  // una evidencia de competencia — ver docs/01-architecture.md, limitación de
+  // pronunciación/STT.
+  if (!responseText.trim() && audioPath) {
+    const attemptId = nanoid();
+    const now = new Date().toISOString();
+    db.insert(attempts)
+      .values({
+        id: attemptId,
+        activityId,
+        submittedAt: now,
+        responseAudioPath: audioPath,
+        clientIdempotencyKey: nanoid(),
+      })
+      .run();
+    db.insert(portfolioItems)
+      .values({
+        id: nanoid(),
+        kind: "recording",
+        storagePath: audioPath,
+        linkedActivityId: activityId,
+        linkedAttemptId: attemptId,
+        createdAt: now,
+      })
+      .run();
+    revalidateUnit(unitId);
+    revalidatePath("/portfolio");
+    return {
+      feedback: null,
+      audioOnly: true,
+      message:
+        "Grabación guardada en tu portafolio. Como no hay transcripción conectada todavía, esto no cuenta automáticamente como evidencia de progreso — queda ahí para que la compares con futuras grabaciones.",
+    };
+  }
+
   const provider = getTutorProvider();
   const feedback = await provider.giveFeedback({
     unitTitle: "Nice to meet you",
@@ -107,6 +148,7 @@ export async function submitProduction(
   const result = recordAttemptAndEvidence({
     activityId,
     responseText,
+    responseAudioPath: audioPath,
     evidence: objectiveIds.map((objectiveId) => ({
       objectiveId,
       rubricId: "writing.a1.v1",
@@ -115,8 +157,23 @@ export async function submitProduction(
       criticalFailure: !feedback.taskFulfilled,
     })),
   });
+
+  if (audioPath) {
+    db.insert(portfolioItems)
+      .values({
+        id: nanoid(),
+        kind: "recording",
+        storagePath: audioPath,
+        linkedActivityId: activityId,
+        linkedAttemptId: result.attemptId,
+        createdAt: new Date().toISOString(),
+      })
+      .run();
+    revalidatePath("/portfolio");
+  }
+
   revalidateUnit(unitId);
-  return { feedback, result };
+  return { feedback, audioOnly: false, result };
 }
 
 export async function submitCommunicativeTask(

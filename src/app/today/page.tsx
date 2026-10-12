@@ -72,6 +72,13 @@ export default function TodayPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Hoy</h1>
 
+      <Link
+        href="/diagnostic"
+        className="block rounded-lg border border-dashed border-black/20 px-4 py-2 text-sm text-ink/60 hover:border-accent/40"
+      >
+        ¿Primera vez? Haz el diagnóstico rápido (10-15 min) →
+      </Link>
+
       {dueReviews.length > 0 && (
         <Link
           href="/review"

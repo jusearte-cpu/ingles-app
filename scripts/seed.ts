@@ -57,18 +57,22 @@ const UNIT_ID = "unit-a1-1-1";
 
 function seed() {
   for (const o of OBJECTIVES) {
-    db.insert(objectives).values(o).onConflictDoNothing().run();
+    db.insert(objectives)
+      .values(o)
+      .onConflictDoUpdate({ target: objectives.id, set: o })
+      .run();
   }
 
+  const unitValues = {
+    id: UNIT_ID,
+    title: "Nice to meet you",
+    moduleTitle: "Módulo 1 — Vida diaria mínima",
+    levelCode: "A1",
+    sortOrder: 1,
+  };
   db.insert(units)
-    .values({
-      id: UNIT_ID,
-      title: "Nice to meet you",
-      moduleTitle: "Módulo 1 — Vida diaria mínima",
-      levelCode: "A1",
-      sortOrder: 1,
-    })
-    .onConflictDoNothing()
+    .values(unitValues)
+    .onConflictDoUpdate({ target: units.id, set: unitValues })
     .run();
 
   const acts = [
@@ -209,7 +213,7 @@ function seed() {
       baseItemId: "unit-a1-1-1-step7",
       content: {
         prompt:
-          "Preséntate: di tu nombre y de dónde eres, en 2-3 frases en inglés. (Si tienes micrófono, puedes grabarte en voz alta en lugar de escribir — esa función llega en una próxima iteración; por ahora, escribe tu respuesta.)",
+          "Preséntate: di tu nombre y de dónde eres, en 2-3 frases en inglés. Puedes grabarte en voz alta con el micrófono, o escribir tu respuesta.",
         expectedKeywords: ["i'm", "from"],
       },
       objectiveIds: ["obj-a1-1-1", "obj-a1-1-5"],
@@ -279,7 +283,10 @@ function seed() {
   ];
 
   for (const a of acts) {
-    db.insert(activities).values(a).onConflictDoNothing().run();
+    db.insert(activities)
+      .values(a)
+      .onConflictDoUpdate({ target: activities.id, set: a })
+      .run();
   }
 
   console.log(`Sembrado: ${OBJECTIVES.length} objetivos, 1 unidad, ${acts.length} actividades.`);
