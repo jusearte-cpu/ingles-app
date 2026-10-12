@@ -36,6 +36,11 @@ Sin ninguna clave de API configurada, el tutor de IA usa un proveedor *mock* bas
 en reglas, siempre etiquetado como tal en pantalla (nunca se presenta como una
 evaluación de IA real). Ver `.env.example` y `docs/01-architecture.md`.
 
+**Nota operativa:** no corras `npm run build` mientras `npm run dev` está activo en
+este mismo proyecto — ambos escriben en `.next/` y pueden corromper el caché
+(síntoma: 500 "Cannot find module './vendor-chunks/...'"). Si pasa, `rm -rf .next`
+y reinicia `npm run dev`.
+
 ## Mapa de la documentación de diseño
 
 | Documento | Contenido |
