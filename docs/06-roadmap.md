@@ -85,28 +85,34 @@ considerarla terminada):
 sincronización real entre dispositivos y tutor de IA real se necesita lo descrito en
 `docs/decisions-log.md` (cuentas de Supabase/Vercel, clave de Anthropic).
 
-## Preparación de nube (adelantado de Etapa 2, no bloqueado por cuentas)
+## Nube: desplegado y verificado en producción
 
-Todo lo que se podía construir sin credenciales reales ya está listo, probado en
-cuanto a que no rompe el modo local (build limpio, middleware es no-op sin
-Supabase configurado):
+**Estado: ✅ completo**, no solo preparado. El motor se migró por completo de
+SQLite local a Postgres/Supabase, con autenticación real, y quedó desplegado
+en una dirección pública:
 
-- `db/schema.supabase.sql` — esquema Postgres real (con `user_id` + Row Level
-  Security) derivado exactamente del esquema SQLite actual, no del diseño
-  aspiracional de Etapa 1.
-- `src/lib/supabase/` (cliente de navegador y de servidor) + `src/middleware.ts`
-  (refresca sesión, no-op sin credenciales) + `/login` (enlace mágico, sin
-  contraseña) + `/auth/callback`.
-- `scripts/migrate-to-supabase.ts` — lleva el progreso local a Supabase una vez
-  exista el proyecto. **Sin probar contra un proyecto real** (no hay forma de
-  probarlo sin credenciales) — revisar antes de correr.
-- `docs/SETUP-CLOUD.md` — guía paso a paso de lo único que falta: las cuentas.
+- Base de datos: Supabase (Postgres), esquema `db/schema.supabase.sql` (con
+  `user_id` + Row Level Security) aplicado y en uso real.
+- Autenticación: enlace mágico (sin contraseña) vía `src/lib/supabase/`,
+  `src/middleware.ts`, `/login`, `/auth/callback` — **probado con éxito en
+  producción**, no solo en local.
+- Todas las páginas protegidas (`/today`, `/map`, `/progress`, `/review`,
+  `/assessments`, `/portfolio`, `/settings`, `/diagnostic`, `/lesson/[id]`) y
+  sus server actions escriben y leen con el `user_id` real de la sesión
+  (`src/lib/auth.ts`, `requireUserId()`), no de un usuario implícito.
+- Grabaciones de audio: bucket privado de Supabase Storage, URLs firmadas para
+  reproducir en el portafolio.
+- App en vivo: **https://ingles-app-chi.vercel.app**, desplegada desde
+  `github.com/jusearte-cpu/ingles-app` vía Vercel.
+- `scripts/migrate-to-supabase.ts` se retiró: no había progreso real de
+  usuario en SQLite que mereciera migrarse (solo datos de prueba generados
+  durante el desarrollo), así que no tenía sentido mantener un script sin usar.
 
-**Explícitamente NO hecho todavía:** mover la lectura/escritura de datos de
-SQLite a Postgres. Es un cambio mecánico pero que necesita un proyecto real
-contra el cual probarse antes de darse por bueno — escribirlo a ciegas sería
-aparentar una integración que no se verificó, justo lo que este proyecto existe
-para evitar.
+Varios problemas reales aparecieron en el camino (conexión IPv6 vs. pooler,
+ubicación de `middleware.ts`, ejecución de código en tiempo de build de
+Vercel, límite de envío de correos de Supabase, entre otros) — documentados
+en detalle en [`docs/SETUP-CLOUD.md`](SETUP-CLOUD.md) para no repetir la
+misma depuración si se hace de nuevo en otro proyecto.
 
 **Criterios de aceptación de la sección 15 ya verificados:** 2 (persistencia tras
 reinicio), 3 (actividades reales, no de relleno), 4 (grabaciones se guardan y
@@ -115,11 +121,14 @@ recuperan — portafolio probado), 5 (porcentajes de registros reales), 6 (compl
 inventa nivel de speaking, ni en el diagnóstico ni en la unidad), 8 (repasos desde
 intentos reales), 9 (condiciones de escucha declaradas, banco de diagnóstico
 separado del de práctica), 12 (exportar probado), 13 (progreso explicado con
-evidencia, no inventado). Pendientes: 1 (multi-dispositivo real — necesita
-Supabase), 10 (privacidad de archivos — hoy el filesystem local no tiene control de
-acceso propio, depende de que el servidor sea solo tuyo; con Supabase Storage se
-resuelve con URLs firmadas), 11 (manejo de errores de red/servicios externos — no
-se ha probado con un proveedor de IA real todavía).
+evidencia, no inventado), 1 (multi-dispositivo real: app desplegada en
+https://ingles-app-chi.vercel.app, login probado con éxito desde el navegador,
+no solo en local), 10 (privacidad de archivos: grabaciones en bucket privado
+de Supabase Storage con URLs firmadas, ya no en un filesystem local sin
+control de acceso propio). Pendiente: 11 (manejo de errores de red/servicios
+externos — no se ha probado con un proveedor de IA real todavía, solo con
+Supabase, que sí se probó incluyendo sus fallos reales: límite de envío de
+correos, IPv6, etc. — ver docs/SETUP-CLOUD.md).
 
 ## Etapa 3 — Fundamentos, A1 y A2
 

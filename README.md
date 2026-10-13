@@ -7,15 +7,17 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
 ## Estado del proyecto
 
 - **Etapa 1** — diseño verificable: ✅ completa (ver `docs/`).
-- **Etapa 2** — recorrido funcional: ✅ esencialmente completa en modo local.
+- **Etapa 2** — recorrido funcional: ✅ esencialmente completa.
   Diagnóstico rápido, grabación de audio, portafolio, banco de evaluación
-  separado del de práctica, exportar/eliminar datos — todo probado en el
-  navegador. Pendiente: diagnóstico largo (varias sesiones).
-- **Conexión a la nube (Supabase + Vercel):** 🟡 código listo, cuentas
-  pendientes de tu parte. Esquema de Postgres, login por enlace mágico,
-  middleware de sesión y script de migración ya escritos — solo falta que
-  crees las cuentas (no puedo hacerlo yo). Ver
-  [`docs/SETUP-CLOUD.md`](docs/SETUP-CLOUD.md), 10-15 minutos.
+  separado del de práctica, exportar/eliminar datos — todo probado. Pendiente:
+  diagnóstico largo (varias sesiones).
+- **Conexión a la nube (Supabase + Vercel):** ✅ **desplegado y verificado en
+  producción** — ya no es solo código preparado. Base de datos real en
+  Supabase (Postgres), login por enlace mágico funcionando, app pública en
+  **https://ingles-app-chi.vercel.app**. Ver [`docs/SETUP-CLOUD.md`](docs/SETUP-CLOUD.md)
+  para el detalle de cómo quedó configurado y los problemas reales que
+  aparecieron en el camino (vale la pena leerlo antes de repetir esto en otro
+  proyecto).
 - **Etapa 3** — Pre-A1/A1/A2: 🟡 iniciada, lejos de completa. 4 unidades reales
   (de ~20-30 que tendría el nivel completo según la matriz), que prueban que el
   motor escala entre niveles y que el reciclaje de aprendizajes funciona de
@@ -29,21 +31,28 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
 
 ## Cómo correr en local
 
+Requiere un `.env.local` con las credenciales de Supabase (ver
+`docs/SETUP-CLOUD.md` y `.env.example`) — la app ya no corre contra SQLite,
+lee y escribe directo en Postgres (Supabase).
+
 ```bash
 npm install
-npm run db:migrate   # crea data/local.db (SQLite) con el esquema
-npm run db:seed       # siembra las unidades de ejemplo + banco de diagnóstico/evaluación
-npm run dev           # http://localhost:3000
+npm run db:seed   # siembra las unidades de ejemplo + banco de diagnóstico/evaluación en Postgres
+npm run dev       # http://localhost:3000
 ```
 
-Sin ninguna clave de API configurada, el tutor de IA usa un proveedor *mock* basado
+Sin `ANTHROPIC_API_KEY` configurada, el tutor de IA usa un proveedor *mock* basado
 en reglas, siempre etiquetado como tal en pantalla (nunca se presenta como una
 evaluación de IA real). Ver `.env.example` y `docs/01-architecture.md`.
 
-**Nota operativa:** no corras `npm run build` mientras `npm run dev` está activo en
-este mismo proyecto — ambos escriben en `.next/` y pueden corromper el caché
-(síntoma: 500 "Cannot find module './vendor-chunks/...'"). Si pasa, `rm -rf .next`
-y reinicia `npm run dev`.
+**Notas operativas:**
+- No corras `npm run build` mientras `npm run dev` está activo en este mismo
+  proyecto — ambos escriben en `.next/` y pueden corromper el caché (síntoma:
+  500 "Cannot find module './vendor-chunks/...'"). Si pasa, `rm -rf .next` y
+  reinicia `npm run dev`.
+- Los scripts (`db:seed`) corren con `tsx --env-file=.env.local`, no con
+  `next`, así que necesitan ese flag para cargar las variables de entorno —
+  ya está así en `package.json`.
 
 ## Mapa de la documentación de diseño
 

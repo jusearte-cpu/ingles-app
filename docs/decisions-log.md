@@ -14,31 +14,22 @@ nada de fondo.
 | Variedad de inglés por defecto (audio generado) | Inglés general americano | Es la opción más disponible por defecto en la mayoría de motores de voz; la exposición gradual a otras variedades (incluida británica) está en el currículo igual, independientemente de la voz de producción | Alta — configurable, y el onboarding te pregunta tu preferencia real |
 | Idioma de apoyo inicial | Mayoritariamente español, decreciente con el nivel | Pedido explícito del encargo | Alta — ajustable manualmente en todo momento |
 
-## Lo que sí necesito que resuelvas — ya preparado, solo falta esto de tu parte
+## Nube: ya está hecho (Supabase + Vercel + GitHub)
 
-Todo el código está listo (schema de Postgres, cliente de Supabase, login por
-enlace mágico, middleware de sesión, script de migración) — ver
-[`docs/SETUP-CLOUD.md`](SETUP-CLOUD.md) para los pasos exactos. Lo único que
-de verdad bloquea es lo que no puedo hacer yo:
+Tú creaste las 3 cuentas (Supabase, GitHub, Vercel) — eso era lo único que yo
+no podía hacer por ti — y entre los dos desplegamos la app completa en
+**https://ingles-app-chi.vercel.app**, con base de datos real y login por
+enlace mágico funcionando en producción. Ver `docs/SETUP-CLOUD.md` para el
+detalle de cómo quedó armado y los problemas reales que resolvimos en el
+camino.
 
-1. **Crear una cuenta en Supabase** (plan gratuito alcanza) y correr
-   `db/schema.supabase.sql` — no puedo crear cuentas en tu nombre.
-2. **Crear una cuenta en Vercel** y conectar el repositorio para una
-   dirección HTTPS real (necesita que el código esté en GitHub — otra cuenta
-   que te toca crear si no la tienes).
-3. **Obtener una clave de API de Anthropic** (tutor de IA) y, si quieres voz de
-   calidad en vez del sintetizador del navegador, una clave del proveedor de TTS/STT
-   que prefieras.
-4. **Un techo de gasto mensual con el que te sientas cómodo** para el punto 3 (hoy
-   asumo un valor conservador en `config/thresholds.json`, editable).
+Lo único que queda pendiente de esta lista original:
 
-Con el paso 1 completo, ya puedes entrar con tu correo por enlace mágico (sin
-contraseña — ni esta app ni yo manejamos una contraseña tuya). Lo que sigue
-después de eso (mover la lectura/escritura de datos de SQLite a Postgres) es
-trabajo de desarrollo que haremos juntos una vez existan credenciales reales
-contra las que probar — no tiene sentido escribirlo a ciegas sin poder
-verificarlo, eso sería justo el tipo de "aparentar completitud" que este
-proyecto pide evitar.
+1. **Clave de API de Anthropic** (tutor de IA real) y, si quieres voz de
+   calidad en vez del sintetizador del navegador, una clave del proveedor de
+   TTS/STT que prefieras.
+2. **Un techo de gasto mensual con el que te sientas cómodo** para el punto 1
+   (hoy asumo un valor conservador en `config/thresholds.json`, editable).
 
 ## Supuesto adicional tomado durante la Etapa 2
 
@@ -62,6 +53,14 @@ que vale la pena que sepas que pasó:
    scroll). Se corrigió implementando el menú "Más" que ya estaba diseñado en
    `05-screens-and-ux.md` pero no se había construido. Lección: con 4-5
    pantallas no se notaba; apareció al escalar.
+3. **La conexión a Postgres se creaba al importar el módulo, no al usarla** —
+   funcionaba en local (build y dev) pero rompía el build de Vercel con un
+   error críptico (`TypeError: Invalid URL`) porque Next.js ejecuta el código
+   de nivel superior de los módulos importados por las Route Handlers durante
+   el build. Se corrigió con un patrón perezoso (Proxy) en `src/db/client.ts`.
+   Ver `docs/SETUP-CLOUD.md` para esta y el resto de sorpresas reales del
+   despliegue (pooler vs. conexión directa, ubicación de `middleware.ts`,
+   límite de correos de Supabase).
 
 ## Alcance real de "completar el currículo": el cuello de botella es contenido, no código
 
