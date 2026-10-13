@@ -76,4 +76,68 @@ export const REVIEW_PROMPTS: Record<string, { prompt: string; expectedKeywords: 
     prompt: "Escribe una frase corta usando el conector 'then'.",
     expectedKeywords: ["then"],
   },
+  "obj-prea1-2-1": {
+    prompt: "Escribe en inglés 3 colores.",
+    expectedKeywords: ["red", "blue", "green", "yellow", "black", "white"],
+  },
+  "obj-prea1-2-2": {
+    prompt: "Escribe en inglés cómo pedirías un lápiz de forma educada.",
+    expectedKeywords: ["can i have"],
+  },
+  "obj-prea1-2-4": {
+    prompt: "Escribe en inglés el número 45.",
+    expectedKeywords: ["forty-five", "forty five"],
+  },
+  "obj-prea1-2-5": {
+    prompt: "Completa: '___ pen in my hand' (cerca) vs '___ pen over there' (lejos).",
+    expectedKeywords: ["this", "that"],
+  },
+  "obj-a1-3-1": {
+    prompt: "Escribe en inglés cómo preguntarías el precio de algo.",
+    expectedKeywords: ["how much"],
+  },
+  "obj-a1-3-2": {
+    prompt: "Completa: 'Do you have ___ bread?' (pregunta)",
+    expectedKeywords: ["any"],
+  },
+  "obj-a1-3-3": {
+    prompt: "¿Qué tipo de conversación escuchaste en esta unidad? (una palabra: store/tienda)",
+    expectedKeywords: ["store", "shop"],
+  },
+  "obj-a1-3-4": {
+    prompt: "Escribe en inglés 3 alimentos.",
+    expectedKeywords: ["bread", "milk", "rice", "cheese", "eggs", "apples"],
+  },
+  "obj-a2-2-1": {
+    prompt: "Escribe en inglés cómo pedirías comida de forma educada en un restaurante.",
+    expectedKeywords: ["i'd like", "i would like"],
+  },
+  "obj-a2-2-2": {
+    prompt: "Completa: 'This soup is ___ (spicy) than that one.'",
+    expectedKeywords: ["spicier"],
+  },
+  "obj-a2-2-3": {
+    prompt: "¿Qué pidió el cliente en el diálogo de escucha de esta unidad? (en inglés)",
+    expectedKeywords: ["soup", "water"],
+  },
+  "obj-a2-2-4": {
+    prompt: "Escribe en inglés una comida y una bebida.",
+    expectedKeywords: ["water", "soup", "salad", "lemonade", "juice"],
+  },
+  "obj-b1-1-1": {
+    prompt: "Escribe en inglés tu opinión sobre un tema, con una razón (usa 'because').",
+    expectedKeywords: ["i think", "in my opinion", "because"],
+  },
+  "obj-b1-1-2": {
+    prompt: "Completa: 'I ___ (live) here for three years.' (sigue siendo verdad)",
+    expectedKeywords: ["have lived"],
+  },
+  "obj-b1-1-3": {
+    prompt: "¿Qué distingue a una opinión de un hecho? (una palabra: reason/razón)",
+    expectedKeywords: ["reason", "opinion"],
+  },
+  "obj-b1-1-4": {
+    prompt: "Escribe una frase usando 'on the other hand'.",
+    expectedKeywords: ["on the other hand"],
+  },
 };

@@ -942,6 +942,909 @@ const A2_1_1 = (() => {
   return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
 })();
 
+// ======================= Pre-A1 · Módulo 2 · Unidad 1 =======================
+// "Colors, numbers, and basic requests" — recicla "pedir repetición" por
+// quinta vez.
+const PREA1_2_1 = (() => {
+  const unitId = "unit-prea1-2-1";
+  const base = "prea1-2-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-prea1-2-1",
+      stableCode: "PreA1.2.1",
+      skill: "vocabulary",
+      canDoStatement: "Puedo nombrar colores básicos en inglés.",
+      levelCode: "Pre-A1",
+    },
+    {
+      id: "obj-prea1-2-2",
+      stableCode: "PreA1.2.2",
+      skill: "speaking",
+      canDoStatement: "Puedo pedir algo de forma básica usando 'Can I have...?'.",
+      levelCode: "Pre-A1",
+    },
+    {
+      id: "obj-prea1-2-4",
+      stableCode: "PreA1.2.4",
+      skill: "listening",
+      canDoStatement: "Puedo entender números del 20 al 100 dichos en voz alta.",
+      levelCode: "Pre-A1",
+    },
+    {
+      id: "obj-prea1-2-5",
+      stableCode: "PreA1.2.5",
+      skill: "grammar",
+      canDoStatement: "Puedo usar 'this/that' para señalar objetos cercanos y lejanos.",
+      levelCode: "Pre-A1",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "Colors, numbers, and basic requests",
+    moduleTitle: "Módulo 2 — Necesidades básicas",
+    levelCode: "Pre-A1",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder nombrar colores, pedir cosas con 'Can I have...?', entender números más grandes, y usar 'this/that' para señalar objetos.",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "Can I have a red pen, please?" },
+          { speaker: "B", text: "This one or that one?" },
+          { speaker: "A", text: "That one, please. How much is it?" },
+          { speaker: "B", text: "It's two dollars." },
+          { speaker: "A", text: "Here you are. Thank you!" },
+        ],
+        notes: [
+          "Can I have...? = ¿Me da...? (pedir algo de forma educada)",
+          "this (cerca) / that (lejos)",
+          "How much is it? = ¿Cuánto cuesta?",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Escucha en contexto",
+      type: "contextualized_input",
+      skill: "listening",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "How much is the blue notebook?" },
+          { speaker: "B", text: "That's thirty-five dollars." },
+          { speaker: "A", text: "And the green one?" },
+          { speaker: "B", text: "That one is twenty dollars." },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿Cuánto cuesta el cuaderno azul? (en inglés)",
+            objectiveId: "obj-prea1-2-4",
+            expectedKeywords: ["thirty-five", "35"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Cuánto cuesta el cuaderno verde? (en inglés)",
+            objectiveId: "obj-prea1-2-4",
+            expectedKeywords: ["twenty", "20"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-prea1-2-4"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "vocabulary",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "red, blue, green, yellow, black, white", note: "Colores básicos." },
+          { phrase: "this pen / that notebook", note: "this + singular cercano, that + singular lejano." },
+          { phrase: "Can I have...?", note: "Pedido educado — no es lo mismo que 'Give me...' (descortés)." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          { id: "s1", template: "Can I have ___ red pen, please? (this/that, cerca de ti)", answer: "this", hint: "está cerca" },
+          { id: "s2", template: "How much is ___ notebook over there? (lejos)", answer: "that", hint: "está lejos" },
+          { id: "s3", template: "It's ___ dollars. (50)", answer: "fifty", hint: "cincuenta" },
+        ],
+      },
+      objectiveIds: ["obj-prea1-2-5"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt: "Sin mirar el paso 2, escribe de memoria cómo se pide un objeto y se pregunta el precio.",
+        expectedKeywords: ["can i have", "how much"],
+      },
+      objectiveIds: ["obj-prea1-2-2"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Pide dos objetos de colores distintos usando 'Can I have...?' y di si están cerca (this) o lejos (that). Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-prea1-2-1", "obj-prea1-2-2"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "Hi! Welcome to the shop. Can I help you?",
+        instructions:
+          "Pide un objeto de un color (por ejemplo, 'Can I have a blue notebook, please?'). Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (quinta vez que practicas esto).",
+        secondTutorLine: "Sure, tht'll be fftn dllrs, cash or crd?",
+        expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+        expectedOriginKeywords: ["can i have"],
+        firstTaskLabel: "Pedir el objeto",
+      },
+      objectiveIds: ["obj-prea1-2-2", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= A1 · Módulo 2 · Unidad 1 =======================
+// "At the store" — recicla "pedir repetición" por sexta vez.
+const A1_3_1 = (() => {
+  const unitId = "unit-a1-3-1";
+  const base = "a1-3-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-a1-3-1",
+      stableCode: "A1.3.1",
+      skill: "speaking",
+      canDoStatement: "Puedo preguntar el precio de algo y pedirlo en una tienda.",
+      levelCode: "A1",
+    },
+    {
+      id: "obj-a1-3-2",
+      stableCode: "A1.3.2",
+      skill: "grammar",
+      canDoStatement: "Puedo usar 'some/any' con sustantivos contables e incontables.",
+      levelCode: "A1",
+    },
+    {
+      id: "obj-a1-3-3",
+      stableCode: "A1.3.3",
+      skill: "listening",
+      canDoStatement: "Puedo entender una conversación corta en una tienda.",
+      levelCode: "A1",
+    },
+    {
+      id: "obj-a1-3-4",
+      stableCode: "A1.3.4",
+      skill: "vocabulary",
+      canDoStatement: "Puedo nombrar alimentos y artículos básicos de una tienda.",
+      levelCode: "A1",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "At the store",
+    moduleTitle: "Módulo 2 — La tienda y la comida",
+    levelCode: "A1",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder comprar en una tienda: preguntar precios, pedir alimentos usando 'some/any', y entender una conversación típica de tienda.",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "Hi, do you have any apples?" },
+          { speaker: "B", text: "Yes, we have some apples. Do you need anything else?" },
+          { speaker: "A", text: "Yes, some bread and some milk, please." },
+          { speaker: "B", text: "Sure. That's eight dollars." },
+        ],
+        notes: [
+          "some = afirmativo/peticiones (we have some apples)",
+          "any = negativo/preguntas (do you have any apples?)",
+          "bread y milk son incontables: no se dice 'a bread', se dice 'some bread'.",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Escucha en contexto",
+      type: "contextualized_input",
+      skill: "listening",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "Do you have any eggs?" },
+          { speaker: "B", text: "Sorry, we don't have any eggs today." },
+          { speaker: "A", text: "That's okay. Some rice and some cheese, please." },
+          { speaker: "B", text: "Here you are. That's twelve dollars." },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿Tenían huevos? (responde en inglés: yes/no)",
+            objectiveId: "obj-a1-3-3",
+            expectedKeywords: ["no"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Cuánto pagó en total? (en inglés)",
+            objectiveId: "obj-a1-3-3",
+            expectedKeywords: ["twelve", "12"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-a1-3-3"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "Do you have any apples?", note: "any en preguntas." },
+          { phrase: "We have some apples.", note: "some en afirmaciones y ofertas/peticiones." },
+          { phrase: "bread, milk, rice, cheese", note: "sustantivos incontables frecuentes de comida." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          { id: "s1", template: "Do you have ___ bananas?", answer: "any", hint: "pregunta" },
+          { id: "s2", template: "We have ___ milk.", answer: "some", hint: "afirmación" },
+          { id: "s3", template: "Can I have ___ rice, please?", answer: "some", hint: "petición" },
+        ],
+      },
+      objectiveIds: ["obj-a1-3-2"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt: "Sin mirar el paso 2, escribe de memoria cómo se pregunta por un alimento y cómo se pide.",
+        expectedKeywords: ["do you have any", "some"],
+      },
+      objectiveIds: ["obj-a1-3-1"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "writing",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Escribe un diálogo corto comprando 3 alimentos en una tienda, usando 'some' y 'any'. Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-a1-3-1", "obj-a1-3-4"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "Hello! What can I get for you today?",
+        instructions:
+          "Pide algo de comer usando 'some'. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (sexta vez que practicas esto, ya en una tienda distinta).",
+        secondTutorLine: "Ok, tht's gnna be fftn bcks, is tht alrght?",
+        expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+        expectedOriginKeywords: ["some"],
+        firstTaskLabel: "Pedir el alimento",
+      },
+      objectiveIds: ["obj-a1-3-1", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= A2 · Módulo 2 · Unidad 1 =======================
+// "At the restaurant" — recicla "pedir repetición" por séptima vez.
+const A2_2_1 = (() => {
+  const unitId = "unit-a2-2-1";
+  const base = "a2-2-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-a2-2-1",
+      stableCode: "A2.2.1",
+      skill: "speaking",
+      canDoStatement: "Puedo pedir comida en un restaurante haciendo peticiones corteses.",
+      levelCode: "A2",
+    },
+    {
+      id: "obj-a2-2-2",
+      stableCode: "A2.2.2",
+      skill: "grammar",
+      canDoStatement: "Puedo usar 'would like' y comparativos para expresar preferencias.",
+      levelCode: "A2",
+    },
+    {
+      id: "obj-a2-2-3",
+      stableCode: "A2.2.3",
+      skill: "listening",
+      canDoStatement: "Puedo entender a un mesero tomando una orden.",
+      levelCode: "A2",
+    },
+    {
+      id: "obj-a2-2-4",
+      stableCode: "A2.2.4",
+      skill: "vocabulary",
+      canDoStatement: "Puedo nombrar comidas y bebidas comunes y describir sabores.",
+      levelCode: "A2",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "At the restaurant",
+    moduleTitle: "Módulo 2 — Viajes y servicios",
+    levelCode: "A2",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder pedir comida en un restaurante de forma educada, usando 'would like' y comparando opciones ('this is sweeter than that').",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "Waiter", text: "Good evening! What would you like to drink?" },
+          { speaker: "Customer", text: "I'd like a lemonade, please. Is it sweeter than the orange juice?" },
+          { speaker: "Waiter", text: "Yes, a little sweeter." },
+          { speaker: "Customer", text: "Great, I'll have that, then." },
+        ],
+        notes: [
+          "I'd like... = quisiera... (más educado que 'I want')",
+          "sweeter than = comparativo de 'sweet'",
+          "I'll have that = pedido final, decisión tomada",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Escucha en contexto",
+      type: "contextualized_input",
+      skill: "listening",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          { speaker: "Waiter", text: "Are you ready to order?" },
+          { speaker: "Customer", text: "Yes, I'd like the chicken soup, please." },
+          { speaker: "Waiter", text: "Would you like anything to drink?" },
+          { speaker: "Customer", text: "Just water, thanks. Is the soup spicier than the salad?" },
+          { speaker: "Waiter", text: "A little, yes." },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿Qué pidió de comer? (en inglés)",
+            objectiveId: "obj-a2-2-3",
+            expectedKeywords: ["chicken soup", "soup"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Qué pidió de tomar? (en inglés)",
+            objectiveId: "obj-a2-2-3",
+            expectedKeywords: ["water"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-a2-2-3"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "I'd like... / Would you like...?", note: "Forma educada de pedir y ofrecer." },
+          { phrase: "sweeter than, spicier than", note: "Comparativo: adjetivo corto + -er + than." },
+          { phrase: "I'll have that, then.", note: "Frase fija para cerrar un pedido." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          { id: "s1", template: "I ___ like the fish, please. (would)", answer: "'d", hint: "contracción de would" },
+          { id: "s2", template: "This soup is ___ (spicy) than that one.", answer: "spicier", hint: "comparativo de spicy" },
+          { id: "s3", template: "___ you like anything to drink?", answer: "Would", hint: "oferta educada" },
+        ],
+      },
+      objectiveIds: ["obj-a2-2-2"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt: "Sin mirar el paso 2, reconstruye cómo el cliente pide su bebida y la compara con otra opción.",
+        expectedKeywords: ["i'd like", "than"],
+      },
+      objectiveIds: ["obj-a2-2-1", "obj-a2-2-2"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "writing",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Escribe cómo pedirías una comida y una bebida en un restaurante, comparando dos opciones con un comparativo. Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-a2-2-1", "obj-a2-2-4"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "Good evening! Are you ready to order?",
+        instructions:
+          "Pide algo de comer usando 'I'd like...'. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (séptima vez que practicas esto).",
+        secondTutorLine: "Sure, nd wld y lke smthng t drnk wth tht?",
+        expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+        expectedOriginKeywords: ["i'd like", "i would like"],
+        firstTaskLabel: "Pedir la comida",
+      },
+      objectiveIds: ["obj-a2-2-1", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B1 · Módulo 1 · Unidad 1 =======================
+// "What's your opinion?" — primer contenido de B1, el siguiente nivel más
+// allá de lo construido hasta ahora. Recicla "pedir repetición" por octava
+// vez, probando que el patrón escala incluso a un nivel nuevo.
+const B1_1_1 = (() => {
+  const unitId = "unit-b1-1-1";
+  const base = "b1-1-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-b1-1-1",
+      stableCode: "B1.1.1",
+      skill: "speaking",
+      canDoStatement: "Puedo dar mi opinión sobre un tema y justificarla con una razón.",
+      levelCode: "B1",
+    },
+    {
+      id: "obj-b1-1-2",
+      stableCode: "B1.1.2",
+      skill: "grammar",
+      canDoStatement: "Puedo distinguir cuándo usar presente perfecto vs. pasado simple.",
+      levelCode: "B1",
+    },
+    {
+      id: "obj-b1-1-3",
+      stableCode: "B1.1.3",
+      skill: "listening",
+      canDoStatement: "Puedo identificar la opinión principal y un argumento en un audio breve.",
+      levelCode: "B1",
+    },
+    {
+      id: "obj-b1-1-4",
+      stableCode: "B1.1.4",
+      skill: "vocabulary",
+      canDoStatement: "Puedo usar conectores de opinión (I think, in my opinion, on the other hand).",
+      levelCode: "B1",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "What's your opinion?",
+    moduleTitle: "Módulo 1 — Opinar y resolver",
+    levelCode: "B1",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder dar tu opinión sobre un tema y justificarla, distinguiendo cuándo usar presente perfecto ('I have never tried it') vs. pasado simple ('I tried it last year').",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "In my opinion, working from home is better for most people." },
+          { speaker: "B", text: "Why do you think that?" },
+          { speaker: "A", text: "Because I've worked from home for two years, and I'm more productive." },
+          { speaker: "B", text: "That's interesting. I worked from home last year, but I didn't like it." },
+          { speaker: "A", text: "On the other hand, it depends on the job." },
+        ],
+        notes: [
+          "In my opinion... / I think... = para introducir una opinión.",
+          "I've worked from home for two years = presente perfecto (sigue siendo verdad, duración hasta ahora).",
+          "I worked from home last year = pasado simple (terminado, momento específico).",
+          "On the other hand = por otro lado (para matizar).",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Escucha en contexto",
+      type: "contextualized_input",
+      skill: "listening",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "I think social media has more negative effects than positive ones." },
+          { speaker: "B", text: "Why?" },
+          { speaker: "A", text: "Because I've seen a lot of people feel more anxious because of it." },
+          { speaker: "B", text: "On the other hand, I made great friends online last year." },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿Cuál es la opinión principal de A sobre las redes sociales? (en inglés, una palabra basta: positive/negative)",
+            objectiveId: "obj-b1-1-3",
+            expectedKeywords: ["negative"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Qué razón da A para esa opinión? (en inglés)",
+            objectiveId: "obj-b1-1-3",
+            expectedKeywords: ["anxious"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-b1-1-3"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "I've worked from home for two years.", note: "Presente perfecto: empezó en el pasado y sigue siendo cierto." },
+          { phrase: "I worked from home last year.", note: "Pasado simple: terminado, momento específico (last year)." },
+          { phrase: "I think / In my opinion / On the other hand", note: "Conectores de opinión." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          {
+            id: "s1",
+            template: "I ___ (live) in this city for five years. (sigue viviendo ahí)",
+            answer: "have lived",
+            hint: "presente perfecto: continúa siendo verdad",
+          },
+          {
+            id: "s2",
+            template: "I ___ (visit) Mexico in 2022. (terminado, momento específico)",
+            answer: "visited",
+            hint: "pasado simple",
+          },
+          {
+            id: "s3",
+            template: "___ my opinion, this is the best option.",
+            answer: "In",
+            hint: "In my opinion",
+          },
+        ],
+      },
+      objectiveIds: ["obj-b1-1-2"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt:
+          "Sin mirar el paso 2, escribe de memoria cómo A da su opinión y la justifica, y cómo B la matiza con 'on the other hand'.",
+        expectedKeywords: ["in my opinion", "because", "on the other hand"],
+      },
+      objectiveIds: ["obj-b1-1-1", "obj-b1-1-4"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "writing",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Da tu opinión sobre un tema (por ejemplo: el teletrabajo, las redes sociales, o algo que elijas) y justifícala con una razón, usando al menos un conector de opinión. Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-b1-1-1", "obj-b1-1-4"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "What's your opinion on learning a new language as an adult — is it harder than as a child?",
+        instructions:
+          "Da tu opinión y justifícala. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (octava vez que practicas esto, ahora en una conversación de opinión en B1).",
+        secondTutorLine: "Intrstng point. Nd hw lng hv y ben studyng Englsh yrself?",
+        expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+        expectedOriginKeywords: ["i think", "in my opinion", "because"],
+        firstTaskLabel: "Dar tu opinión",
+      },
+      objectiveIds: ["obj-b1-1-1", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
 // ======================= Banco de evaluación (separado de práctica) =======================
 // "Comprobación de nivel A1.1" — mismos objetivos que unit-a1-1-1, pero ítems
 // NUEVOS (no los mismos con nombres cambiados) y pool='assessment', así que
@@ -1003,7 +1906,16 @@ const ASSESSMENT_ACTIVITIES: Activity[] = (() => {
   ];
 })();
 
-const ALL_UNITS: UnitDefinition[] = [PREA1_1_1, A1_1_1, A1_1_2, A2_1_1];
+const ALL_UNITS: UnitDefinition[] = [
+  PREA1_1_1,
+  PREA1_2_1,
+  A1_1_1,
+  A1_1_2,
+  A1_3_1,
+  A2_1_1,
+  A2_2_1,
+  B1_1_1,
+];
 
 async function seed() {
   let objCount = 0;
