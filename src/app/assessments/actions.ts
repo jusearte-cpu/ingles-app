@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { keywordGrade } from "@/lib/graders";
 import { recordAttemptAndEvidence } from "@/lib/record-evidence";
+import { requireUserId } from "@/lib/auth";
 
 /**
  * Evidencia de evaluación formal: is_assessment = true, is_unaided = true
@@ -15,9 +16,11 @@ export async function submitAssessmentItem(
   responseText: string,
   expectedKeywords: string[],
 ) {
+  const userId = await requireUserId();
   const { satisfactory, matched } = keywordGrade(responseText, expectedKeywords, 1);
 
-  recordAttemptAndEvidence({
+  await recordAttemptAndEvidence({
+    userId,
     activityId,
     responseText,
     evidence: [

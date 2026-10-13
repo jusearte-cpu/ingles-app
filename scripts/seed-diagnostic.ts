@@ -90,14 +90,14 @@ const ITEMS = [
   },
 ];
 
-function seed() {
+async function seed() {
   for (const item of ITEMS) {
-    db.insert(diagnosticItems)
+    await db
+      .insert(diagnosticItems)
       .values(item)
-      .onConflictDoUpdate({ target: diagnosticItems.id, set: item })
-      .run();
+      .onConflictDoUpdate({ target: diagnosticItems.id, set: item });
   }
   console.log(`Sembrados ${ITEMS.length} ítems de diagnóstico.`);
 }
 
-seed();
+seed().then(() => process.exit(0));

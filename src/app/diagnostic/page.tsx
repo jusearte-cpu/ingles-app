@@ -2,15 +2,13 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/db/client";
 import { diagnosticItems } from "@/db/schema";
+import { requireUserId } from "@/lib/auth";
 import { DiagnosticRunner } from "./DiagnosticRunner";
 
-export default function DiagnosticPage() {
-  const items = db
-    .select()
-    .from(diagnosticItems)
-    .orderBy(diagnosticItems.sortOrder)
-    .all()
-    .map((i) => ({ id: i.id, skill: i.skill, content: i.content as any }));
+export default async function DiagnosticPage() {
+  await requireUserId();
+  const rows = await db.select().from(diagnosticItems).orderBy(diagnosticItems.sortOrder);
+  const items = rows.map((i) => ({ id: i.id, skill: i.skill, content: i.content as any }));
 
   return (
     <div className="space-y-6">

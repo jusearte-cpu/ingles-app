@@ -1,7 +1,17 @@
 import { loadThresholds } from "@/lib/thresholds";
+import { requireUserId } from "@/lib/auth";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { DeleteDataButton } from "./DeleteDataButton";
+import { SignOutButton } from "./SignOutButton";
 
-export default function SettingsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SettingsPage() {
+  await requireUserId();
+  const supabase = createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const thresholds = loadThresholds();
 
   return (
@@ -9,10 +19,16 @@ export default function SettingsPage() {
       <h1 className="text-2xl font-semibold">Configuración</h1>
 
       <section className="space-y-2">
+        <h2 className="text-lg font-medium">Cuenta</h2>
+        <p className="text-sm text-ink/60">Conectado como {user?.email}.</p>
+        <SignOutButton />
+      </section>
+
+      <section className="space-y-2">
         <h2 className="text-lg font-medium">Datos</h2>
         <p className="text-sm text-ink/60">
-          Todo vive en <code>data/local.db</code> (SQLite) y <code>data/recordings/</code>{" "}
-          en este equipo mientras no haya un despliegue en la nube conectado.
+          Tu progreso vive en Supabase (Postgres) y tus grabaciones en un bucket
+          privado de Storage — solo accesibles con tu sesión.
         </p>
         <a
           href="/api/export"

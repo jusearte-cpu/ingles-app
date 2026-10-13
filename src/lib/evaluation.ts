@@ -9,26 +9,26 @@ export type ObjectiveStatusValue =
   | "not_demonstrated";
 
 /**
- * Recalcula el estado de un objetivo a partir de SUS evidencias reales.
- * Esta es la implementación concreta de docs/03-progress-and-evaluation-model.md
- * sección 2. No promedia, no redondea a favor: si falta una condición, el
- * resultado es "insufficient_evidence", nunca "demonstrated" por defecto.
+ * Recalcula el estado de un objetivo a partir de SUS evidencias reales (de
+ * un usuario específico). Esta es la implementación concreta de
+ * docs/03-progress-and-evaluation-model.md sección 2. No promedia, no
+ * redondea a favor: si falta una condición, el resultado es
+ * "insufficient_evidence", nunca "demonstrated" por defecto.
  */
-export function recomputeObjectiveStatus(objectiveId: string): {
-  status: ObjectiveStatusValue;
-  reasons: string[];
-} {
+export async function recomputeObjectiveStatus(
+  userId: string,
+  objectiveId: string,
+): Promise<{ status: ObjectiveStatusValue; reasons: string[] }> {
   const thresholds = loadThresholds().competency_demonstrated;
 
-  const rows = db
+  const rows = await db
     .select({
       evidence: evidenceRecords,
       activityId: attempts.activityId,
     })
     .from(evidenceRecords)
     .innerJoin(attempts, eq(evidenceRecords.attemptId, attempts.id))
-    .where(eq(evidenceRecords.objectiveId, objectiveId))
-    .all();
+    .where(and(eq(evidenceRecords.objectiveId, objectiveId), eq(evidenceRecords.userId, userId)));
 
   const reasons: string[] = [];
 
@@ -46,21 +46,17 @@ export function recomputeObjectiveStatus(objectiveId: string): {
     const earliest = satisfactory
       .map((e) => new Date(e.evidence.createdAt).getTime())
       .reduce((a, b) => Math.min(a, b), Infinity);
-    const days =
-      (new Date(r.evidence.createdAt).getTime() - earliest) / 86_400_000;
+    const days = (new Date(r.evidence.createdAt).getTime() - earliest) / 86_400_000;
     return days >= thresholds.retention_check_min_interval_days;
   });
 
   const recentEvidence = [...rows]
     .sort(
       (a, b) =>
-        new Date(b.evidence.createdAt).getTime() -
-        new Date(a.evidence.createdAt).getTime(),
+        new Date(b.evidence.createdAt).getTime() - new Date(a.evidence.createdAt).getTime(),
     )
     .slice(0, thresholds.critical_failure_lookback_evidences);
-  const hasRecentCriticalFailure = recentEvidence.some(
-    (r) => r.evidence.criticalFailure,
-  );
+  const hasRecentCriticalFailure = recentEvidence.some((r) => r.evidence.criticalFailure);
 
   const meetsRepetition =
     satisfactory.length >= thresholds.min_satisfactory_evidences &&
@@ -89,13 +85,13 @@ export function recomputeObjectiveStatus(objectiveId: string): {
         ? "not_demonstrated"
         : "insufficient_evidence";
 
-  db.insert(objectiveStatus)
-    .values({ objectiveId, status, lastEvaluatedAt: new Date().toISOString() })
+  await db
+    .insert(objectiveStatus)
+    .values({ userId, objectiveId, status, lastEvaluatedAt: new Date() })
     .onConflictDoUpdate({
-      target: objectiveStatus.objectiveId,
-      set: { status, lastEvaluatedAt: new Date().toISOString() },
-    })
-    .run();
+      target: [objectiveStatus.userId, objectiveStatus.objectiveId],
+      set: { status, lastEvaluatedAt: new Date() },
+    });
 
   return { status, reasons };
 }

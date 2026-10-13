@@ -3,8 +3,9 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { db } from "@/db/client";
 import { attempts, spacedRepetitionItems } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, and } from "drizzle-orm";
 import { getAllUnitsWithActivities } from "@/lib/queries";
+import { requireUserId } from "@/lib/auth";
 
 const NEEDS_ATTEMPT = new Set([
   "contextualized_input",
@@ -14,24 +15,33 @@ const NEEDS_ATTEMPT = new Set([
   "communicative_task",
 ]);
 
-function unitStatus(activities: { id: string; type: string; objectiveIds: string[] }[]) {
+async function unitStatus(
+  userId: string,
+  activities: { id: string; type: string; objectiveIds: string[] }[],
+) {
   const interactiveIds = activities.filter((a) => NEEDS_ATTEMPT.has(a.type)).map((a) => a.id);
   const attemptedIds = new Set(
     interactiveIds.length
-      ? db
-          .select({ activityId: attempts.activityId })
-          .from(attempts)
-          .where(inArray(attempts.activityId, interactiveIds))
-          .all()
-          .map((r) => r.activityId)
+      ? (
+          await db
+            .select({ activityId: attempts.activityId })
+            .from(attempts)
+            .where(and(inArray(attempts.activityId, interactiveIds), eq(attempts.userId, userId)))
+        ).map((r) => r.activityId)
       : [],
   );
   const objectiveIds = Array.from(new Set(activities.flatMap((a) => a.objectiveIds)));
-  const reviewDone =
-    objectiveIds.length > 0 &&
-    objectiveIds.every((id) =>
-      db.select().from(spacedRepetitionItems).where(eq(spacedRepetitionItems.objectiveId, id)).get(),
-    );
+  let reviewDone = objectiveIds.length > 0;
+  for (const id of objectiveIds) {
+    const [row] = await db
+      .select()
+      .from(spacedRepetitionItems)
+      .where(and(eq(spacedRepetitionItems.userId, userId), eq(spacedRepetitionItems.objectiveId, id)));
+    if (!row) {
+      reviewDone = false;
+      break;
+    }
+  }
   const completedSteps = attemptedIds.size + (reviewDone ? 1 : 0);
   const totalSteps = interactiveIds.length + 1;
 
@@ -40,8 +50,9 @@ function unitStatus(activities: { id: string; type: string; objectiveIds: string
   return "pasos completados (ver Progreso)";
 }
 
-export default function MapPage() {
-  const unitsWithActivities = getAllUnitsWithActivities();
+export default async function MapPage() {
+  const userId = await requireUserId();
+  const unitsWithActivities = await getAllUnitsWithActivities();
 
   if (unitsWithActivities.length === 0) {
     return <p>Todavía no hay contenido sembrado. Corre `npm run db:seed`.</p>;
@@ -51,7 +62,7 @@ export default function MapPage() {
   for (const { unit, activities } of unitsWithActivities) {
     const key = `${unit.levelCode} — ${unit.moduleTitle}`;
     const list = groups.get(key) ?? [];
-    list.push({ unit, status: unitStatus(activities) });
+    list.push({ unit, status: await unitStatus(userId, activities) });
     groups.set(key, list);
   }
 

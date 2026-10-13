@@ -2,22 +2,32 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/db/client";
 import { attempts, evidenceRecords } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, and } from "drizzle-orm";
 import { getAssessmentActivities } from "@/lib/queries";
+import { requireUserId } from "@/lib/auth";
 import { AssessmentRunner } from "./AssessmentRunner";
 
-export default function AssessmentsPage() {
-  const items = getAssessmentActivities();
+export default async function AssessmentsPage() {
+  const userId = await requireUserId();
+  const items = await getAssessmentActivities();
 
   const answeredActivityIds = new Set(
     items.length
-      ? db
-          .select({ activityId: attempts.activityId })
-          .from(attempts)
-          .innerJoin(evidenceRecords, eq(evidenceRecords.attemptId, attempts.id))
-          .where(inArray(attempts.activityId, items.map((i) => i.id)))
-          .all()
-          .map((r) => r.activityId)
+      ? (
+          await db
+            .select({ activityId: attempts.activityId })
+            .from(attempts)
+            .innerJoin(evidenceRecords, eq(evidenceRecords.attemptId, attempts.id))
+            .where(
+              and(
+                inArray(
+                  attempts.activityId,
+                  items.map((i) => i.id),
+                ),
+                eq(attempts.userId, userId),
+              ),
+            )
+        ).map((r) => r.activityId)
       : [],
   );
 

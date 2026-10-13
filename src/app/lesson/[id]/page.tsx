@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUnitWithActivities } from "@/lib/queries";
+import { requireUserId } from "@/lib/auth";
 import { StepRenderer } from "./StepRenderer";
 
-export default function LessonPage({
+export const dynamic = "force-dynamic";
+
+export default async function LessonPage({
   params,
   searchParams,
 }: {
   params: { id: string };
   searchParams: { step?: string };
 }) {
-  const data = getUnitWithActivities(params.id);
+  await requireUserId();
+  const data = await getUnitWithActivities(params.id);
   if (!data) notFound();
 
   const { unit } = data;

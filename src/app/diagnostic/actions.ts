@@ -6,12 +6,12 @@ import { db } from "@/db/client";
 import { diagnosticSessions, diagnosticItems, diagnosticResponses } from "@/db/schema";
 import { keywordGrade, exactGrade } from "@/lib/graders";
 import { getTutorProvider } from "@/lib/ai";
+import { requireUserId } from "@/lib/auth";
 
 export async function startDiagnostic() {
+  const userId = await requireUserId();
   const id = nanoid();
-  db.insert(diagnosticSessions)
-    .values({ id, kind: "quick", status: "in_progress", startedAt: new Date().toISOString() })
-    .run();
+  await db.insert(diagnosticSessions).values({ id, userId, kind: "quick", status: "in_progress" });
   return { sessionId: id };
 }
 
@@ -26,9 +26,10 @@ export async function submitDiagnosticBatch(
   sessionId: string,
   answers: Record<string, string>,
 ) {
-  const items = db.select().from(diagnosticItems).all();
+  const userId = await requireUserId();
+  const items = await db.select().from(diagnosticItems);
   const provider = getTutorProvider();
-  const now = new Date().toISOString();
+  const now = new Date();
 
   const bySkill = new Map<string, { total: number; satisfactory: number }>();
 
@@ -51,16 +52,15 @@ export async function submitDiagnosticBatch(
       satisfactory = keywordGrade(response, content.expectedKeywords ?? [], 1).satisfactory;
     }
 
-    db.insert(diagnosticResponses)
-      .values({
-        id: nanoid(),
-        sessionId,
-        itemId: item.id,
-        responseText: response,
-        satisfactory,
-        createdAt: now,
-      })
-      .run();
+    await db.insert(diagnosticResponses).values({
+      id: nanoid(),
+      userId,
+      sessionId,
+      itemId: item.id,
+      responseText: response,
+      satisfactory,
+      createdAt: now,
+    });
 
     const bucket = bySkill.get(item.skill) ?? { total: 0, satisfactory: 0 };
     bucket.total += 1;
@@ -68,10 +68,10 @@ export async function submitDiagnosticBatch(
     bySkill.set(item.skill, bucket);
   }
 
-  db.update(diagnosticSessions)
+  await db
+    .update(diagnosticSessions)
     .set({ status: "completed", completedAt: now })
-    .where(eq(diagnosticSessions.id, sessionId))
-    .run();
+    .where(eq(diagnosticSessions.id, sessionId));
 
   const SKILL_LABEL: Record<string, string> = {
     reading: "Reading",

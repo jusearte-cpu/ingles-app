@@ -1005,40 +1005,28 @@ const ASSESSMENT_ACTIVITIES: Activity[] = (() => {
 
 const ALL_UNITS: UnitDefinition[] = [PREA1_1_1, A1_1_1, A1_1_2, A2_1_1];
 
-function seed() {
+async function seed() {
   let objCount = 0;
   let actCount = 0;
   const seenObjectives = new Set<string>();
 
   for (const def of ALL_UNITS) {
     for (const o of def.objectives) {
-      db.insert(objectives)
-        .values(o)
-        .onConflictDoUpdate({ target: objectives.id, set: o })
-        .run();
+      await db.insert(objectives).values(o).onConflictDoUpdate({ target: objectives.id, set: o });
       if (!seenObjectives.has(o.id)) {
         seenObjectives.add(o.id);
         objCount += 1;
       }
     }
-    db.insert(units)
-      .values(def.unit)
-      .onConflictDoUpdate({ target: units.id, set: def.unit })
-      .run();
+    await db.insert(units).values(def.unit).onConflictDoUpdate({ target: units.id, set: def.unit });
     for (const a of def.activities) {
-      db.insert(activities)
-        .values(a)
-        .onConflictDoUpdate({ target: activities.id, set: a })
-        .run();
+      await db.insert(activities).values(a).onConflictDoUpdate({ target: activities.id, set: a });
       actCount += 1;
     }
   }
 
   for (const a of ASSESSMENT_ACTIVITIES) {
-    db.insert(activities)
-      .values(a)
-      .onConflictDoUpdate({ target: activities.id, set: a })
-      .run();
+    await db.insert(activities).values(a).onConflictDoUpdate({ target: activities.id, set: a });
     actCount += 1;
   }
 
@@ -1047,4 +1035,4 @@ function seed() {
   );
 }
 
-seed();
+seed().then(() => process.exit(0));

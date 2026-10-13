@@ -1,19 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "node:fs";
-import path from "node:path";
 import { nanoid } from "nanoid";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 /**
- * Guarda una grabación de audio en almacenamiento privado local (filesystem
- * del servidor, fuera de /public — nunca servido directamente sin pasar por
- * la ruta GET de abajo). Cuando se conecte Supabase, esto se reemplaza por
- * un bucket privado con URL firmada (ver docs/01-architecture.md), sin tocar
- * el resto de la app: el contrato (recibe bytes, devuelve una ruta) es igual.
+ * Sube una grabación de audio al bucket privado "recordings" de Supabase
+ * Storage, en la carpeta del usuario autenticado (recordings/<user_id>/...),
+ * que es justo lo que exige la política de acceso (ver
+ * db/schema.supabase.sql) — nadie más puede leerla.
  */
 const MAX_BYTES = 10 * 1024 * 1024; // 10MB, ~varios minutos de audio comprimido
 const ALLOWED_TYPES = new Set(["audio/webm", "audio/ogg", "audio/mp4", "audio/wav"]);
 
 export async function POST(req: NextRequest) {
+  const supabase = createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "No autenticado." }, { status: 401 });
+  }
+
   const contentType = req.headers.get("content-type") ?? "audio/webm";
   const baseType = contentType.split(";")[0].trim();
   if (!ALLOWED_TYPES.has(baseType)) {
@@ -29,30 +35,14 @@ export async function POST(req: NextRequest) {
   }
 
   const ext = baseType.split("/")[1] ?? "webm";
-  const id = nanoid();
-  const dir = path.join(process.cwd(), "data", "recordings");
-  fs.mkdirSync(dir, { recursive: true });
-  const filePath = path.join(dir, `${id}.${ext}`);
-  fs.writeFileSync(filePath, buffer);
+  const path = `${user.id}/${nanoid()}.${ext}`;
 
-  return NextResponse.json({ path: `recordings/${id}.${ext}` });
-}
-
-export async function GET(req: NextRequest) {
-  const file = req.nextUrl.searchParams.get("path");
-  if (!file || file.includes("..")) {
-    return NextResponse.json({ error: "Ruta inválida." }, { status: 400 });
-  }
-  const fullPath = path.join(process.cwd(), "data", file);
-  if (!fullPath.startsWith(path.join(process.cwd(), "data", "recordings"))) {
-    return NextResponse.json({ error: "Ruta inválida." }, { status: 400 });
-  }
-  if (!fs.existsSync(fullPath)) {
-    return NextResponse.json({ error: "No encontrado." }, { status: 404 });
-  }
-  const buffer = fs.readFileSync(fullPath);
-  const ext = path.extname(fullPath).slice(1);
-  return new NextResponse(buffer, {
-    headers: { "Content-Type": `audio/${ext === "webm" ? "webm" : ext}` },
+  const { error } = await supabase.storage.from("recordings").upload(path, buffer, {
+    contentType: baseType,
   });
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ path });
 }

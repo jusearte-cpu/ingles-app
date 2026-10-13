@@ -1,8 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import fs from "node:fs";
-import path from "node:path";
+import { eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import {
   attempts,
@@ -14,6 +13,8 @@ import {
   diagnosticSessions,
   diagnosticResponses,
 } from "@/db/schema";
+import { requireUserId } from "@/lib/auth";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 /**
  * Elimina TUS datos (evidencia, intentos, progreso, portafolio, diagnósticos)
@@ -21,21 +22,22 @@ import {
  * la app, no datos tuyos. Criterio de aceptación: "puedo eliminar mis datos".
  */
 export async function deleteAllMyData() {
-  const recordingsDir = path.join(process.cwd(), "data", "recordings");
-  if (fs.existsSync(recordingsDir)) {
-    for (const file of fs.readdirSync(recordingsDir)) {
-      fs.unlinkSync(path.join(recordingsDir, file));
-    }
+  const userId = await requireUserId();
+  const supabase = createSupabaseServerClient();
+
+  const { data: files } = await supabase.storage.from("recordings").list(userId);
+  if (files && files.length > 0) {
+    await supabase.storage.from("recordings").remove(files.map((f) => `${userId}/${f.name}`));
   }
 
-  db.delete(evidenceRecords).run();
-  db.delete(portfolioItems).run();
-  db.delete(attempts).run();
-  db.delete(objectiveStatus).run();
-  db.delete(spacedRepetitionHistory).run();
-  db.delete(spacedRepetitionItems).run();
-  db.delete(diagnosticResponses).run();
-  db.delete(diagnosticSessions).run();
+  await db.delete(evidenceRecords).where(eq(evidenceRecords.userId, userId));
+  await db.delete(portfolioItems).where(eq(portfolioItems.userId, userId));
+  await db.delete(attempts).where(eq(attempts.userId, userId));
+  await db.delete(objectiveStatus).where(eq(objectiveStatus.userId, userId));
+  await db.delete(spacedRepetitionHistory).where(eq(spacedRepetitionHistory.userId, userId));
+  await db.delete(spacedRepetitionItems).where(eq(spacedRepetitionItems.userId, userId));
+  await db.delete(diagnosticResponses).where(eq(diagnosticResponses.userId, userId));
+  await db.delete(diagnosticSessions).where(eq(diagnosticSessions.userId, userId));
 
   revalidatePath("/today");
   revalidatePath("/map");

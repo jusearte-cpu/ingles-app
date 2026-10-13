@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/db/client";
 import { spacedRepetitionItems, spacedRepetitionHistory } from "@/db/schema";
 import { loadThresholds } from "./thresholds";
@@ -11,40 +11,41 @@ export type ReviewResult = "recalled_easily" | "recalled_with_effort" | "failed"
  * unidad), sin registrar un resultado todavía — el resultado se registra
  * cuando ese repaso realmente ocurra, vía scheduleReview().
  */
-export function initializeSpacedRepetition(objectiveId: string, firstIntervalDays = 3) {
+export async function initializeSpacedRepetition(
+  userId: string,
+  objectiveId: string,
+  firstIntervalDays = 3,
+) {
   const cfg = loadThresholds().spaced_repetition;
-  const existing = db
+  const [existing] = await db
     .select()
     .from(spacedRepetitionItems)
-    .where(eq(spacedRepetitionItems.objectiveId, objectiveId))
-    .get();
+    .where(and(eq(spacedRepetitionItems.userId, userId), eq(spacedRepetitionItems.objectiveId, objectiveId)));
   if (existing) return existing;
 
-  const dueAt = new Date(
-    Date.now() + firstIntervalDays * 86_400_000,
-  ).toISOString();
-  db.insert(spacedRepetitionItems)
+  const dueAt = new Date(Date.now() + firstIntervalDays * 86_400_000);
+  await db
+    .insert(spacedRepetitionItems)
     .values({
+      userId,
       objectiveId,
       easeFactor: cfg.initial_ease_factor,
       intervalDays: firstIntervalDays,
       dueAt,
     })
-    .onConflictDoNothing()
-    .run();
+    .onConflictDoNothing();
   return { easeFactor: cfg.initial_ease_factor, intervalDays: firstIntervalDays, dueAt };
 }
 
 /** SM-2 simplificado — ver docs/03-progress-and-evaluation-model.md, sección 4. */
-export function scheduleReview(objectiveId: string, result: ReviewResult) {
+export async function scheduleReview(userId: string, objectiveId: string, result: ReviewResult) {
   const cfg = loadThresholds().spaced_repetition;
   const now = new Date();
 
-  const existing = db
+  const [existing] = await db
     .select()
     .from(spacedRepetitionItems)
-    .where(eq(spacedRepetitionItems.objectiveId, objectiveId))
-    .get();
+    .where(and(eq(spacedRepetitionItems.userId, userId), eq(spacedRepetitionItems.objectiveId, objectiveId)));
 
   let easeFactor = existing?.easeFactor ?? cfg.initial_ease_factor;
   let intervalDays = existing?.intervalDays ?? 1;
@@ -59,24 +60,23 @@ export function scheduleReview(objectiveId: string, result: ReviewResult) {
     intervalDays = Math.max(1, intervalDays * easeFactor);
   }
 
-  const dueAt = new Date(now.getTime() + intervalDays * 86_400_000).toISOString();
+  const dueAt = new Date(now.getTime() + intervalDays * 86_400_000);
 
-  db.insert(spacedRepetitionItems)
-    .values({ objectiveId, easeFactor, intervalDays, dueAt })
+  await db
+    .insert(spacedRepetitionItems)
+    .values({ userId, objectiveId, easeFactor, intervalDays, dueAt })
     .onConflictDoUpdate({
-      target: spacedRepetitionItems.objectiveId,
+      target: [spacedRepetitionItems.userId, spacedRepetitionItems.objectiveId],
       set: { easeFactor, intervalDays, dueAt },
-    })
-    .run();
+    });
 
-  db.insert(spacedRepetitionHistory)
-    .values({
-      id: nanoid(),
-      objectiveId,
-      result,
-      reviewedAt: now.toISOString(),
-    })
-    .run();
+  await db.insert(spacedRepetitionHistory).values({
+    id: nanoid(),
+    userId,
+    objectiveId,
+    result,
+    reviewedAt: now,
+  });
 
   return { easeFactor, intervalDays, dueAt };
 }

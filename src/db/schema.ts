@@ -1,24 +1,30 @@
 import {
-  sqliteTable,
+  pgTable,
   text,
   integer,
   real,
-} from "drizzle-orm/sqlite-core";
+  boolean,
+  timestamp,
+  jsonb,
+  uuid,
+  primaryKey,
+  unique,
+} from "drizzle-orm/pg-core";
 
 /**
- * Esquema de desarrollo local (SQLite vía Drizzle), Etapa 2.
+ * Esquema real contra Supabase (Postgres) — reemplaza la versión SQLite de
+ * desarrollo local de la Etapa 2. Debe coincidir exactamente con
+ * db/schema.supabase.sql (esa es la fuente que se aplica en el SQL Editor de
+ * Supabase; este archivo es lo que la app usa en tiempo de ejecución).
  *
- * Simplificaciones deliberadas frente a db/schema.sql (el diseño completo
- * Postgres/Supabase de Etapa 1):
- *  - Un solo usuario implícito (sin columnas user_id, sin tablas de auth):
- *    la app corre localmente para una persona. Al conectar Supabase, se migra
- *    a db/schema.sql y se recupera el aislamiento por usuario con RLS.
- *  - Jerarquía currículo→nivel→módulo reducida a lo que existe hoy (una
- *    unidad real). Se amplía en la Etapa 3 sin cambiar la forma del modelo.
- *  - jsonb -> columnas `text` con JSON serializado (SQLite no tiene jsonb).
+ * Frente a la versión SQLite anterior: las tablas de datos personales ganan
+ * `userId` (uuid, referencia implícita a auth.users — Drizzle no modela
+ * auth.users porque Supabase lo gestiona aparte) y Row Level Security real
+ * (aplicada en SQL, no aquí). El currículo (objectives/units/activities/
+ * diagnosticItems) sigue sin userId: es contenido compartido, no datos tuyos.
  */
 
-export const objectives = sqliteTable("objectives", {
+export const objectives = pgTable("objectives", {
   id: text("id").primaryKey(),
   stableCode: text("stable_code").notNull().unique(),
   skill: text("skill").notNull(),
@@ -26,7 +32,7 @@ export const objectives = sqliteTable("objectives", {
   levelCode: text("level_code").notNull(),
 });
 
-export const units = sqliteTable("units", {
+export const units = pgTable("units", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
   moduleTitle: text("module_title").notNull(),
@@ -34,7 +40,7 @@ export const units = sqliteTable("units", {
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-export const activities = sqliteTable("activities", {
+export const activities = pgTable("activities", {
   id: text("id").primaryKey(),
   unitId: text("unit_id")
     .notNull()
@@ -45,25 +51,31 @@ export const activities = sqliteTable("activities", {
   skill: text("skill").notNull(),
   pool: text("pool").notNull().default("practice"),
   baseItemId: text("base_item_id").notNull(),
-  content: text("content", { mode: "json" }).notNull(),
-  objectiveIds: text("objective_ids", { mode: "json" })
-    .notNull()
-    .$type<string[]>(),
+  content: jsonb("content").notNull(),
+  objectiveIds: jsonb("objective_ids").notNull().default([]).$type<string[]>(),
 });
 
-export const attempts = sqliteTable("attempts", {
-  id: text("id").primaryKey(),
-  activityId: text("activity_id")
-    .notNull()
-    .references(() => activities.id),
-  submittedAt: text("submitted_at").notNull(),
-  responseText: text("response_text"),
-  responseAudioPath: text("response_audio_path"),
-  clientIdempotencyKey: text("client_idempotency_key").notNull().unique(),
-});
+export const attempts = pgTable(
+  "attempts",
+  {
+    id: text("id").primaryKey(),
+    userId: uuid("user_id").notNull(),
+    activityId: text("activity_id")
+      .notNull()
+      .references(() => activities.id),
+    submittedAt: timestamp("submitted_at", { withTimezone: true }).notNull().defaultNow(),
+    responseText: text("response_text"),
+    responseAudioPath: text("response_audio_path"),
+    clientIdempotencyKey: text("client_idempotency_key").notNull(),
+  },
+  (t) => ({
+    uniqueIdempotency: unique().on(t.userId, t.clientIdempotencyKey),
+  }),
+);
 
-export const evidenceRecords = sqliteTable("evidence_records", {
+export const evidenceRecords = pgTable("evidence_records", {
   id: text("id").primaryKey(),
+  userId: uuid("user_id").notNull(),
   attemptId: text("attempt_id")
     .notNull()
     .references(() => attempts.id),
@@ -71,75 +83,73 @@ export const evidenceRecords = sqliteTable("evidence_records", {
     .notNull()
     .references(() => objectives.id),
   rubricId: text("rubric_id").notNull(),
-  // Simplificación de la Etapa 2: en el esquema completo (db/schema.sql) esto
-  // se deriva del puntaje ponderado de la rúbrica dentro de ai_eval. Aquí,
-  // mientras la evaluación es por reglas/mock (sin IA real conectada), se
-  // guarda explícito para que el cálculo de competencia sea trazable.
-  satisfactory: integer("satisfactory", { mode: "boolean" }).notNull(),
-  isUnaided: integer("is_unaided", { mode: "boolean" }).notNull().default(false),
-  isTransferTask: integer("is_transfer_task", { mode: "boolean" })
-    .notNull()
-    .default(false),
-  isAssessment: integer("is_assessment", { mode: "boolean" })
-    .notNull()
-    .default(false),
-  criticalFailure: integer("critical_failure", { mode: "boolean" })
-    .notNull()
-    .default(false),
-  usedTranscript: integer("used_transcript", { mode: "boolean" })
-    .notNull()
-    .default(false),
-  aiEval: text("ai_eval", { mode: "json" }),
-  humanOverride: text("human_override", { mode: "json" }),
-  createdAt: text("created_at").notNull(),
+  satisfactory: boolean("satisfactory").notNull(),
+  isUnaided: boolean("is_unaided").notNull().default(false),
+  isTransferTask: boolean("is_transfer_task").notNull().default(false),
+  isAssessment: boolean("is_assessment").notNull().default(false),
+  criticalFailure: boolean("critical_failure").notNull().default(false),
+  usedTranscript: boolean("used_transcript").notNull().default(false),
+  aiEval: jsonb("ai_eval"),
+  humanOverride: jsonb("human_override"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const objectiveStatus = sqliteTable("objective_status", {
-  objectiveId: text("objective_id")
-    .primaryKey()
-    .references(() => objectives.id),
-  status: text("status").notNull().default("insufficient_evidence"),
-  lastEvaluatedAt: text("last_evaluated_at"),
-});
-
-export const spacedRepetitionItems = sqliteTable("spaced_repetition_items", {
-  objectiveId: text("objective_id")
-    .primaryKey()
-    .references(() => objectives.id),
-  easeFactor: real("ease_factor").notNull().default(2.5),
-  intervalDays: real("interval_days").notNull().default(1),
-  dueAt: text("due_at").notNull(),
-});
-
-export const spacedRepetitionHistory = sqliteTable(
-  "spaced_repetition_history",
+export const objectiveStatus = pgTable(
+  "objective_status",
   {
-    id: text("id").primaryKey(),
+    userId: uuid("user_id").notNull(),
     objectiveId: text("objective_id")
       .notNull()
       .references(() => objectives.id),
-    result: text("result").notNull(),
-    reviewedAt: text("reviewed_at").notNull(),
+    status: text("status").notNull().default("insufficient_evidence"),
+    lastEvaluatedAt: timestamp("last_evaluated_at", { withTimezone: true }),
   },
+  (t) => ({ pk: primaryKey({ columns: [t.userId, t.objectiveId] }) }),
 );
 
-export const diagnosticSessions = sqliteTable("diagnostic_sessions", {
+export const spacedRepetitionItems = pgTable(
+  "spaced_repetition_items",
+  {
+    userId: uuid("user_id").notNull(),
+    objectiveId: text("objective_id")
+      .notNull()
+      .references(() => objectives.id),
+    easeFactor: real("ease_factor").notNull().default(2.5),
+    intervalDays: real("interval_days").notNull().default(1),
+    dueAt: timestamp("due_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({ pk: primaryKey({ columns: [t.userId, t.objectiveId] }) }),
+);
+
+export const spacedRepetitionHistory = pgTable("spaced_repetition_history", {
   id: text("id").primaryKey(),
-  kind: text("kind").notNull().default("quick"),
-  status: text("status").notNull().default("in_progress"),
-  startedAt: text("started_at").notNull(),
-  completedAt: text("completed_at"),
+  userId: uuid("user_id").notNull(),
+  objectiveId: text("objective_id")
+    .notNull()
+    .references(() => objectives.id),
+  result: text("result").notNull(),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const diagnosticItems = sqliteTable("diagnostic_items", {
+export const diagnosticSessions = pgTable("diagnostic_sessions", {
+  id: text("id").primaryKey(),
+  userId: uuid("user_id").notNull(),
+  kind: text("kind").notNull().default("quick"),
+  status: text("status").notNull().default("in_progress"),
+  startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+});
+
+export const diagnosticItems = pgTable("diagnostic_items", {
   id: text("id").primaryKey(),
   skill: text("skill").notNull(),
   sortOrder: integer("sort_order").notNull().default(0),
-  content: text("content", { mode: "json" }).notNull(),
+  content: jsonb("content").notNull(),
 });
 
-export const diagnosticResponses = sqliteTable("diagnostic_responses", {
+export const diagnosticResponses = pgTable("diagnostic_responses", {
   id: text("id").primaryKey(),
+  userId: uuid("user_id").notNull(),
   sessionId: text("session_id")
     .notNull()
     .references(() => diagnosticSessions.id),
@@ -147,15 +157,16 @@ export const diagnosticResponses = sqliteTable("diagnostic_responses", {
     .notNull()
     .references(() => diagnosticItems.id),
   responseText: text("response_text").notNull(),
-  satisfactory: integer("satisfactory", { mode: "boolean" }).notNull(),
-  createdAt: text("created_at").notNull(),
+  satisfactory: boolean("satisfactory").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const portfolioItems = sqliteTable("portfolio_items", {
+export const portfolioItems = pgTable("portfolio_items", {
   id: text("id").primaryKey(),
+  userId: uuid("user_id").notNull(),
   kind: text("kind").notNull(),
   storagePath: text("storage_path"),
   linkedActivityId: text("linked_activity_id").references(() => activities.id),
   linkedAttemptId: text("linked_attempt_id").references(() => attempts.id),
-  createdAt: text("created_at").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

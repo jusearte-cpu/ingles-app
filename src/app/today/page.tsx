@@ -3,8 +3,9 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { db } from "@/db/client";
 import { attempts, spacedRepetitionItems } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, and } from "drizzle-orm";
 import { getAllUnitsWithActivities, getDueReviews } from "@/lib/queries";
+import { requireUserId } from "@/lib/auth";
 
 const NEEDS_ATTEMPT = new Set([
   "contextualized_input",
@@ -27,8 +28,9 @@ const STEP_MINUTES: Record<string, number> = {
   review_scheduling: 1,
 };
 
-export default function TodayPage() {
-  const unitsWithActivities = getAllUnitsWithActivities();
+export default async function TodayPage() {
+  const userId = await requireUserId();
+  const unitsWithActivities = await getAllUnitsWithActivities();
 
   if (unitsWithActivities.length === 0) {
     return <p>Todavía no hay contenido sembrado. Corre `npm run db:seed`.</p>;
@@ -39,12 +41,12 @@ export default function TodayPage() {
   );
   const attemptedIds = new Set(
     allActivityIds.length
-      ? db
-          .select({ activityId: attempts.activityId })
-          .from(attempts)
-          .where(inArray(attempts.activityId, allActivityIds))
-          .all()
-          .map((r) => r.activityId)
+      ? (
+          await db
+            .select({ activityId: attempts.activityId })
+            .from(attempts)
+            .where(and(inArray(attempts.activityId, allActivityIds), eq(attempts.userId, userId)))
+        ).map((r) => r.activityId)
       : [],
   );
 
@@ -53,11 +55,17 @@ export default function TodayPage() {
 
   for (const { unit, activities } of unitsWithActivities) {
     const unitObjectiveIds = Array.from(new Set(activities.flatMap((a) => a.objectiveIds)));
-    const reviewDone =
-      unitObjectiveIds.length > 0 &&
-      unitObjectiveIds.every((id) =>
-        db.select().from(spacedRepetitionItems).where(eq(spacedRepetitionItems.objectiveId, id)).get(),
-      );
+    let reviewDone = unitObjectiveIds.length > 0;
+    for (const id of unitObjectiveIds) {
+      const [row] = await db
+        .select()
+        .from(spacedRepetitionItems)
+        .where(and(eq(spacedRepetitionItems.userId, userId), eq(spacedRepetitionItems.objectiveId, id)));
+      if (!row) {
+        reviewDone = false;
+        break;
+      }
+    }
 
     const nextStep = activities.find(
       (a) =>
@@ -70,7 +78,7 @@ export default function TodayPage() {
     }
   }
 
-  const dueReviews = getDueReviews(new Date().toISOString());
+  const dueReviews = await getDueReviews(userId, new Date().toISOString());
 
   return (
     <div className="space-y-6">
@@ -134,9 +142,9 @@ export default function TodayPage() {
       )}
 
       <p className="text-xs text-ink/50">
-        Etapa 2/3 (local): {unitsWithActivities.length} unidades reales en Pre-A1, A1 y
-        A2. El resto del currículo se construye en las próximas etapas (ver
-        docs/06-roadmap.md).
+        Etapa 2/3: {unitsWithActivities.length} unidades reales en Pre-A1, A1 y A2,
+        corriendo contra Supabase. El resto del currículo se construye en las próximas
+        etapas (ver docs/06-roadmap.md).
       </p>
     </div>
   );

@@ -6,6 +6,7 @@ import { keywordGrade, exactGrade } from "@/lib/graders";
 import { recordAttemptAndEvidence } from "@/lib/record-evidence";
 import { initializeSpacedRepetition } from "@/lib/spaced-repetition";
 import { getTutorProvider } from "@/lib/ai";
+import { requireUserId } from "@/lib/auth";
 import { db } from "@/db/client";
 import { portfolioItems, attempts } from "@/db/schema";
 
@@ -22,11 +23,13 @@ export async function submitListeningAnswers(
   objectiveId: string,
   answers: { questionId: string; response: string; expectedKeywords: string[] }[],
 ) {
+  const userId = await requireUserId();
   const graded = answers.map((a) => keywordGrade(a.response, a.expectedKeywords, 1));
   const satisfactory = graded.every((g) => g.satisfactory);
   const combinedText = answers.map((a) => `${a.questionId}: ${a.response}`).join(" | ");
 
-  const result = recordAttemptAndEvidence({
+  const result = await recordAttemptAndEvidence({
+    userId,
     activityId,
     responseText: combinedText,
     evidence: [
@@ -48,11 +51,13 @@ export async function submitGuidedPractice(
   objectiveId: string,
   answers: { sentenceId: string; response: string; answer: string }[],
 ) {
+  const userId = await requireUserId();
   const correctCount = answers.filter((a) => exactGrade(a.response, a.answer)).length;
   const satisfactory = correctCount === answers.length;
   const combinedText = answers.map((a) => `${a.sentenceId}: ${a.response}`).join(" | ");
 
-  const result = recordAttemptAndEvidence({
+  const result = await recordAttemptAndEvidence({
+    userId,
     activityId,
     responseText: combinedText,
     evidence: [
@@ -75,9 +80,11 @@ export async function submitUnaidedRetrieval(
   responseText: string,
   expectedKeywords: string[],
 ) {
+  const userId = await requireUserId();
   const { satisfactory, matched } = keywordGrade(responseText, expectedKeywords, 2);
 
-  const result = recordAttemptAndEvidence({
+  const result = await recordAttemptAndEvidence({
+    userId,
     activityId,
     responseText,
     evidence: objectiveIds.map((objectiveId) => ({
@@ -98,6 +105,8 @@ export async function submitProduction(
   responseText: string,
   audioPath?: string,
 ) {
+  const userId = await requireUserId();
+
   // Sin texto: no hay forma fiable de evaluar contenido/pronunciación sin una
   // transcripción conectada (no hay una en modo local/mock). Se guarda la
   // grabación en el portafolio para comparar más adelante, pero NO se inventa
@@ -105,26 +114,21 @@ export async function submitProduction(
   // pronunciación/STT.
   if (!responseText.trim() && audioPath) {
     const attemptId = nanoid();
-    const now = new Date().toISOString();
-    db.insert(attempts)
-      .values({
-        id: attemptId,
-        activityId,
-        submittedAt: now,
-        responseAudioPath: audioPath,
-        clientIdempotencyKey: nanoid(),
-      })
-      .run();
-    db.insert(portfolioItems)
-      .values({
-        id: nanoid(),
-        kind: "recording",
-        storagePath: audioPath,
-        linkedActivityId: activityId,
-        linkedAttemptId: attemptId,
-        createdAt: now,
-      })
-      .run();
+    await db.insert(attempts).values({
+      id: attemptId,
+      userId,
+      activityId,
+      responseAudioPath: audioPath,
+      clientIdempotencyKey: nanoid(),
+    });
+    await db.insert(portfolioItems).values({
+      id: nanoid(),
+      userId,
+      kind: "recording",
+      storagePath: audioPath,
+      linkedActivityId: activityId,
+      linkedAttemptId: attemptId,
+    });
     revalidateUnit(unitId);
     revalidatePath("/portfolio");
     return {
@@ -145,7 +149,8 @@ export async function submitProduction(
 
   const satisfactory = feedback.taskFulfilled && feedback.meaningErrors.length === 0;
 
-  const result = recordAttemptAndEvidence({
+  const result = await recordAttemptAndEvidence({
+    userId,
     activityId,
     responseText,
     responseAudioPath: audioPath,
@@ -159,16 +164,14 @@ export async function submitProduction(
   });
 
   if (audioPath) {
-    db.insert(portfolioItems)
-      .values({
-        id: nanoid(),
-        kind: "recording",
-        storagePath: audioPath,
-        linkedActivityId: activityId,
-        linkedAttemptId: result.attemptId,
-        createdAt: new Date().toISOString(),
-      })
-      .run();
+    await db.insert(portfolioItems).values({
+      id: nanoid(),
+      userId,
+      kind: "recording",
+      storagePath: audioPath,
+      linkedActivityId: activityId,
+      linkedAttemptId: result.attemptId,
+    });
     revalidatePath("/portfolio");
   }
 
@@ -186,10 +189,12 @@ export async function submitCommunicativeTask(
   expectedOriginKeywords: string[],
   expectedRepetitionKeywords: string[],
 ) {
+  const userId = await requireUserId();
   const originGrade = keywordGrade(originResponse, expectedOriginKeywords, 1);
   const repetitionGrade = keywordGrade(repetitionResponse, expectedRepetitionKeywords, 1);
 
-  const result = recordAttemptAndEvidence({
+  const result = await recordAttemptAndEvidence({
+    userId,
     activityId,
     responseText: `origin: ${originResponse} | repetition: ${repetitionResponse}`,
     evidence: [
@@ -219,8 +224,9 @@ export async function completeReviewScheduling(
   objectiveIds: string[],
   intervalDays: number,
 ) {
+  const userId = await requireUserId();
   for (const id of objectiveIds) {
-    initializeSpacedRepetition(id, intervalDays);
+    await initializeSpacedRepetition(userId, id, intervalDays);
   }
   revalidateUnit(unitId);
   revalidatePath("/review");

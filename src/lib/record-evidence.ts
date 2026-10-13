@@ -20,46 +20,43 @@ export interface EvidenceInput {
  * camino de escritura para progreso real en la app — nunca se escribe
  * "demonstrated" a mano desde la interfaz.
  */
-export function recordAttemptAndEvidence(params: {
+export async function recordAttemptAndEvidence(params: {
+  userId: string;
   activityId: string;
   responseText?: string;
   responseAudioPath?: string;
   evidence: EvidenceInput[];
 }) {
   const attemptId = nanoid();
-  const now = new Date().toISOString();
 
-  db.insert(attempts)
-    .values({
-      id: attemptId,
-      activityId: params.activityId,
-      submittedAt: now,
-      responseText: params.responseText,
-      responseAudioPath: params.responseAudioPath,
-      clientIdempotencyKey: nanoid(),
-    })
-    .run();
-
-  const results = params.evidence.map((e) => {
-    const evidenceId = nanoid();
-    db.insert(evidenceRecords)
-      .values({
-        id: evidenceId,
-        attemptId,
-        objectiveId: e.objectiveId,
-        rubricId: e.rubricId,
-        satisfactory: e.satisfactory,
-        isUnaided: e.isUnaided ?? false,
-        isTransferTask: e.isTransferTask ?? false,
-        isAssessment: e.isAssessment ?? false,
-        criticalFailure: e.criticalFailure ?? false,
-        usedTranscript: e.usedTranscript ?? false,
-        createdAt: now,
-      })
-      .run();
-    const { status, reasons } = recomputeObjectiveStatus(e.objectiveId);
-    return { objectiveId: e.objectiveId, status, reasons };
+  await db.insert(attempts).values({
+    id: attemptId,
+    userId: params.userId,
+    activityId: params.activityId,
+    responseText: params.responseText,
+    responseAudioPath: params.responseAudioPath,
+    clientIdempotencyKey: nanoid(),
   });
+
+  const results = [];
+  for (const e of params.evidence) {
+    const evidenceId = nanoid();
+    await db.insert(evidenceRecords).values({
+      id: evidenceId,
+      userId: params.userId,
+      attemptId,
+      objectiveId: e.objectiveId,
+      rubricId: e.rubricId,
+      satisfactory: e.satisfactory,
+      isUnaided: e.isUnaided ?? false,
+      isTransferTask: e.isTransferTask ?? false,
+      isAssessment: e.isAssessment ?? false,
+      criticalFailure: e.criticalFailure ?? false,
+      usedTranscript: e.usedTranscript ?? false,
+    });
+    const { status, reasons } = await recomputeObjectiveStatus(params.userId, e.objectiveId);
+    results.push({ objectiveId: e.objectiveId, status, reasons });
+  }
 
   return { attemptId, results };
 }

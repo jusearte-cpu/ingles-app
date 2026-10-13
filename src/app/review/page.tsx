@@ -3,18 +3,20 @@ export const dynamic = "force-dynamic";
 import { getDueReviews, getUpcomingReviews, getObjectivesByIds } from "@/lib/queries";
 import { REVIEW_PROMPTS } from "@/lib/review-prompts";
 import { loadThresholds } from "@/lib/thresholds";
+import { requireUserId } from "@/lib/auth";
 import { ReviewCard } from "./ReviewCard";
 
-export default function ReviewPage() {
+export default async function ReviewPage() {
+  const userId = await requireUserId();
   const now = new Date().toISOString();
-  const due = getDueReviews(now);
-  const upcoming = getUpcomingReviews(now);
+  const due = await getDueReviews(userId, now);
+  const upcoming = await getUpcomingReviews(userId, now);
   const cap = loadThresholds().spaced_repetition.daily_review_cap;
 
   const dueToShow = due.slice(0, cap);
   const overflow = due.length - dueToShow.length;
 
-  const objectives = getObjectivesByIds(dueToShow.map((d) => d.objectiveId));
+  const objectives = await getObjectivesByIds(dueToShow.map((d) => d.objectiveId));
   const objectiveById = new Map(objectives.map((o) => [o.id, o]));
 
   return (

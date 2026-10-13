@@ -2,10 +2,11 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/db/client";
 import { attempts, spacedRepetitionItems, spacedRepetitionHistory } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, and } from "drizzle-orm";
 import { getAllObjectives, getAllUnitsWithActivities, LEVEL_ORDER } from "@/lib/queries";
 import { recomputeObjectiveStatus } from "@/lib/evaluation";
 import { loadThresholds } from "@/lib/thresholds";
+import { requireUserId } from "@/lib/auth";
 
 const NEEDS_ATTEMPT = new Set([
   "contextualized_input",
@@ -27,15 +28,16 @@ const STATUS_COLOR: Record<string, string> = {
   insufficient_evidence: "bg-black/5 text-ink/60 border-black/10",
 };
 
-export default function ProgressPage() {
-  const unitsWithActivities = getAllUnitsWithActivities();
-  const objectives = getAllObjectives();
+export default async function ProgressPage() {
+  const userId = await requireUserId();
+  const unitsWithActivities = await getAllUnitsWithActivities();
+  const objectives = await getAllObjectives();
   const thresholds = loadThresholds().competency_demonstrated;
 
-  const objectiveResults = objectives.map((o) => ({
-    objective: o,
-    ...recomputeObjectiveStatus(o.id),
-  }));
+  const objectiveResults = [];
+  for (const o of objectives) {
+    objectiveResults.push({ objective: o, ...(await recomputeObjectiveStatus(userId, o.id)) });
+  }
 
   const demonstratedCount = objectiveResults.filter((r) => r.status === "demonstrated").length;
   const competenciasDemostradas =
@@ -47,34 +49,45 @@ export default function ProgressPage() {
     .map((a) => a.id);
   const attemptedActivityIds = new Set(
     interactiveActivityIds.length
-      ? db
-          .select({ activityId: attempts.activityId })
-          .from(attempts)
-          .where(inArray(attempts.activityId, interactiveActivityIds))
-          .all()
-          .map((r) => r.activityId)
+      ? (
+          await db
+            .select({ activityId: attempts.activityId })
+            .from(attempts)
+            .where(and(inArray(attempts.activityId, interactiveActivityIds), eq(attempts.userId, userId)))
+        ).map((r) => r.activityId)
       : [],
   );
-  const reviewScheduledCount = unitsWithActivities.filter(({ activities }) => {
+
+  let reviewScheduledCount = 0;
+  for (const { activities } of unitsWithActivities) {
     const ids = Array.from(new Set(activities.flatMap((a) => a.objectiveIds)));
-    return (
-      ids.length > 0 &&
-      ids.every((id) =>
-        db.select().from(spacedRepetitionItems).where(eq(spacedRepetitionItems.objectiveId, id)).get(),
-      )
-    );
-  }).length;
+    if (ids.length === 0) continue;
+    let allDone = true;
+    for (const id of ids) {
+      const [row] = await db
+        .select()
+        .from(spacedRepetitionItems)
+        .where(and(eq(spacedRepetitionItems.userId, userId), eq(spacedRepetitionItems.objectiveId, id)));
+      if (!row) {
+        allDone = false;
+        break;
+      }
+    }
+    if (allDone) reviewScheduledCount += 1;
+  }
   const totalObligatory = interactiveActivityIds.length + unitsWithActivities.length; // +1 repaso por unidad
   const completedObligatory = attemptedActivityIds.size + reviewScheduledCount;
   const recorridoCompletado = totalObligatory === 0 ? null : completedObligatory / totalObligatory;
 
   const historyWindowMs = 8 * 7 * 86_400_000;
   const now = Date.now();
-  const recentHistory = db
+  const allHistory = await db
     .select()
     .from(spacedRepetitionHistory)
-    .all()
-    .filter((h) => now - new Date(h.reviewedAt).getTime() <= historyWindowMs);
+    .where(eq(spacedRepetitionHistory.userId, userId));
+  const recentHistory = allHistory.filter(
+    (h) => now - new Date(h.reviewedAt).getTime() <= historyWindowMs,
+  );
   const retentionPassed = recentHistory.filter((h) => h.result !== "failed").length;
 
   const resultsByLevel = new Map<string, typeof objectiveResults>();
