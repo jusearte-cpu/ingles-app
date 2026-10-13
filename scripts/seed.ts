@@ -2726,6 +2726,418 @@ const C1_1_1 = (() => {
   return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
 })();
 
+// ======================= A1 · Módulo 3 · Unidad 1 =======================
+// "My apartment" — recicla "pedir repetición" por decimotercera vez.
+const A1_4_1 = (() => {
+  const unitId = "unit-a1-4-1";
+  const base = "a1-4-1";
+  const objs: Objective[] = [
+    { id: "obj-a1-4-1", stableCode: "A1.4.1", skill: "speaking", canDoStatement: "Puedo describir mi casa o apartamento usando 'there is/are'.", levelCode: "A1" },
+    { id: "obj-a1-4-2", stableCode: "A1.4.2", skill: "grammar", canDoStatement: "Puedo usar preposiciones de lugar (in, on, under, next to).", levelCode: "A1" },
+    { id: "obj-a1-4-3", stableCode: "A1.4.3", skill: "listening", canDoStatement: "Puedo entender la descripción de una vivienda.", levelCode: "A1" },
+    { id: "obj-a1-4-4", stableCode: "A1.4.4", skill: "vocabulary", canDoStatement: "Puedo nombrar habitaciones y muebles básicos.", levelCode: "A1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "My apartment", moduleTitle: "Módulo 3 — Vivienda", levelCode: "A1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder describir tu casa: qué habitaciones tiene y dónde están los muebles, usando 'there is/are' y preposiciones de lugar." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "What's your apartment like?" },
+        { speaker: "B", text: "There are two bedrooms and one bathroom. The sofa is next to the window." },
+        { speaker: "A", text: "Is there a kitchen?" },
+        { speaker: "B", text: "Yes, there is. It's small, but there's a table in it." },
+      ],
+      notes: ["There is + singular, There are + plural.", "next to, in, on, under = preposiciones de lugar.", "bedroom, bathroom, kitchen, living room = habitaciones."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "There's a cat under the table and a lamp on the desk." },
+        { speaker: "B", text: "Is there a TV in the living room?" },
+        { speaker: "A", text: "Yes, there is. It's next to the window." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Dónde está el gato? (en inglés)", objectiveId: "obj-a1-4-3", expectedKeywords: ["under the table"] },
+        { id: "q2", prompt: "¿Dónde está la TV? (en inglés)", objectiveId: "obj-a1-4-3", expectedKeywords: ["next to the window"] },
+      ],
+    }, objectiveIds: ["obj-a1-4-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "There is a lamp on the desk.", note: "on = sobre una superficie." },
+        { phrase: "There's a cat under the table.", note: "under = debajo de." },
+        { phrase: "The sofa is next to the window.", note: "next to = al lado de." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "There ___ a bed in my room. (is/are)", answer: "is", hint: "singular" },
+        { id: "s2", template: "There ___ two chairs in the kitchen.", answer: "are", hint: "plural" },
+        { id: "s3", template: "The book is ___ the table. (sobre)", answer: "on", hint: "superficie" },
+      ],
+    }, objectiveIds: ["obj-a1-4-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, escribe de memoria cómo describe B su apartamento.",
+      expectedKeywords: ["there are", "there's"],
+    }, objectiveIds: ["obj-a1-4-1"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Describe tu casa o apartamento: cuántas habitaciones tiene y dónde está un mueble. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-a1-4-1", "obj-a1-4-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "Tell me about your home — how many rooms does it have?",
+      instructions: "Describe tu casa. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (decimotercera vez que practicas esto).",
+      secondTutorLine: "Cool, nd whch rm d y lke th mst?",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["there is", "there are"],
+      firstTaskLabel: "Describir tu casa",
+    }, objectiveIds: ["obj-a1-4-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= A1 · Módulo 4 · Unidad 1 =======================
+// "What's the weather like?" — recicla "pedir repetición" por decimocuarta vez.
+const A1_5_1 = (() => {
+  const unitId = "unit-a1-5-1";
+  const base = "a1-5-1";
+  const objs: Objective[] = [
+    { id: "obj-a1-5-1", stableCode: "A1.5.1", skill: "speaking", canDoStatement: "Puedo describir el clima y hacer planes según el clima.", levelCode: "A1" },
+    { id: "obj-a1-5-2", stableCode: "A1.5.2", skill: "grammar", canDoStatement: "Puedo usar 'going to' para planes basados en el clima.", levelCode: "A1" },
+    { id: "obj-a1-5-3", stableCode: "A1.5.3", skill: "listening", canDoStatement: "Puedo entender un pronóstico del clima simple.", levelCode: "A1" },
+    { id: "obj-a1-5-4", stableCode: "A1.5.4", skill: "vocabulary", canDoStatement: "Puedo nombrar condiciones climáticas (sunny, rainy, cold, hot).", levelCode: "A1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "What's the weather like?", moduleTitle: "Módulo 4 — Clima y planes", levelCode: "A1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder describir el clima y decir qué vas a hacer según el clima, usando 'going to'." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "What's the weather like today?" },
+        { speaker: "B", text: "It's sunny and hot. I'm going to go to the beach." },
+        { speaker: "A", text: "Sounds great. I'm going to stay home — it's going to rain later." },
+      ],
+      notes: ["What's the weather like? = ¿Cómo está el clima?", "I'm going to + verbo = plan basado en lo que sabes ahora.", "sunny, hot, rainy, cold, cloudy = condiciones climáticas."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "Forecast", text: "Tomorrow will be cold and cloudy, with rain in the afternoon." },
+        { speaker: "Forecast", text: "The weekend is going to be sunny and warm." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Cómo va a estar el clima mañana? (en inglés)", objectiveId: "obj-a1-5-3", expectedKeywords: ["cold", "cloudy"] },
+        { id: "q2", prompt: "¿Cómo va a estar el fin de semana? (en inglés)", objectiveId: "obj-a1-5-3", expectedKeywords: ["sunny", "warm"] },
+      ],
+    }, objectiveIds: ["obj-a1-5-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "I'm going to go to the beach.", note: "going to + verbo: plan ya decidido." },
+        { phrase: "It's going to rain.", note: "going to también para predicciones con evidencia (nubes, etc.)." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "It's ___ (sunny). I'm going to wear sunglasses.", answer: "sunny", hint: "clima" },
+        { id: "s2", template: "I'm ___ (go) to the park tomorrow. (going to)", answer: "going to go", hint: "plan" },
+        { id: "s3", template: "Look at those clouds! It's ___ (rain) soon.", answer: "going to rain", hint: "predicción con evidencia" },
+      ],
+    }, objectiveIds: ["obj-a1-5-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, escribe de memoria el plan de A y B según el clima.",
+      expectedKeywords: ["going to", "beach"],
+    }, objectiveIds: ["obj-a1-5-1"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Describe el clima de hoy y di qué vas a hacer usando 'going to'. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-a1-5-1", "obj-a1-5-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "What's the weather like where you are, and what are you going to do today?",
+      instructions: "Describe el clima y tu plan. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (decimocuarta vez que practicas esto).",
+      secondTutorLine: "Nce! Nd d y nd n mbrlla fr tht?",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["going to", "it's"],
+      firstTaskLabel: "Describir el clima y tu plan",
+    }, objectiveIds: ["obj-a1-5-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= A2 · Módulo 4 · Unidad 1 =======================
+// "What are you going to do?" — recicla "pedir repetición" por decimoquinta vez.
+const A2_4_1 = (() => {
+  const unitId = "unit-a2-4-1";
+  const base = "a2-4-1";
+  const objs: Objective[] = [
+    { id: "obj-a2-4-1", stableCode: "A2.4.1", skill: "speaking", canDoStatement: "Puedo hablar de mis planes futuros y preguntar por los de otros.", levelCode: "A2" },
+    { id: "obj-a2-4-2", stableCode: "A2.4.2", skill: "grammar", canDoStatement: "Puedo distinguir 'going to' (planes) de 'will' (decisiones espontáneas/predicciones).", levelCode: "A2" },
+    { id: "obj-a2-4-3", stableCode: "A2.4.3", skill: "listening", canDoStatement: "Puedo entender planes futuros en una conversación.", levelCode: "A2" },
+    { id: "obj-a2-4-4", stableCode: "A2.4.4", skill: "vocabulary", canDoStatement: "Puedo usar expresiones de tiempo futuro (next week, tomorrow, in two days).", levelCode: "A2" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "What are you going to do?", moduleTitle: "Módulo 4 — Planes", levelCode: "A2", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder hablar de planes futuros y distinguir cuándo usar 'going to' (planeado) vs. 'will' (decidido en el momento)." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "What are you going to do next week?" },
+        { speaker: "B", text: "I'm going to visit my parents. I planned it last month." },
+        { speaker: "A", text: "Nice! I don't have plans yet... I think I'll just relax at home." },
+      ],
+      notes: ["going to = plan ya decidido antes.", "will (decisión en el momento, mientras hablas) = 'I think I'll...'", "next week, tomorrow, in two days = expresiones de futuro."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "I'm going to start a new course next month. I signed up yesterday." },
+        { speaker: "B", text: "That's great. I haven't decided yet, but I think I'll join too." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Cuándo empieza el curso de A? (en inglés)", objectiveId: "obj-a2-4-3", expectedKeywords: ["next month"] },
+        { id: "q2", prompt: "¿B ya decidió unirse? (responde yes/no en inglés)", objectiveId: "obj-a2-4-3", expectedKeywords: ["no"] },
+      ],
+    }, objectiveIds: ["obj-a2-4-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "I'm going to visit my parents. I planned it.", note: "going to: ya había un plan." },
+        { phrase: "I think I'll just relax.", note: "will: decisión tomada en el momento de hablar." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "I already bought the tickets. I ___ (go) to the concert. (planeado)", answer: "'m going to go", hint: "going to" },
+        { id: "s2", template: "The phone is ringing. I ___ (answer) it. (decisión espontánea)", answer: "'ll answer", hint: "will" },
+        { id: "s3", template: "See you ___ week! (próxima)", answer: "next", hint: "next week" },
+      ],
+    }, objectiveIds: ["obj-a2-4-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye el plan de A y la decisión espontánea de B.",
+      expectedKeywords: ["going to", "i'll"],
+    }, objectiveIds: ["obj-a2-4-1", "obj-a2-4-2"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Escribe un plan ya decidido (con 'going to') y una decisión espontánea (con 'will'). Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-a2-4-1", "obj-a2-4-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "What are you going to do next weekend?",
+      instructions: "Cuenta tu plan. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (decimoquinta vez que practicas esto).",
+      secondTutorLine: "Awsm, nd whos gna cme wth y?",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["going to", "i'm"],
+      firstTaskLabel: "Contar tu plan",
+    }, objectiveIds: ["obj-a2-4-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= A2 · Módulo 5 · Unidad 1 =======================
+// "Can you help me?" — recicla "pedir repetición" por decimosexta vez.
+const A2_5_1 = (() => {
+  const unitId = "unit-a2-5-1";
+  const base = "a2-5-1";
+  const objs: Objective[] = [
+    { id: "obj-a2-5-1", stableCode: "A2.5.1", skill: "speaking", canDoStatement: "Puedo pedir ayuda con un problema de tecnología.", levelCode: "A2" },
+    { id: "obj-a2-5-2", stableCode: "A2.5.2", skill: "grammar", canDoStatement: "Puedo usar 'can/could' para pedir y ofrecer ayuda educadamente.", levelCode: "A2" },
+    { id: "obj-a2-5-3", stableCode: "A2.5.3", skill: "listening", canDoStatement: "Puedo entender instrucciones técnicas simples paso a paso.", levelCode: "A2" },
+    { id: "obj-a2-5-4", stableCode: "A2.5.4", skill: "vocabulary", canDoStatement: "Puedo nombrar problemas técnicos comunes (it's not working, it's frozen).", levelCode: "A2" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "Can you help me?", moduleTitle: "Módulo 5 — Tecnología cotidiana", levelCode: "A2", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder pedir ayuda con un problema de tecnología y entender instrucciones paso a paso." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "Can you help me? My phone isn't working." },
+        { speaker: "B", text: "Sure. Could you turn it off and on again?" },
+        { speaker: "A", text: "Okay... it's working now! Thank you." },
+      ],
+      notes: ["Can you help me? = ¿Me puedes ayudar?", "Could you + verbo? = forma educada de pedir algo.", "It's not working / It's frozen = no funciona / se congeló."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "My computer is frozen. Can you help?" },
+        { speaker: "B", text: "First, wait 10 seconds. Then, press this button for 5 seconds." },
+        { speaker: "A", text: "Okay, I did that. It's restarting now." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué hay que hacer primero? (en inglés)", objectiveId: "obj-a2-5-3", expectedKeywords: ["wait", "10 seconds"] },
+        { id: "q2", prompt: "¿Qué hay que hacer después? (en inglés)", objectiveId: "obj-a2-5-3", expectedKeywords: ["press", "button"] },
+      ],
+    }, objectiveIds: ["obj-a2-5-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "Can you help me? / Could you help me?", note: "Could es más formal/educado que Can." },
+        { phrase: "First, ... Then, ...", note: "Conectores para dar instrucciones en orden." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "___ you help me, please? (educado)", answer: "Could", hint: "más formal que can" },
+        { id: "s2", template: "My laptop ___ (not/work).", answer: "isn't working", hint: "no funciona" },
+        { id: "s3", template: "It's ___. (congelado)", answer: "frozen", hint: "frozen" },
+      ],
+    }, objectiveIds: ["obj-a2-5-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, escribe de memoria cómo A pide ayuda y qué le responde B.",
+      expectedKeywords: ["can you help", "could you"],
+    }, objectiveIds: ["obj-a2-5-1"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Describe un problema técnico y pide ayuda educadamente con 'Could you...?'. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-a2-5-1", "obj-a2-5-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "What seems to be the problem with your device?",
+      instructions: "Describe un problema técnico y pide ayuda. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (decimosexta vez que practicas esto).",
+      secondTutorLine: "Ok, trn it ff nd wait tn secnds, thn trn it bck on.",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["can you help", "could you help"],
+      firstTaskLabel: "Pedir ayuda",
+    }, objectiveIds: ["obj-a2-5-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B1 · Módulo 3 · Unidad 1 =======================
+// "Is technology making us smarter or lazier?" — recicla "pedir repetición"
+// por decimoséptima vez.
+const B1_3_1 = (() => {
+  const unitId = "unit-b1-3-1";
+  const base = "b1-3-1";
+  const objs: Objective[] = [
+    { id: "obj-b1-3-1", stableCode: "B1.3.1", skill: "speaking", canDoStatement: "Puedo debatir sobre un tema usando condicionales de primer tipo.", levelCode: "B1" },
+    { id: "obj-b1-3-2", stableCode: "B1.3.2", skill: "grammar", canDoStatement: "Puedo formar condicionales tipo 1 (if + presente, will + infinitivo).", levelCode: "B1" },
+    { id: "obj-b1-3-3", stableCode: "B1.3.3", skill: "listening", canDoStatement: "Puedo entender un argumento con condición-consecuencia.", levelCode: "B1" },
+    { id: "obj-b1-3-4", stableCode: "B1.3.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario sobre tecnología y sus efectos (dependence, distraction, convenience).", levelCode: "B1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "Is technology making us smarter or lazier?", moduleTitle: "Módulo 3 — Tecnología y medio ambiente", levelCode: "B1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder debatir sobre el efecto de la tecnología usando condicionales tipo 1 (if + presente, will + infinitivo) para hablar de consecuencias reales." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "If we keep relying on technology this much, we'll lose basic skills." },
+        { speaker: "B", text: "Maybe, but if we use it wisely, it'll make our lives easier." },
+        { speaker: "A", text: "That's true, but there's a real risk of dependence." },
+      ],
+      notes: ["If + presente simple, will + infinitivo = condición real/probable con consecuencia futura.", "dependence, distraction, convenience = vocabulario del tema."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "If people spend less time outside, they'll feel more isolated." },
+        { speaker: "B", text: "But if they use apps to connect with friends, it won't be a problem." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué consecuencia menciona A? (en inglés)", objectiveId: "obj-b1-3-3", expectedKeywords: ["isolated"] },
+        { id: "q2", prompt: "¿Qué condición da B para que no sea un problema? (en inglés)", objectiveId: "obj-b1-3-3", expectedKeywords: ["apps", "connect"] },
+      ],
+    }, objectiveIds: ["obj-b1-3-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "If we keep relying on technology, we'll lose basic skills.", note: "If + presente, will + infinitivo: condicional tipo 1." },
+        { phrase: "If they use apps, it won't be a problem.", note: "Forma negativa: won't en la consecuencia." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "If I ___ (have) time, I'll learn a new skill.", answer: "have", hint: "if + presente" },
+        { id: "s2", template: "If you don't practice, you ___ (not/improve).", answer: "won't improve", hint: "consecuencia negativa" },
+        { id: "s3", template: "We'll reduce stress if we ___ (use) technology wisely.", answer: "use", hint: "if + presente" },
+      ],
+    }, objectiveIds: ["obj-b1-3-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye el argumento de A y la respuesta de B usando condicionales.",
+      expectedKeywords: ["if", "will"],
+    }, objectiveIds: ["obj-b1-3-1", "obj-b1-3-4"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Da tu opinión sobre el efecto de la tecnología usando al menos un condicional tipo 1 (if + presente, will + infinitivo). Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b1-3-1", "obj-b1-3-2"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "Do you think technology does more good than harm?",
+      instructions: "Argumenta tu postura usando un condicional tipo 1. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (decimoséptima vez que practicas esto).",
+      secondTutorLine: "Fr pnt. Bt wht if ppl dn't hve accss t it t ll?",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["if", "will"],
+      firstTaskLabel: "Argumentar tu postura",
+    }, objectiveIds: ["obj-b1-3-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B1 · Módulo 4 · Unidad 1 =======================
+// "People I admire" — recicla "pedir repetición" por decimoctava vez.
+const B1_4_1 = (() => {
+  const unitId = "unit-b1-4-1";
+  const base = "b1-4-1";
+  const objs: Objective[] = [
+    { id: "obj-b1-4-1", stableCode: "B1.4.1", skill: "speaking", canDoStatement: "Puedo describir a una persona usando cláusulas de relativo (who, that, which).", levelCode: "B1" },
+    { id: "obj-b1-4-2", stableCode: "B1.4.2", skill: "grammar", canDoStatement: "Puedo formar oraciones de relativo para dar información adicional.", levelCode: "B1" },
+    { id: "obj-b1-4-3", stableCode: "B1.4.3", skill: "listening", canDoStatement: "Puedo entender una descripción detallada de una persona.", levelCode: "B1" },
+    { id: "obj-b1-4-4", stableCode: "B1.4.4", skill: "vocabulary", canDoStatement: "Puedo usar adjetivos de personalidad (ambitious, generous, reliable).", levelCode: "B1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "People I admire", moduleTitle: "Módulo 4 — Relaciones y noticias", levelCode: "B1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder describir a alguien que admiras usando cláusulas de relativo (who, that, which) y adjetivos de personalidad." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "My aunt, who taught me how to cook, is the most generous person I know." },
+        { speaker: "B", text: "That's nice. I admire my mentor, who is really reliable and ambitious." },
+      ],
+      notes: ["who = para personas (sujeto de la cláusula).", "that/which = para cosas.", "generous, reliable, ambitious = adjetivos de personalidad."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "I admire my grandfather, who worked two jobs to support his family." },
+        { speaker: "A", text: "He's the most hardworking and honest person I've ever met." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué hizo el abuelo? (en inglés)", objectiveId: "obj-b1-4-3", expectedKeywords: ["two jobs", "worked"] },
+        { id: "q2", prompt: "¿Qué dos adjetivos usa para describirlo? (en inglés)", objectiveId: "obj-b1-4-3", expectedKeywords: ["hardworking", "honest"] },
+      ],
+    }, objectiveIds: ["obj-b1-4-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "My aunt, who taught me how to cook, is generous.", note: "who introduce información adicional sobre una persona." },
+        { phrase: "ambitious, generous, reliable, hardworking, honest", note: "Adjetivos de personalidad frecuentes." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "My friend, ___ lives in Canada, called me yesterday. (persona)", answer: "who", hint: "para personas" },
+        { id: "s2", template: "The book ___ I read last month was great. (cosa)", answer: "that", hint: "para cosas" },
+        { id: "s3", template: "She's very ___ — she always helps others. (generosa)", answer: "generous", hint: "adjetivo" },
+      ],
+    }, objectiveIds: ["obj-b1-4-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, escribe de memoria cómo A describe a su tía usando una cláusula de relativo.",
+      expectedKeywords: ["who", "generous"],
+    }, objectiveIds: ["obj-b1-4-1"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Describe a alguien que admiras usando una cláusula de relativo con 'who' y al menos un adjetivo de personalidad. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b1-4-1", "obj-b1-4-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "Tell me about someone you really admire.",
+      instructions: "Describe a esa persona usando una cláusula de relativo. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (decimoctava vez que practicas esto).",
+      secondTutorLine: "Tht's rlly nce. Hw dd y mt thm?",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["who", "that"],
+      firstTaskLabel: "Describir a esa persona",
+    }, objectiveIds: ["obj-b1-4-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
 // ======================= Banco de evaluación (separado de práctica) =======================
 // "Comprobación de nivel A1.1" — mismos objetivos que unit-a1-1-1, pero ítems
 // NUEVOS (no los mismos con nombres cambiados) y pool='assessment', así que
@@ -2793,11 +3205,17 @@ const ALL_UNITS: UnitDefinition[] = [
   A1_1_1,
   A1_1_2,
   A1_3_1,
+  A1_4_1,
+  A1_5_1,
   A2_1_1,
   A2_2_1,
   A2_3_1,
+  A2_4_1,
+  A2_5_1,
   B1_1_1,
   B1_2_1,
+  B1_3_1,
+  B1_4_1,
   B2_1_1,
   C1_1_1,
 ];

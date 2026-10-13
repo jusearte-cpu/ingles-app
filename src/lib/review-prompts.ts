@@ -204,4 +204,100 @@ export const REVIEW_PROMPTS: Record<string, { prompt: string; expectedKeywords: 
     prompt: "Completa: 'We were able to ___ a conclusion after reviewing the data.' (reach/arrive)",
     expectedKeywords: ["reach"],
   },
+  "obj-a1-4-1": {
+    prompt: "Escribe en inglés una frase describiendo tu casa con 'there is/are'.",
+    expectedKeywords: ["there is", "there are"],
+  },
+  "obj-a1-4-2": {
+    prompt: "Completa: 'The lamp is ___ the desk.' (sobre)",
+    expectedKeywords: ["on"],
+  },
+  "obj-a1-4-3": {
+    prompt: "¿Qué tipo de descripción escuchaste en esta unidad? (una palabra: house/casa)",
+    expectedKeywords: ["house", "apartment"],
+  },
+  "obj-a1-4-4": {
+    prompt: "Escribe en inglés 2 habitaciones de una casa.",
+    expectedKeywords: ["bedroom", "bathroom", "kitchen", "living room"],
+  },
+  "obj-a1-5-1": {
+    prompt: "Escribe en inglés cómo está el clima hoy.",
+    expectedKeywords: ["sunny", "rainy", "cold", "hot", "it's"],
+  },
+  "obj-a1-5-2": {
+    prompt: "Completa: 'I'm ___ (go) to the beach tomorrow.' (going to)",
+    expectedKeywords: ["going to go"],
+  },
+  "obj-a1-5-3": {
+    prompt: "¿De qué tipo fue el audio de esta unidad? (una palabra: weather/clima)",
+    expectedKeywords: ["weather"],
+  },
+  "obj-a1-5-4": {
+    prompt: "Escribe en inglés 2 condiciones climáticas.",
+    expectedKeywords: ["sunny", "rainy", "cold", "hot", "cloudy"],
+  },
+  "obj-a2-4-1": {
+    prompt: "Escribe en inglés un plan que tengas para la próxima semana.",
+    expectedKeywords: ["going to", "next week"],
+  },
+  "obj-a2-4-2": {
+    prompt: "¿Cuál usarías para un plan ya decidido: 'going to' o 'will'?",
+    expectedKeywords: ["going to"],
+  },
+  "obj-a2-4-3": {
+    prompt: "¿De qué trataba la conversación de esta unidad? (una palabra: plans/planes)",
+    expectedKeywords: ["plans"],
+  },
+  "obj-a2-4-4": {
+    prompt: "Escribe en inglés una expresión de tiempo futuro.",
+    expectedKeywords: ["next week", "tomorrow", "in two days"],
+  },
+  "obj-a2-5-1": {
+    prompt: "Escribe en inglés cómo pedirías ayuda con un problema técnico.",
+    expectedKeywords: ["can you help", "could you help"],
+  },
+  "obj-a2-5-2": {
+    prompt: "Completa: '___ you help me, please?' (más educado que can)",
+    expectedKeywords: ["could"],
+  },
+  "obj-a2-5-3": {
+    prompt: "¿Qué tipo de instrucciones escuchaste en esta unidad? (una palabra: technical/técnicas)",
+    expectedKeywords: ["technical", "technology"],
+  },
+  "obj-a2-5-4": {
+    prompt: "Escribe en inglés cómo dirías que algo 'no funciona'.",
+    expectedKeywords: ["not working", "isn't working"],
+  },
+  "obj-b1-3-1": {
+    prompt: "Escribe tu opinión sobre la tecnología usando un condicional tipo 1 (if + presente, will).",
+    expectedKeywords: ["if", "will"],
+  },
+  "obj-b1-3-2": {
+    prompt: "Completa: 'If you practice every day, you ___ (improve) quickly.'",
+    expectedKeywords: ["will improve", "'ll improve"],
+  },
+  "obj-b1-3-3": {
+    prompt: "¿De qué tema trataba el audio de esta unidad? (una palabra: technology/tecnología)",
+    expectedKeywords: ["technology"],
+  },
+  "obj-b1-3-4": {
+    prompt: "Escribe en inglés una palabra relacionada con el efecto de la tecnología (dependence, distraction, convenience).",
+    expectedKeywords: ["dependence", "distraction", "convenience"],
+  },
+  "obj-b1-4-1": {
+    prompt: "Describe a alguien que admiras usando una cláusula con 'who'.",
+    expectedKeywords: ["who"],
+  },
+  "obj-b1-4-2": {
+    prompt: "Completa: 'The person ___ helped me is my neighbor.' (persona)",
+    expectedKeywords: ["who"],
+  },
+  "obj-b1-4-3": {
+    prompt: "¿Qué tipo de descripción escuchaste en esta unidad? (una palabra: person/persona)",
+    expectedKeywords: ["person"],
+  },
+  "obj-b1-4-4": {
+    prompt: "Escribe en inglés un adjetivo de personalidad.",
+    expectedKeywords: ["ambitious", "generous", "reliable", "honest", "hardworking"],
+  },
 };
