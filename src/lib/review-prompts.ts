@@ -396,4 +396,68 @@ export const REVIEW_PROMPTS: Record<string, { prompt: string; expectedKeywords: 
     prompt: "Escribe en inglés una palabra de vocabulario de quejas (refund, compensation, unacceptable).",
     expectedKeywords: ["refund", "compensation", "unacceptable"],
   },
+  "obj-b2-6-1": {
+    prompt: "Escribe un contraargumento respetuoso sobre un tema educativo.",
+    expectedKeywords: ["even though", "despite", "but"],
+  },
+  "obj-b2-6-2": {
+    prompt: "Completa: '___ the rain, we went for a walk.' (+ sustantivo)",
+    expectedKeywords: ["despite"],
+  },
+  "obj-b2-6-3": {
+    prompt: "¿Qué concedió un hablante en el debate de esta unidad? (en inglés)",
+    expectedKeywords: ["save time", "saves time"],
+  },
+  "obj-b2-6-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario de debate (counterargument, rebuttal, concede).",
+    expectedKeywords: ["counterargument", "rebuttal", "concede"],
+  },
+  "obj-b2-7-1": {
+    prompt: "Reporta en estilo indirecto una pregunta que te hicieron (she asked if/what...).",
+    expectedKeywords: ["asked if", "asked what", "wondered"],
+  },
+  "obj-b2-7-2": {
+    prompt: "Completa: '\"Where do you live?\" → He asked where I ___ (live).'",
+    expectedKeywords: ["lived"],
+  },
+  "obj-b2-7-3": {
+    prompt: "¿Qué preguntó la persona en el audio de esta unidad? (en inglés)",
+    expectedKeywords: ["finished the report", "deadline"],
+  },
+  "obj-b2-7-4": {
+    prompt: "Escribe en inglés un verbo de reporte (asked, wondered, inquired).",
+    expectedKeywords: ["asked", "wondered", "inquired"],
+  },
+  "obj-c1-2-1": {
+    prompt: "Construye un argumento académico breve usando subordinación compleja.",
+    expectedKeywords: ["although", "given that", "provided that"],
+  },
+  "obj-c1-2-2": {
+    prompt: "Completa: '___ the data is verified, we'll publish the study.' (siempre que)",
+    expectedKeywords: ["provided that"],
+  },
+  "obj-c1-2-3": {
+    prompt: "¿Qué limitación se mencionaba en el texto académico de esta unidad? (en inglés)",
+    expectedKeywords: ["variables", "not controlled"],
+  },
+  "obj-c1-2-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario académico (methodology, evidence, implication).",
+    expectedKeywords: ["methodology", "evidence", "implication"],
+  },
+  "obj-c1-3-1": {
+    prompt: "Resume de forma neutral dos posturas opuestas sobre un tema.",
+    expectedKeywords: ["to put it another way", "one side", "the other"],
+  },
+  "obj-c1-3-2": {
+    prompt: "Completa (inversión): 'Never ___ I seen such a clear example.'",
+    expectedKeywords: ["have"],
+  },
+  "obj-c1-3-3": {
+    prompt: "¿Qué palabra revelaba el sesgo del hablante en el audio de esta unidad? (en inglés)",
+    expectedKeywords: ["obviously", "disaster"],
+  },
+  "obj-c1-3-4": {
+    prompt: "Escribe en inglés una frase de mediación neutral (to put it another way, impartial).",
+    expectedKeywords: ["to put it another way", "impartial"],
+  },
 };
