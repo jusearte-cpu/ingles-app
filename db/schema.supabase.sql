@@ -61,6 +61,20 @@ create table if not exists diagnostic_items (
 
 -- ===================== Datos personales (user_id + RLS) =====================
 
+create table if not exists profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  target_level text not null default 'C1'
+    check (target_level in ('A2','B1','B2','C1','C2')),
+  weekly_minutes_target integer not null default 225,
+  study_days_per_week integer not null default 5,
+  support_language_ratio numeric not null default 1.0
+    check (support_language_ratio >= 0 and support_language_ratio <= 1),
+  english_variety_preference text not null default 'general_american',
+  text_size text not null default 'default' check (text_size in ('default','large','extra_large')),
+  reduced_motion boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
 create table if not exists attempts (
   id text primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -168,7 +182,7 @@ declare
   t text;
 begin
   for t in select unnest(array[
-    'attempts', 'evidence_records', 'objective_status',
+    'profiles', 'attempts', 'evidence_records', 'objective_status',
     'spaced_repetition_items', 'spaced_repetition_history',
     'portfolio_items', 'diagnostic_sessions', 'diagnostic_responses'
   ])

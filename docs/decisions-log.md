@@ -23,13 +23,33 @@ enlace mágico funcionando en producción. Ver `docs/SETUP-CLOUD.md` para el
 detalle de cómo quedó armado y los problemas reales que resolvimos en el
 camino.
 
-Lo único que queda pendiente de esta lista original:
+## Decisión firme: cero costo, de forma permanente
 
-1. **Clave de API de Anthropic** (tutor de IA real) y, si quieres voz de
-   calidad en vez del sintetizador del navegador, una clave del proveedor de
-   TTS/STT que prefieras.
-2. **Un techo de gasto mensual con el que te sientas cómodo** para el punto 1
-   (hoy asumo un valor conservador en `config/thresholds.json`, editable).
+Revisamos cuánto costaría conectar un tutor de IA real (Claude Haiku 4.5, el
+modelo más barato: ~$0.002 por corrección, probablemente <$1-3/mes incluso con
+uso diario) y decidiste explícitamente que **no** — el curso debe tener costo
+cero para ti, sin excepción, no solo "por ahora".
+
+Esto no es una limitación temporal como las anteriores: es una restricción de
+producto permanente. Implicaciones concretas:
+
+- **El tutor de IA se queda en modo *mock* (reglas) para siempre**, no como
+  paso intermedio. `src/lib/ai/mock-provider.ts` es la implementación
+  definitiva, no un placeholder a reemplazar.
+- **TTS/STT de pago quedan descartados** — el sintetizador de voz del
+  navegador (Web Speech API, gratis) sigue siendo la única voz de la app, y no
+  se conecta transcripción automática de audio (Whisper u otro) para
+  pronunciación/contenido oral. Las limitaciones que esto implica (sin
+  evaluación automática de pronunciación, sin feedback de contenido en
+  grabaciones) ya estaban documentadas como honestas en `01-architecture.md` —
+  ahora son permanentes, no transitorias.
+- **Supabase y Vercel se quedan en plan gratuito** — si el uso creciera al
+  punto de necesitar un plan de pago en cualquiera de los dos (más
+  almacenamiento, más ancho de banda), eso rompería la restricción de costo
+  cero y habría que avisarte explícitamente antes de que pase, nunca
+  silenciosamente.
+- `config/thresholds.json` y el resto de la app ya no necesitan un "techo de
+  gasto mensual" configurable para IA — ese escenario no aplica.
 
 ## Supuesto adicional tomado durante la Etapa 2
 

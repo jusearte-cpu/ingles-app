@@ -8,10 +8,10 @@
 | Estilos/UI | Tailwind CSS + componentes propios | Control fino de lectura en celular y controles táctiles grandes, sin el peso de una librería completa |
 | Backend/datos | Supabase (Postgres administrado + Auth + Storage + Realtime) | Un solo proveedor cubre persistencia, autenticación, archivos privados y sincronización entre dispositivos, con *Row Level Security* nativo |
 | Hosting frontend | Vercel | HTTPS automático, despliegue desde git, apto para Next.js |
-| IA (tutor, feedback, generación) | Adaptador `LLMProvider`, por defecto API de Anthropic (Claude) | Reutiliza conocimiento del dominio; intercambiable sin tocar el resto de la app |
-| Texto-a-voz (TTS) | Adaptador `TTSProvider`, por defecto API de voz de calidad + *fallback* a Web Speech API del navegador | Control de costo: voz "gratis" del navegador como modo degradado, voz de calidad cuando hay presupuesto aprobado |
-| Voz-a-texto (STT) | Adaptador `STTProvider`, por defecto Whisper (u equivalente) | Transcripción para feedback de contenido/fluidez — **no** para puntuar pronunciación (ver limitación abajo) |
-| Evaluación de pronunciación | **Pendiente / opcional** | No hay forma confiable de auto-hospedar esto; requeriría un proveedor especializado (p. ej. evaluación de pronunciación de Azure) y es una decisión futura explícita, no asumida ahora |
+| IA (tutor, feedback, generación) | Adaptador `LLMProvider`; **decisión firme: se queda en modo mock (reglas) permanentemente** | Costo cero es un requisito del producto, no una fase transitoria — ver `docs/decisions-log.md`. El adaptador sigue existiendo por si esto cambia algún día, pero no hay plan de conectar un proveedor real |
+| Texto-a-voz (TTS) | Web Speech API del navegador, **única voz, permanente** | Gratis, sin cuenta ni clave. No se conecta una API de voz de pago |
+| Voz-a-texto (STT) | **No conectado, decisión permanente** | Transcribir audio con un proveedor real tiene costo; sin esto, no hay feedback automático de contenido en grabaciones — limitación aceptada explícitamente |
+| Evaluación de pronunciación | **No implementado, decisión permanente** | Requeriría un proveedor especializado de pago (p. ej. Azure); descartado por la misma razón que STT |
 
 Todas las integraciones de IA están detrás de interfaces (`LLMProvider`, `TTSProvider`,
 `STTProvider`) para que cambiar de proveedor sea un cambio de configuración, no una

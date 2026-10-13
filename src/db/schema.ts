@@ -55,6 +55,20 @@ export const activities = pgTable("activities", {
   objectiveIds: jsonb("objective_ids").notNull().default([]).$type<string[]>(),
 });
 
+export const profiles = pgTable("profiles", {
+  userId: uuid("user_id").primaryKey(),
+  targetLevel: text("target_level").notNull().default("C1"),
+  weeklyMinutesTarget: integer("weekly_minutes_target").notNull().default(225),
+  studyDaysPerWeek: integer("study_days_per_week").notNull().default(5),
+  supportLanguageRatio: real("support_language_ratio").notNull().default(1.0),
+  englishVarietyPreference: text("english_variety_preference")
+    .notNull()
+    .default("general_american"),
+  textSize: text("text_size").notNull().default("default"),
+  reducedMotion: boolean("reduced_motion").notNull().default(false),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const attempts = pgTable(
   "attempts",
   {

@@ -20,11 +20,5 @@
     "high": { "min_evidences_per_objective": 3, "requires_transfer": true, "requires_retention_check": true },
     "medium": { "min_evidences_per_objective": 2 },
     "low": { "min_evidences_per_objective": 1 }
-  },
-  "ai_usage_caps_usd_per_month": {
-    "llm_tutor": 5,
-    "llm_generation": 3,
-    "tts": 1,
-    "stt": 1
   }
 }
