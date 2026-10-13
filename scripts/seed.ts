@@ -1845,6 +1845,887 @@ const B1_1_1 = (() => {
   return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
 })();
 
+// ======================= A2 · Módulo 3 · Unidad 1 =======================
+// "At the doctor's" — recicla "pedir repetición" por novena vez.
+const A2_3_1 = (() => {
+  const unitId = "unit-a2-3-1";
+  const base = "a2-3-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-a2-3-1",
+      stableCode: "A2.3.1",
+      skill: "speaking",
+      canDoStatement: "Puedo describir síntomas básicos de salud.",
+      levelCode: "A2",
+    },
+    {
+      id: "obj-a2-3-2",
+      stableCode: "A2.3.2",
+      skill: "grammar",
+      canDoStatement: "Puedo usar imperativos para dar y entender consejos (Drink water, Take this medicine).",
+      levelCode: "A2",
+    },
+    {
+      id: "obj-a2-3-3",
+      stableCode: "A2.3.3",
+      skill: "listening",
+      canDoStatement: "Puedo entender instrucciones básicas de un doctor.",
+      levelCode: "A2",
+    },
+    {
+      id: "obj-a2-3-4",
+      stableCode: "A2.3.4",
+      skill: "vocabulary",
+      canDoStatement: "Puedo nombrar partes del cuerpo y síntomas comunes.",
+      levelCode: "A2",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "At the doctor's",
+    moduleTitle: "Módulo 3 — Salud",
+    levelCode: "A2",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder describir cómo te sientes cuando estás enfermo, entender el consejo de un doctor, y nombrar partes del cuerpo.",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "Doctor", text: "What's the problem?" },
+          { speaker: "Patient", text: "I have a headache and a sore throat." },
+          { speaker: "Doctor", text: "Do you have a fever?" },
+          { speaker: "Patient", text: "Yes, a little." },
+          { speaker: "Doctor", text: "Drink a lot of water and rest. Take this medicine twice a day." },
+        ],
+        notes: [
+          "I have a headache / a sore throat / a fever = tengo dolor de cabeza / de garganta / fiebre.",
+          "Drink... / Take... / Rest = imperativos para dar consejos (sin sujeto).",
+          "twice a day = dos veces al día.",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Escucha en contexto",
+      type: "contextualized_input",
+      skill: "listening",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          { speaker: "Doctor", text: "What's wrong?" },
+          { speaker: "Patient", text: "My stomach hurts, and I feel dizzy." },
+          { speaker: "Doctor", text: "Don't eat heavy food today. Drink tea, and come back tomorrow if it doesn't improve." },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿Qué le duele al paciente? (en inglés)",
+            objectiveId: "obj-a2-3-3",
+            expectedKeywords: ["stomach"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Qué consejo le da el doctor sobre la comida? (en inglés)",
+            objectiveId: "obj-a2-3-3",
+            expectedKeywords: ["don't eat", "heavy food"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-a2-3-3"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "Drink water. / Don't eat heavy food.", note: "Imperativo afirmativo y negativo — sin sujeto." },
+          { phrase: "head, throat, stomach, back", note: "Partes del cuerpo frecuentes." },
+          { phrase: "I feel dizzy / sick / tired", note: "feel + adjetivo, para describir cómo te sientes." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          { id: "s1", template: "___ (drink) a lot of water. (consejo afirmativo)", answer: "Drink", hint: "imperativo" },
+          { id: "s2", template: "___ (not/eat) heavy food. (consejo negativo)", answer: "Don't eat", hint: "imperativo negativo" },
+          { id: "s3", template: "I have a sore ___ (garganta).", answer: "throat", hint: "parte del cuerpo" },
+        ],
+      },
+      objectiveIds: ["obj-a2-3-2"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt: "Sin mirar el paso 2, escribe de memoria los síntomas del paciente y el consejo del doctor.",
+        expectedKeywords: ["headache", "drink", "rest"],
+      },
+      objectiveIds: ["obj-a2-3-1"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "writing",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Describe cómo te sientes cuando estás resfriado (2-3 síntomas) y escribe un consejo usando el imperativo. Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-a2-3-1", "obj-a2-3-4"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "Hi, what's the problem today?",
+        instructions:
+          "Describe un síntoma (por ejemplo, 'I have a headache'). Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (novena vez que practicas esto).",
+        secondTutorLine: "Ok, tke ths twce a dy nd cme bck n a wek if it dsn't mprve.",
+        expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+        expectedOriginKeywords: ["i have", "i feel"],
+        firstTaskLabel: "Describir el síntoma",
+      },
+      objectiveIds: ["obj-a2-3-1", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B1 · Módulo 2 · Unidad 1 =======================
+// "Have you ever...?" — recicla "pedir repetición" por décima vez.
+const B1_2_1 = (() => {
+  const unitId = "unit-b1-2-1";
+  const base = "b1-2-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-b1-2-1",
+      stableCode: "B1.2.1",
+      skill: "speaking",
+      canDoStatement: "Puedo contar experiencias de vida usando presente perfecto con ever/never.",
+      levelCode: "B1",
+    },
+    {
+      id: "obj-b1-2-2",
+      stableCode: "B1.2.2",
+      skill: "grammar",
+      canDoStatement: "Puedo formar preguntas y respuestas con 'Have you ever...?'.",
+      levelCode: "B1",
+    },
+    {
+      id: "obj-b1-2-3",
+      stableCode: "B1.2.3",
+      skill: "listening",
+      canDoStatement: "Puedo entender a alguien contando una experiencia de vida.",
+      levelCode: "B1",
+    },
+    {
+      id: "obj-b1-2-4",
+      stableCode: "B1.2.4",
+      skill: "vocabulary",
+      canDoStatement: "Puedo usar adverbios de experiencia (ever, never, already, yet).",
+      levelCode: "B1",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "Have you ever...?",
+    moduleTitle: "Módulo 2 — Experiencias de vida",
+    levelCode: "B1",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder preguntar y contar experiencias de vida con 'Have you ever...?', y usar 'ever/never/already/yet' con precisión.",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "Have you ever traveled alone?" },
+          { speaker: "B", text: "Yes, I have. I've already traveled alone twice." },
+          { speaker: "A", text: "Have you ever lived in another country?" },
+          { speaker: "B", text: "No, I haven't. Not yet, but I'd like to." },
+        ],
+        notes: [
+          "Have you ever...? = ¿Alguna vez has...? (experiencia en algún momento de la vida)",
+          "I've already... = Ya he... (se completó antes de lo esperado)",
+          "Not yet = Todavía no (se esperaba, no ha pasado)",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Escucha en contexto",
+      type: "contextualized_input",
+      skill: "listening",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "Have you ever tried sushi?" },
+          { speaker: "B", text: "Yes, I have. I've already tried it three times, actually." },
+          { speaker: "A", text: "Have you ever been to Japan?" },
+          { speaker: "B", text: "No, I haven't. Never. But I really want to go." },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿Cuántas veces ha probado sushi B? (en inglés)",
+            objectiveId: "obj-b1-2-3",
+            expectedKeywords: ["three", "3"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Ha estado B en Japón? (responde yes/no en inglés)",
+            objectiveId: "obj-b1-2-3",
+            expectedKeywords: ["no"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-b1-2-3"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "Have you ever...?", note: "Pregunta sobre experiencia alguna vez en la vida, sin momento específico." },
+          { phrase: "I've already... / Not yet.", note: "already = ya (afirmativo); yet = todavía (negativo/preguntas)." },
+          { phrase: "No, I haven't. Never.", note: "never refuerza la negación — nunca." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          { id: "s1", template: "___ you ever visited Europe?", answer: "Have", hint: "pregunta de experiencia" },
+          { id: "s2", template: "I've ___ finished my homework. (ya)", answer: "already", hint: "completado antes de lo esperado" },
+          { id: "s3", template: "I haven't done it ___. (todavía)", answer: "yet", hint: "negativo" },
+        ],
+      },
+      objectiveIds: ["obj-b1-2-2"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt: "Sin mirar el paso 2, reconstruye las dos preguntas con 'Have you ever...?' y sus respuestas.",
+        expectedKeywords: ["have you ever", "already", "not yet"],
+      },
+      objectiveIds: ["obj-b1-2-1", "obj-b1-2-4"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "writing",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Escribe 2-3 preguntas con 'Have you ever...?' sobre experiencias de vida, y responde una de ellas sobre ti mismo. Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-b1-2-1", "obj-b1-2-2"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "Have you ever done something really adventurous?",
+        instructions:
+          "Responde contando una experiencia (real o inventada). Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (décima vez que practicas esto).",
+        secondTutorLine: "Wow, nd hw dd y fl aftrwrds?",
+        expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+        expectedOriginKeywords: ["i have", "i've", "yes", "no"],
+        firstTaskLabel: "Contar la experiencia",
+      },
+      objectiveIds: ["obj-b1-2-1", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B2 · Módulo 1 · Unidad 1 =======================
+// "I might be wrong, but..." — primer contenido de B2, el hito de autonomía
+// comunicativa del programa. Recicla "pedir repetición" por undécima vez,
+// realizado de forma más sofisticada (pedir que se aclare, no solo repetir).
+const B2_1_1 = (() => {
+  const unitId = "unit-b2-1-1";
+  const base = "b2-1-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-b2-1-1",
+      stableCode: "B2.1.1",
+      skill: "speaking",
+      canDoStatement: "Puedo argumentar una postura matizándola (to some extent, arguably).",
+      levelCode: "B2",
+    },
+    {
+      id: "obj-b2-1-2",
+      stableCode: "B2.1.2",
+      skill: "grammar",
+      canDoStatement: "Puedo usar modales de deducción en pasado (must have, might have, can't have).",
+      levelCode: "B2",
+    },
+    {
+      id: "obj-b2-1-3",
+      stableCode: "B2.1.3",
+      skill: "listening",
+      canDoStatement: "Puedo inferir qué tan seguro está un hablante a partir de los modales que usa.",
+      levelCode: "B2",
+    },
+    {
+      id: "obj-b2-1-4",
+      stableCode: "B2.1.4",
+      skill: "vocabulary",
+      canDoStatement: "Puedo usar lenguaje de matización (to some extent, arguably, on balance).",
+      levelCode: "B2",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "I might be wrong, but...",
+    moduleTitle: "Módulo 1 — Argumentar con matices",
+    levelCode: "B2",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder argumentar con matices (no todo es blanco o negro), y usar modales de deducción en pasado para especular sobre lo que probablemente pasó.",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "To some extent, I agree that remote work is more productive." },
+          { speaker: "B", text: "Why do you say 'to some extent'?" },
+          { speaker: "A", text: "Well, it arguably depends on the job. She must have worked remotely before — she's really good at it." },
+          { speaker: "B", text: "True, she can't have learned that overnight." },
+        ],
+        notes: [
+          "To some extent = hasta cierto punto (matiza sin negar del todo).",
+          "arguably = podría decirse que (opinión defendible, no un hecho).",
+          "must have worked = seguramente trabajó (deducción fuerte sobre el pasado).",
+          "can't have learned = no puede ser que haya aprendido (deducción negativa fuerte).",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Escucha en contexto",
+      type: "contextualized_input",
+      skill: "listening",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          { speaker: "A", text: "The lights are off and the car is gone. They must have left already." },
+          { speaker: "B", text: "They might have left, or they could just be out for a walk." },
+          { speaker: "A", text: "No, they can't have gone for a walk — they took the car." },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿Qué tan seguro está A de que se fueron? (en inglés: seguro/posible — certain/possible)",
+            objectiveId: "obj-b2-1-3",
+            expectedKeywords: ["certain", "sure"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Por qué A descarta que salieron a caminar? (en inglés)",
+            objectiveId: "obj-b2-1-3",
+            expectedKeywords: ["car", "took the car"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-b2-1-3"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "must have + participio", note: "Deducción fuerte afirmativa: seguramente pasó." },
+          { phrase: "might/could have + participio", note: "Deducción posible, no segura." },
+          { phrase: "can't have + participio", note: "Deducción negativa fuerte: es imposible que haya pasado." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          { id: "s1", template: "She's not answering. She ___ (must/be) busy.", answer: "must be", hint: "deducción presente" },
+          { id: "s2", template: "He ___ (must/leave) early — his car isn't here. (pasado)", answer: "must have left", hint: "deducción fuerte pasado" },
+          { id: "s3", template: "That ___ (can't/be) true — I just saw her yesterday. (pasado)", answer: "can't have been", hint: "deducción negativa pasado" },
+        ],
+      },
+      objectiveIds: ["obj-b2-1-2"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt: "Sin mirar el paso 2, reconstruye cómo A matiza su opinión y cómo usa un modal de deducción sobre el pasado.",
+        expectedKeywords: ["to some extent", "must have"],
+      },
+      objectiveIds: ["obj-b2-1-1", "obj-b2-1-4"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "writing",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Da tu opinión sobre un tema matizándola con 'to some extent' o 'arguably', y especula sobre algo del pasado usando 'must have' o 'might have'. Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-b2-1-1", "obj-b2-1-2"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "Do you think technology has made people more isolated?",
+        instructions:
+          "Da tu opinión matizándola (por ejemplo, 'to some extent...'). Luego el sistema va a decir algo difícil de entender — en este nivel, en vez de solo pedir que repitan, pide que te lo aclaren o reformulen ('Could you clarify what you mean by that?').",
+        secondTutorLine: "Rght, bt dsn't tht dpnd on hw ppl use it?",
+        expectedRepetitionKeywords: ["clarify", "elaborate", "mean by that", "could you explain"],
+        expectedOriginKeywords: ["to some extent", "arguably", "i think"],
+        firstTaskLabel: "Dar tu opinión matizada",
+      },
+      objectiveIds: ["obj-b2-1-1", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= C1 · Módulo 1 · Unidad 1 =======================
+// "Precision and nuance" — primer contenido de C1, el objetivo principal del
+// programa. Recicla "pedir repetición" por duodécima vez, ya como una
+// habilidad de mediación más sofisticada (reformular con precisión).
+const C1_1_1 = (() => {
+  const unitId = "unit-c1-1-1";
+  const base = "c1-1-1";
+  const objs: Objective[] = [
+    {
+      id: "obj-c1-1-1",
+      stableCode: "C1.1.1",
+      skill: "speaking",
+      canDoStatement: "Puedo reformular una idea eligiendo la palabra exacta en vez de una aproximada.",
+      levelCode: "C1",
+    },
+    {
+      id: "obj-c1-1-2",
+      stableCode: "C1.1.2",
+      skill: "grammar",
+      canDoStatement: "Puedo usar estructuras de énfasis (It's... that..., What I need is...) con precisión.",
+      levelCode: "C1",
+    },
+    {
+      id: "obj-c1-1-3",
+      stableCode: "C1.1.3",
+      skill: "reading",
+      canDoStatement: "Puedo identificar connotación o ironía en un texto breve, sin apoyos.",
+      levelCode: "C1",
+    },
+    {
+      id: "obj-c1-1-4",
+      stableCode: "C1.1.4",
+      skill: "vocabulary",
+      canDoStatement: "Puedo usar colocaciones avanzadas de uso frecuente con precisión (reach a conclusion, draw a parallel).",
+      levelCode: "C1",
+    },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = {
+    id: unitId,
+    title: "Precision and nuance",
+    moduleTitle: "Módulo 1 — Precisión y fluidez",
+    levelCode: "C1",
+    sortOrder: 1,
+  };
+  const acts: Activity[] = [
+    {
+      id: `act-${base}-1`,
+      unitId,
+      stepNumber: 1,
+      stepName: "Qué aprenderás",
+      type: "info",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step1`,
+      content: {
+        body:
+          "Vas a poder elegir la palabra exacta en vez de la aproximada, usar estructuras de énfasis para dar precisión a una idea, y detectar connotación o ironía en un texto.",
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-2`,
+      unitId,
+      stepNumber: 2,
+      stepName: "Ejemplo resuelto",
+      type: "worked_example",
+      skill: "reading",
+      pool: "practice",
+      baseItemId: `${base}-step2`,
+      content: {
+        dialogue: [
+          { speaker: "Texto", text: "\"Oh, great, another meeting that could have been an email,\" she said, checking her watch for the third time." },
+        ],
+        notes: [
+          "'Oh, great' aquí es irónico — el contexto (revisar el reloj, 'podría haber sido un correo') indica frustración, no entusiasmo real.",
+          "It's precision, not fluency, that separates a good writer from a great one. = estructura de énfasis con 'It's... that...' para resaltar 'precision'.",
+          "What I need is a clear answer, not more questions. = 'What I need is...' enfatiza la necesidad específica.",
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-3`,
+      unitId,
+      stepNumber: 3,
+      stepName: "Lectura en contexto",
+      type: "contextualized_input",
+      skill: "reading",
+      pool: "practice",
+      baseItemId: `${base}-step3`,
+      content: {
+        dialogue: [
+          {
+            speaker: "Texto",
+            text: "\"Wonderful,\" he muttered, staring at the fourth error message of the morning. \"Exactly what I needed today.\"",
+          },
+        ],
+        questions: [
+          {
+            id: "q1",
+            prompt: "¿La palabra 'Wonderful' se usa de forma literal o irónica aquí? (en inglés: literal/ironic)",
+            objectiveId: "obj-c1-1-3",
+            expectedKeywords: ["ironic"],
+          },
+          {
+            id: "q2",
+            prompt: "¿Qué palabra del texto da la pista de que no está contento? (en inglés)",
+            objectiveId: "obj-c1-1-3",
+            expectedKeywords: ["muttered", "error"],
+          },
+        ],
+      },
+      objectiveIds: ["obj-c1-1-3"],
+    },
+    {
+      id: `act-${base}-4`,
+      unitId,
+      stepNumber: 4,
+      stepName: "Observa el lenguaje",
+      type: "language_observation",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step4`,
+      content: {
+        highlights: [
+          { phrase: "It's precision that matters most.", note: "Estructura de énfasis: 'It's + [foco] + that...' resalta un elemento." },
+          { phrase: "What I need is clarity.", note: "'What I need is...' enfatiza una necesidad específica." },
+          { phrase: "reach a conclusion, draw a parallel", note: "Colocaciones avanzadas — no se dicen 'arrive a conclusion' ni 'make a parallel'." },
+        ],
+      },
+      objectiveIds: [],
+    },
+    {
+      id: `act-${base}-5`,
+      unitId,
+      stepNumber: 5,
+      stepName: "Práctica guiada",
+      type: "guided_practice",
+      skill: "grammar",
+      pool: "practice",
+      baseItemId: `${base}-step5`,
+      content: {
+        sentences: [
+          { id: "s1", template: "It's honesty ___ I value most in a friend.", answer: "that", hint: "estructura de énfasis" },
+          { id: "s2", template: "What I need ___ more time, not more resources.", answer: "is", hint: "What I need is..." },
+          { id: "s3", template: "After reviewing the data, we were able to ___ a conclusion. (reach/arrive)", answer: "reach", hint: "colocación correcta" },
+        ],
+      },
+      objectiveIds: ["obj-c1-1-2", "obj-c1-1-4"],
+    },
+    {
+      id: `act-${base}-6`,
+      unitId,
+      stepNumber: 6,
+      stepName: "Recuperación sin apoyo",
+      type: "unaided_retrieval",
+      skill: "reading",
+      pool: "practice",
+      baseItemId: `${base}-step6`,
+      content: {
+        prompt: "Sin mirar el paso 3, explica en inglés por qué 'Wonderful' era irónico en ese texto.",
+        expectedKeywords: ["ironic", "not happy", "frustrat"],
+      },
+      objectiveIds: ["obj-c1-1-3"],
+    },
+    {
+      id: `act-${base}-7`,
+      unitId,
+      stepNumber: 7,
+      stepName: "Producción",
+      type: "production",
+      skill: "writing",
+      pool: "practice",
+      baseItemId: `${base}-step7`,
+      content: {
+        prompt:
+          "Escribe 2-3 frases sobre algo que te importa, usando una estructura de énfasis ('It's... that...' o 'What I need is...') y al menos una colocación precisa (reach a conclusion, draw a parallel, etc.). Puedes grabarte o escribirlo.",
+      },
+      objectiveIds: ["obj-c1-1-1", "obj-c1-1-2"],
+    },
+    {
+      id: `act-${base}-8`,
+      unitId,
+      stepNumber: 8,
+      stepName: "Tarea comunicativa",
+      type: "communicative_task",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step8`,
+      content: {
+        tutorLine: "What's one thing you'd change about how people learn languages today?",
+        instructions:
+          "Responde usando una estructura de énfasis para dar precisión a tu idea (por ejemplo, 'What I'd change is...'). Luego el sistema va a decir algo difícil de entender — pide que te lo reformulen o aclaren, con precisión (duodécima vez que practicas esta función, ya como mediación).",
+        secondTutorLine: "Fr, bt hw wld y mplmnt tht n prctice, exctly?",
+        expectedRepetitionKeywords: ["clarify", "elaborate", "rephrase", "could you explain", "what do you mean"],
+        expectedOriginKeywords: ["what i'd change", "what i would change", "it's"],
+        firstTaskLabel: "Dar tu idea con precisión",
+      },
+      objectiveIds: ["obj-c1-1-1", "obj-prea1-2-3"],
+    },
+    {
+      id: `act-${base}-9`,
+      unitId,
+      stepNumber: 9,
+      stepName: "Retroalimentación",
+      type: "feedback",
+      skill: "speaking",
+      pool: "practice",
+      baseItemId: `${base}-step9`,
+      content: {},
+      objectiveIds: [],
+    },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
 // ======================= Banco de evaluación (separado de práctica) =======================
 // "Comprobación de nivel A1.1" — mismos objetivos que unit-a1-1-1, pero ítems
 // NUEVOS (no los mismos con nombres cambiados) y pool='assessment', así que
@@ -1914,7 +2795,11 @@ const ALL_UNITS: UnitDefinition[] = [
   A1_3_1,
   A2_1_1,
   A2_2_1,
+  A2_3_1,
   B1_1_1,
+  B1_2_1,
+  B2_1_1,
+  C1_1_1,
 ];
 
 async function seed() {

@@ -140,4 +140,68 @@ export const REVIEW_PROMPTS: Record<string, { prompt: string; expectedKeywords: 
     prompt: "Escribe una frase usando 'on the other hand'.",
     expectedKeywords: ["on the other hand"],
   },
+  "obj-a2-3-1": {
+    prompt: "Escribe en inglés un síntoma de salud.",
+    expectedKeywords: ["headache", "fever", "sore throat", "hurts"],
+  },
+  "obj-a2-3-2": {
+    prompt: "Escribe un consejo de salud en imperativo (afirmativo o negativo).",
+    expectedKeywords: ["drink", "don't eat", "take", "rest"],
+  },
+  "obj-a2-3-3": {
+    prompt: "¿Qué tipo de conversación escuchaste en esta unidad? (una palabra: doctor)",
+    expectedKeywords: ["doctor"],
+  },
+  "obj-a2-3-4": {
+    prompt: "Escribe en inglés 2 partes del cuerpo.",
+    expectedKeywords: ["head", "throat", "stomach", "back"],
+  },
+  "obj-b1-2-1": {
+    prompt: "Escribe en inglés una experiencia de vida usando presente perfecto (Have you ever...?).",
+    expectedKeywords: ["have you ever", "i've"],
+  },
+  "obj-b1-2-2": {
+    prompt: "Completa: '___ you ever visited another country?'",
+    expectedKeywords: ["have"],
+  },
+  "obj-b1-2-3": {
+    prompt: "¿Qué tipo de historia escuchaste en esta unidad? (una palabra: experience/experiencia)",
+    expectedKeywords: ["experience"],
+  },
+  "obj-b1-2-4": {
+    prompt: "Escribe una frase usando 'already' o 'yet'.",
+    expectedKeywords: ["already", "yet", "never", "ever"],
+  },
+  "obj-b2-1-1": {
+    prompt: "Escribe tu opinión sobre un tema matizándola con 'to some extent' o 'arguably'.",
+    expectedKeywords: ["to some extent", "arguably"],
+  },
+  "obj-b2-1-2": {
+    prompt: "Completa: 'She's not here. She ___ (must) have left already.'",
+    expectedKeywords: ["must"],
+  },
+  "obj-b2-1-3": {
+    prompt: "¿Qué modal indica una deducción más segura: 'must have' o 'might have'?",
+    expectedKeywords: ["must have"],
+  },
+  "obj-b2-1-4": {
+    prompt: "Escribe una frase usando 'on balance' o 'arguably'.",
+    expectedKeywords: ["on balance", "arguably"],
+  },
+  "obj-c1-1-1": {
+    prompt: "Reformula esta idea con una palabra más precisa: 'The meeting was bad.' (usa una palabra más exacta que 'bad')",
+    expectedKeywords: ["unproductive", "pointless", "tedious", "disorganized"],
+  },
+  "obj-c1-1-2": {
+    prompt: "Completa: 'What I need ___ a clear answer.'",
+    expectedKeywords: ["is"],
+  },
+  "obj-c1-1-3": {
+    prompt: "¿Qué palabra describe cuando alguien dice lo opuesto de lo que siente, para dar énfasis? (en inglés)",
+    expectedKeywords: ["irony", "ironic", "sarcasm"],
+  },
+  "obj-c1-1-4": {
+    prompt: "Completa: 'We were able to ___ a conclusion after reviewing the data.' (reach/arrive)",
+    expectedKeywords: ["reach"],
+  },
 };
