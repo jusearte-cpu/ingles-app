@@ -3138,6 +3138,412 @@ const B1_4_1 = (() => {
   return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
 })();
 
+// ======================= B1 · Módulo 5 · Unidad 1 =======================
+// "Applying for a job" — recicla "pedir repetición" por decimonovena vez.
+const B1_5_1 = (() => {
+  const unitId = "unit-b1-5-1";
+  const base = "b1-5-1";
+  const objs: Objective[] = [
+    { id: "obj-b1-5-1", stableCode: "B1.5.1", skill: "speaking", canDoStatement: "Puedo hablar de mis habilidades y experiencia para un trabajo.", levelCode: "B1" },
+    { id: "obj-b1-5-2", stableCode: "B1.5.2", skill: "grammar", canDoStatement: "Puedo usar 'should/shouldn't' para dar consejos.", levelCode: "B1" },
+    { id: "obj-b1-5-3", stableCode: "B1.5.3", skill: "listening", canDoStatement: "Puedo entender una conversación sobre una solicitud de empleo.", levelCode: "B1" },
+    { id: "obj-b1-5-4", stableCode: "B1.5.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario de trabajo (skills, experience, qualifications).", levelCode: "B1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "Applying for a job", moduleTitle: "Módulo 5 — Trabajo y estudio", levelCode: "B1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder hablar de tus habilidades y experiencia para un trabajo, y dar consejos con 'should/shouldn't'." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "What skills do you bring to this role?" },
+        { speaker: "B", text: "I have three years of experience in customer service, and I'm good at problem-solving." },
+        { speaker: "A", text: "You should mention specific examples next time." },
+      ],
+      notes: ["skills, experience, qualifications = vocabulario clave de entrevistas.", "should/shouldn't + infinitivo = consejo.", "good at + -ing = habilidad en algo."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "I applied for the job, but I didn't mention my language skills." },
+        { speaker: "B", text: "You should definitely add that — it's a qualification they're looking for." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué no mencionó A? (en inglés)", objectiveId: "obj-b1-5-3", expectedKeywords: ["language skills"] },
+        { id: "q2", prompt: "¿Qué consejo le da B? (en inglés)", objectiveId: "obj-b1-5-3", expectedKeywords: ["should", "add"] },
+      ],
+    }, objectiveIds: ["obj-b1-5-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "You should mention specific examples.", note: "should = consejo recomendado." },
+        { phrase: "You shouldn't exaggerate your experience.", note: "shouldn't = consejo de no hacer algo." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "You ___ (should) practice your answers before an interview.", answer: "should", hint: "consejo" },
+        { id: "s2", template: "You ___ (shouldn't) arrive late.", answer: "shouldn't", hint: "consejo negativo" },
+        { id: "s3", template: "I have three years of ___ (experiencia) in sales.", answer: "experience", hint: "experience" },
+      ],
+    }, objectiveIds: ["obj-b1-5-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye cómo B describe sus habilidades y el consejo que recibe.",
+      expectedKeywords: ["experience", "should"],
+    }, objectiveIds: ["obj-b1-5-1"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Escribe cómo responderías a '¿Qué habilidades tienes?' en una entrevista, y da un consejo con 'should' a otra persona. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b1-5-1", "obj-b1-5-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "What skills do you bring to this role?",
+      instructions: "Responde describiendo una habilidad o experiencia tuya. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (decimonovena vez que practicas esto).",
+      secondTutorLine: "Interstng. Nd whr dd y gt tht experience?",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["i have", "experience", "skills"],
+      firstTaskLabel: "Describir tu habilidad",
+    }, objectiveIds: ["obj-b1-5-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B1 · Módulo 6 · Unidad 1 =======================
+// "In the news" — recicla "pedir repetición" por vigésima vez.
+const B1_6_1 = (() => {
+  const unitId = "unit-b1-6-1";
+  const base = "b1-6-1";
+  const objs: Objective[] = [
+    { id: "obj-b1-6-1", stableCode: "B1.6.1", skill: "speaking", canDoStatement: "Puedo resumir una noticia breve con mis propias palabras.", levelCode: "B1" },
+    { id: "obj-b1-6-2", stableCode: "B1.6.2", skill: "grammar", canDoStatement: "Puedo usar estilo indirecto simple (He said that...) para reportar lo que alguien dijo.", levelCode: "B1" },
+    { id: "obj-b1-6-3", stableCode: "B1.6.3", skill: "reading", canDoStatement: "Puedo entender la idea principal de una noticia breve.", levelCode: "B1" },
+    { id: "obj-b1-6-4", stableCode: "B1.6.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario de noticias (according to, reported, announced).", levelCode: "B1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "In the news", moduleTitle: "Módulo 6 — Noticias de actualidad", levelCode: "B1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "reading", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder entender y resumir una noticia breve, y reportar lo que alguien dijo usando estilo indirecto simple." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "reading", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "Texto", text: "According to local news, the mayor announced a new park will open next year." },
+        { speaker: "Resumen", text: "He said that a new park would open next year." },
+      ],
+      notes: ["According to... = según...", "announced, reported = anunció, reportó.", "He said that + pasado = estilo indirecto (will → would)."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Lectura en contexto", type: "contextualized_input", skill: "reading", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "Texto", text: "According to the report, the company announced it would hire 200 new employees next month." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué anunció la empresa? (en inglés)", objectiveId: "obj-b1-6-3", expectedKeywords: ["hire", "200", "employees"] },
+        { id: "q2", prompt: "¿Cuándo? (en inglés)", objectiveId: "obj-b1-6-3", expectedKeywords: ["next month"] },
+      ],
+    }, objectiveIds: ["obj-b1-6-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "He said that a new park would open.", note: "will → would en estilo indirecto." },
+        { phrase: "According to local news...", note: "Para atribuir información a una fuente." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "She said that she ___ (be) tired. (is → )", answer: "was", hint: "estilo indirecto: is → was" },
+        { id: "s2", template: "He said that he ___ (will/help). (will → )", answer: "would help", hint: "will → would" },
+        { id: "s3", template: "___ to the news, prices will rise. (según)", answer: "According", hint: "According to" },
+      ],
+    }, objectiveIds: ["obj-b1-6-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "reading", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reporta en estilo indirecto lo que anunció el alcalde.",
+      expectedKeywords: ["said that", "would"],
+    }, objectiveIds: ["obj-b1-6-1", "obj-b1-6-2"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Resume una noticia (real o inventada) en 2-3 frases, usando 'According to...' y estilo indirecto. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b1-6-1", "obj-b1-6-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "Have you read any interesting news recently? Tell me about it.",
+      instructions: "Resume una noticia. Luego el sistema va a decir algo difícil de entender — pide que te lo repita, en inglés (vigésima vez que practicas esto).",
+      secondTutorLine: "Interstng, nd whr dd y rd tht?",
+      expectedRepetitionKeywords: ["repeat", "sorry", "again", "can you say"],
+      expectedOriginKeywords: ["according to", "said that"],
+      firstTaskLabel: "Resumir la noticia",
+    }, objectiveIds: ["obj-b1-6-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B2 · Módulo 2 · Unidad 1 =======================
+// "The interview" — recicla "pedir repetición" por vigésima primera vez.
+const B2_2_1 = (() => {
+  const unitId = "unit-b2-2-1";
+  const base = "b2-2-1";
+  const objs: Objective[] = [
+    { id: "obj-b2-2-1", stableCode: "B2.2.1", skill: "speaking", canDoStatement: "Puedo responder preguntas de entrevista de trabajo con ejemplos concretos.", levelCode: "B2" },
+    { id: "obj-b2-2-2", stableCode: "B2.2.2", skill: "grammar", canDoStatement: "Puedo formar preguntas indirectas educadas (Could you tell me...? / I was wondering if...).", levelCode: "B2" },
+    { id: "obj-b2-2-3", stableCode: "B2.2.3", skill: "listening", canDoStatement: "Puedo entender preguntas de seguimiento imprevistas en una entrevista.", levelCode: "B2" },
+    { id: "obj-b2-2-4", stableCode: "B2.2.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario profesional (achievement, responsibility, teamwork).", levelCode: "B2" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "The interview", moduleTitle: "Módulo 2 — Trabajo profesional y educación", levelCode: "B2", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder responder preguntas de entrevista con ejemplos concretos, y hacer preguntas indirectas educadas." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "Interviewer", text: "Tell me about an achievement you're proud of." },
+        { speaker: "Candidate", text: "I led a team project that improved our workflow by 30%." },
+        { speaker: "Candidate", text: "I was wondering if there are opportunities for teamwork in this role." },
+      ],
+      notes: ["achievement, responsibility, teamwork = vocabulario profesional.", "I was wondering if... / Could you tell me...? = preguntas indirectas educadas."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "Interviewer", text: "That's impressive. What was the biggest challenge in that project?" },
+        { speaker: "Candidate", text: "Honestly, managing different opinions within the team." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué pregunta de seguimiento hace el entrevistador? (en inglés)", objectiveId: "obj-b2-2-3", expectedKeywords: ["challenge"] },
+        { id: "q2", prompt: "¿Qué responde el candidato? (en inglés)", objectiveId: "obj-b2-2-3", expectedKeywords: ["opinions", "team"] },
+      ],
+    }, objectiveIds: ["obj-b2-2-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "I was wondering if there are opportunities for teamwork.", note: "Forma indirecta y educada de preguntar." },
+        { phrase: "Could you tell me more about the team?", note: "Otra forma educada de preguntar." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "I was wondering ___ there's room for growth in this role.", answer: "if", hint: "pregunta indirecta" },
+        { id: "s2", template: "___ you tell me about the team culture? (educado)", answer: "Could", hint: "forma educada" },
+        { id: "s3", template: "I'm proud of this ___ (logro).", answer: "achievement", hint: "achievement" },
+      ],
+    }, objectiveIds: ["obj-b2-2-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye el logro que menciona el candidato y su pregunta indirecta.",
+      expectedKeywords: ["i led", "i was wondering"],
+    }, objectiveIds: ["obj-b2-2-1", "obj-b2-2-2"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Describe un logro tuyo con un ejemplo concreto, y escribe una pregunta indirecta que le harías a un entrevistador. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b2-2-1", "obj-b2-2-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "Tell me about an achievement you're proud of.",
+      instructions: "Responde con un ejemplo concreto. Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (vigésima primera vez que practicas esta función).",
+      secondTutorLine: "Imprssv. Nd hw did tht impct the wdr tm?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean"],
+      expectedOriginKeywords: ["i", "achievement"],
+      firstTaskLabel: "Describir tu logro",
+    }, objectiveIds: ["obj-b2-2-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B2 · Módulo 3 · Unidad 1 =======================
+// "Breaking news" — recicla "pedir repetición" por vigésima segunda vez.
+const B2_3_1 = (() => {
+  const unitId = "unit-b2-3-1";
+  const base = "b2-3-1";
+  const objs: Objective[] = [
+    { id: "obj-b2-3-1", stableCode: "B2.3.1", skill: "speaking", canDoStatement: "Puedo describir eventos usando voz pasiva cuando el agente no importa.", levelCode: "B2" },
+    { id: "obj-b2-3-2", stableCode: "B2.3.2", skill: "grammar", canDoStatement: "Puedo formar la voz pasiva en distintos tiempos verbales.", levelCode: "B2" },
+    { id: "obj-b2-3-3", stableCode: "B2.3.3", skill: "listening", canDoStatement: "Puedo entender un reporte de noticias con voz pasiva.", levelCode: "B2" },
+    { id: "obj-b2-3-4", stableCode: "B2.3.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario de medios (coverage, headline, source).", levelCode: "B2" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "Breaking news", moduleTitle: "Módulo 3 — Medios de comunicación", levelCode: "B2", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "reading", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder describir eventos con voz pasiva (cuando no importa quién lo hizo) y entender reportes de noticias." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "reading", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "Texto", text: "The bridge was built in 1990. It has been repaired twice since then." },
+        { speaker: "Texto", text: "According to our source, the decision was made last week." },
+      ],
+      notes: ["was built, has been repaired, was made = voz pasiva en distintos tiempos.", "coverage, headline, source = vocabulario de medios."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "Reporter", text: "The new policy was announced this morning and is being reviewed by experts." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Cuándo se anunció la política? (en inglés)", objectiveId: "obj-b2-3-3", expectedKeywords: ["this morning"] },
+        { id: "q2", prompt: "¿Quién la está revisando? (en inglés)", objectiveId: "obj-b2-3-3", expectedKeywords: ["experts"] },
+      ],
+    }, objectiveIds: ["obj-b2-3-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "The bridge was built in 1990.", note: "Pasado simple pasivo: was/were + participio." },
+        { phrase: "It has been repaired twice.", note: "Presente perfecto pasivo: has/have been + participio." },
+        { phrase: "It is being reviewed.", note: "Presente continuo pasivo: is/are being + participio." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "The report ___ (publish) yesterday. (pasado pasivo)", answer: "was published", hint: "was + participio" },
+        { id: "s2", template: "The results ___ (not/announce) yet. (presente perfecto pasivo)", answer: "haven't been announced", hint: "haven't been + participio" },
+        { id: "s3", template: "The decision is ___ (reconsiderar) right now. (presente continuo pasivo)", answer: "being reconsidered", hint: "being + participio" },
+      ],
+    }, objectiveIds: ["obj-b2-3-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "reading", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, escribe de memoria las frases en voz pasiva sobre el puente.",
+      expectedKeywords: ["was built", "has been repaired"],
+    }, objectiveIds: ["obj-b2-3-1", "obj-b2-3-2"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Escribe 2-3 frases sobre una noticia usando voz pasiva en distintos tiempos. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b2-3-1", "obj-b2-3-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "What's a recent news story that caught your attention?",
+      instructions: "Describe la noticia usando voz pasiva. Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (vigésima segunda vez que practicas esta función).",
+      secondTutorLine: "Rght, nd whch srce dd y rd tht in?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean"],
+      expectedOriginKeywords: ["was", "been"],
+      firstTaskLabel: "Describir la noticia",
+    }, objectiveIds: ["obj-b2-3-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B2 · Módulo 4 · Unidad 1 =======================
+// "A complicated issue" — recicla "pedir repetición" por vigésima tercera vez.
+const B2_4_1 = (() => {
+  const unitId = "unit-b2-4-1";
+  const base = "b2-4-1";
+  const objs: Objective[] = [
+    { id: "obj-b2-4-1", stableCode: "B2.4.1", skill: "speaking", canDoStatement: "Puedo presentar varios lados de un tema social complejo.", levelCode: "B2" },
+    { id: "obj-b2-4-2", stableCode: "B2.4.2", skill: "grammar", canDoStatement: "Puedo usar conectores de contraste avanzados (whereas, despite) y estructuras de énfasis (What really matters is...).", levelCode: "B2" },
+    { id: "obj-b2-4-3", stableCode: "B2.4.3", skill: "listening", canDoStatement: "Puedo identificar distintas posturas en una discusión.", levelCode: "B2" },
+    { id: "obj-b2-4-4", stableCode: "B2.4.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario de temas sociales (inequality, awareness, policy).", levelCode: "B2" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "A complicated issue", moduleTitle: "Módulo 4 — Temas sociales con matices", levelCode: "B2", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder presentar varios lados de un tema social complejo, usando conectores de contraste avanzados y estructuras de énfasis." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "Whereas some people believe awareness alone can reduce inequality, others think policy change is essential." },
+        { speaker: "B", text: "What really matters is combining both — despite good intentions, awareness alone rarely changes outcomes." },
+      ],
+      notes: ["whereas = mientras que (contraste).", "despite + sustantivo/gerundio = a pesar de.", "What really matters is... = estructura de énfasis."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "Whereas some argue the policy helps, others say it increases inequality." },
+        { speaker: "B", text: "Despite the criticism, I think it raises important awareness." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué postura menciona A sobre la política? (en inglés: helps/increases inequality)", objectiveId: "obj-b2-4-3", expectedKeywords: ["inequality"] },
+        { id: "q2", prompt: "¿Qué dice B a pesar de las críticas? (en inglés)", objectiveId: "obj-b2-4-3", expectedKeywords: ["awareness"] },
+      ],
+    }, objectiveIds: ["obj-b2-4-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "Whereas some believe X, others think Y.", note: "whereas contrasta dos posturas en una sola frase." },
+        { phrase: "Despite the criticism, ...", note: "despite + sustantivo (no + cláusula completa)." },
+        { phrase: "What really matters is combining both.", note: "Estructura de énfasis." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "___ some support the law, others oppose it. (mientras que)", answer: "Whereas", hint: "contraste" },
+        { id: "s2", template: "___ the rain, they went to the park. (a pesar de)", answer: "Despite", hint: "despite + sustantivo" },
+        { id: "s3", template: "What really ___ is finding a fair solution.", answer: "matters", hint: "énfasis" },
+      ],
+    }, objectiveIds: ["obj-b2-4-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye las dos posturas usando 'whereas' y 'despite'.",
+      expectedKeywords: ["whereas", "despite"],
+    }, objectiveIds: ["obj-b2-4-1", "obj-b2-4-2"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Presenta dos posturas sobre un tema social usando 'whereas', y da tu conclusión con 'What really matters is...'. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b2-4-1", "obj-b2-4-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "What do you think is the biggest challenge our society faces today?",
+      instructions: "Presenta dos posturas usando 'whereas'. Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (vigésima tercera vez que practicas esta función).",
+      secondTutorLine: "Fr nugh, bt whch sd d y persnlly lean twrds?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean"],
+      expectedOriginKeywords: ["whereas", "despite"],
+      firstTaskLabel: "Presentar las posturas",
+    }, objectiveIds: ["obj-b2-4-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= B2 · Módulo 5 · Unidad 1 =======================
+// "I'd like to make a complaint" — recicla "pedir repetición" por vigésima
+// cuarta vez.
+const B2_5_1 = (() => {
+  const unitId = "unit-b2-5-1";
+  const base = "b2-5-1";
+  const objs: Objective[] = [
+    { id: "obj-b2-5-1", stableCode: "B2.5.1", skill: "speaking", canDoStatement: "Puedo presentar una queja formal de manera educada pero firme.", levelCode: "B2" },
+    { id: "obj-b2-5-2", stableCode: "B2.5.2", skill: "grammar", canDoStatement: "Puedo usar condicionales mixtos simples (If I had known, I would have...) para explicar una situación pasada con efecto presente.", levelCode: "B2" },
+    { id: "obj-b2-5-3", stableCode: "B2.5.3", skill: "listening", canDoStatement: "Puedo entender una queja formal y la respuesta a ella.", levelCode: "B2" },
+    { id: "obj-b2-5-4", stableCode: "B2.5.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario de quejas formales (refund, compensation, unacceptable).", levelCode: "B2" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "I'd like to make a complaint", moduleTitle: "Módulo 5 — Negociación y quejas formales", levelCode: "B2", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder presentar una queja formal educada pero firme, y usar condicionales mixtos para explicar cómo una situación pasada afecta el presente." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "I'd like to make a complaint. This product arrived damaged." },
+        { speaker: "B", text: "I'm sorry to hear that. We can offer a refund or a replacement." },
+        { speaker: "A", text: "If I had known it would arrive like this, I wouldn't have ordered it." },
+      ],
+      notes: ["I'd like to make a complaint = quiero presentar una queja.", "refund, compensation, unacceptable = vocabulario de quejas.", "If I had known..., I wouldn't have... = condicional mixto: pasado hipotético con efecto en cómo ves el presente."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "This is unacceptable. I was promised a delivery within two days." },
+        { speaker: "B", text: "I understand your frustration. We'll offer you a full refund." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué le habían prometido a A? (en inglés)", objectiveId: "obj-b2-5-3", expectedKeywords: ["two days", "delivery"] },
+        { id: "q2", prompt: "¿Qué ofrece B? (en inglés)", objectiveId: "obj-b2-5-3", expectedKeywords: ["refund"] },
+      ],
+    }, objectiveIds: ["obj-b2-5-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "If I had known, I wouldn't have ordered it.", note: "Condicional mixto: condición pasada (had known) + consecuencia pasada (wouldn't have ordered), pero afecta cómo te sientes ahora." },
+        { phrase: "This is unacceptable.", note: "Firme pero educado — no agresivo." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "If I ___ (know) about the delay, I would have chosen another store.", answer: "had known", hint: "condición pasada hipotética" },
+        { id: "s2", template: "I'd like a ___ (reembolso) for this item.", answer: "refund", hint: "refund" },
+        { id: "s3", template: "This service is completely ___ (inaceptable).", answer: "unacceptable", hint: "unacceptable" },
+      ],
+    }, objectiveIds: ["obj-b2-5-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye la queja de A y la respuesta de B.",
+      expectedKeywords: ["complaint", "refund"],
+    }, objectiveIds: ["obj-b2-5-1"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Escribe una queja formal sobre un producto o servicio, usando un condicional mixto para explicar el efecto que tuvo. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-b2-5-1", "obj-b2-5-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "I'm sorry, how can I help you today?",
+      instructions: "Presenta una queja formal. Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (vigésima cuarta vez que practicas esta función).",
+      secondTutorLine: "I c. Wld y lk a refnd r a replacemnt?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean"],
+      expectedOriginKeywords: ["complaint", "i'd like"],
+      firstTaskLabel: "Presentar la queja",
+    }, objectiveIds: ["obj-b2-5-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
 // ======================= Banco de evaluación (separado de práctica) =======================
 // "Comprobación de nivel A1.1" — mismos objetivos que unit-a1-1-1, pero ítems
 // NUEVOS (no los mismos con nombres cambiados) y pool='assessment', así que
@@ -3216,7 +3622,13 @@ const ALL_UNITS: UnitDefinition[] = [
   B1_2_1,
   B1_3_1,
   B1_4_1,
+  B1_5_1,
+  B1_6_1,
   B2_1_1,
+  B2_2_1,
+  B2_3_1,
+  B2_4_1,
+  B2_5_1,
   C1_1_1,
 ];
 

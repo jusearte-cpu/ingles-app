@@ -300,4 +300,100 @@ export const REVIEW_PROMPTS: Record<string, { prompt: string; expectedKeywords: 
     prompt: "Escribe en inglés un adjetivo de personalidad.",
     expectedKeywords: ["ambitious", "generous", "reliable", "honest", "hardworking"],
   },
+  "obj-b1-5-1": {
+    prompt: "Escribe en inglés una habilidad o experiencia tuya relevante para un trabajo.",
+    expectedKeywords: ["experience", "skills", "i have"],
+  },
+  "obj-b1-5-2": {
+    prompt: "Completa: 'You ___ practice before the interview.' (consejo)",
+    expectedKeywords: ["should"],
+  },
+  "obj-b1-5-3": {
+    prompt: "¿De qué trataba la conversación de esta unidad? (una palabra: job/trabajo)",
+    expectedKeywords: ["job"],
+  },
+  "obj-b1-5-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario de trabajo (skills, experience, qualifications).",
+    expectedKeywords: ["skills", "experience", "qualifications"],
+  },
+  "obj-b1-6-1": {
+    prompt: "Resume en inglés una noticia breve con tus propias palabras.",
+    expectedKeywords: ["according to", "said"],
+  },
+  "obj-b1-6-2": {
+    prompt: "Completa (estilo indirecto): 'She said that she ___ (is) happy.' (is → )",
+    expectedKeywords: ["was"],
+  },
+  "obj-b1-6-3": {
+    prompt: "¿De qué trataba la lectura de esta unidad? (una palabra: news/noticia)",
+    expectedKeywords: ["news"],
+  },
+  "obj-b1-6-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario de noticias (according to, reported, announced).",
+    expectedKeywords: ["according to", "reported", "announced"],
+  },
+  "obj-b2-2-1": {
+    prompt: "Escribe en inglés un logro tuyo con un ejemplo concreto.",
+    expectedKeywords: ["i", "achievement"],
+  },
+  "obj-b2-2-2": {
+    prompt: "Escribe una pregunta indirecta educada usando 'I was wondering if...'.",
+    expectedKeywords: ["i was wondering"],
+  },
+  "obj-b2-2-3": {
+    prompt: "¿De qué trataba el audio de esta unidad? (una palabra: interview/entrevista)",
+    expectedKeywords: ["interview"],
+  },
+  "obj-b2-2-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario profesional (achievement, responsibility, teamwork).",
+    expectedKeywords: ["achievement", "responsibility", "teamwork"],
+  },
+  "obj-b2-3-1": {
+    prompt: "Escribe en inglés una frase sobre un evento usando voz pasiva.",
+    expectedKeywords: ["was", "been"],
+  },
+  "obj-b2-3-2": {
+    prompt: "Completa (voz pasiva): 'The report ___ (publish) yesterday.'",
+    expectedKeywords: ["was published"],
+  },
+  "obj-b2-3-3": {
+    prompt: "¿De qué trataba el reporte de esta unidad? (una palabra: policy/news)",
+    expectedKeywords: ["policy", "news"],
+  },
+  "obj-b2-3-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario de medios (coverage, headline, source).",
+    expectedKeywords: ["coverage", "headline", "source"],
+  },
+  "obj-b2-4-1": {
+    prompt: "Presenta en inglés dos posturas sobre un tema social usando 'whereas'.",
+    expectedKeywords: ["whereas"],
+  },
+  "obj-b2-4-2": {
+    prompt: "Completa: '___ the rain, we went for a walk.' (a pesar de)",
+    expectedKeywords: ["despite"],
+  },
+  "obj-b2-4-3": {
+    prompt: "¿Cuántas posturas distintas se presentaban en la discusión de esta unidad? (un número)",
+    expectedKeywords: ["two", "2"],
+  },
+  "obj-b2-4-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario de temas sociales (inequality, awareness, policy).",
+    expectedKeywords: ["inequality", "awareness", "policy"],
+  },
+  "obj-b2-5-1": {
+    prompt: "Escribe en inglés cómo presentarías una queja formal.",
+    expectedKeywords: ["i'd like to make a complaint", "complaint"],
+  },
+  "obj-b2-5-2": {
+    prompt: "Completa: 'If I ___ (know), I wouldn't have bought it.' (condicional mixto)",
+    expectedKeywords: ["had known"],
+  },
+  "obj-b2-5-3": {
+    prompt: "¿Qué solución se ofreció en el diálogo de esta unidad? (en inglés)",
+    expectedKeywords: ["refund"],
+  },
+  "obj-b2-5-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario de quejas (refund, compensation, unacceptable).",
+    expectedKeywords: ["refund", "compensation", "unacceptable"],
+  },
 };
