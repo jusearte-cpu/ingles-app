@@ -460,4 +460,68 @@ export const REVIEW_PROMPTS: Record<string, { prompt: string; expectedKeywords: 
     prompt: "Escribe en inglés una frase de mediación neutral (to put it another way, impartial).",
     expectedKeywords: ["to put it another way", "impartial"],
   },
+  "obj-c1-4-1": {
+    prompt: "Narra brevemente un momento combinando dos tiempos de pasado.",
+    expectedKeywords: ["had been", "had"],
+  },
+  "obj-c1-4-2": {
+    prompt: "Completa: 'By the time I arrived, the film ___ (already/start).'",
+    expectedKeywords: ["had already started"],
+  },
+  "obj-c1-4-3": {
+    prompt: "¿Qué tono tenía el narrador del texto de esta unidad? (en inglés: overwhelmed, indifferent, etc.)",
+    expectedKeywords: ["overwhelmed"],
+  },
+  "obj-c1-4-4": {
+    prompt: "Escribe en inglés una palabra descriptiva precisa (no genérica como 'good' o 'bad').",
+    expectedKeywords: ["exhausted", "overwhelmed", "rigorous"],
+  },
+  "obj-c1-5-1": {
+    prompt: "Escribe en inglés cómo pedirías algo delicado con mucho tacto.",
+    expectedKeywords: ["would you be willing"],
+  },
+  "obj-c1-5-2": {
+    prompt: "Completa: 'If we ___ (have) more time, we could reconsider.'",
+    expectedKeywords: ["had"],
+  },
+  "obj-c1-5-3": {
+    prompt: "¿Qué concesión se mencionaba en el audio de esta unidad? (en inglés)",
+    expectedKeywords: ["free shipping"],
+  },
+  "obj-c1-5-4": {
+    prompt: "Escribe en inglés una palabra de negociación avanzada (concession, leverage, common ground).",
+    expectedKeywords: ["concession", "leverage", "common ground"],
+  },
+  "obj-c1-6-1": {
+    prompt: "Escribe una conclusión breve basada en evidencia (usa 'suggests' o 'reveals').",
+    expectedKeywords: ["suggests", "reveals"],
+  },
+  "obj-c1-6-2": {
+    prompt: "Completa (nominalización): 'We analyzed the data.' → 'Our ___ of the data...'",
+    expectedKeywords: ["analysis"],
+  },
+  "obj-c1-6-3": {
+    prompt: "¿Qué tendencia mostraban los datos del texto de esta unidad? (en inglés)",
+    expectedKeywords: ["decline"],
+  },
+  "obj-c1-6-4": {
+    prompt: "Escribe en inglés una palabra de vocabulario de informes (findings, trend, correlation).",
+    expectedKeywords: ["findings", "trend", "correlation"],
+  },
+  "obj-c1-7-1": {
+    prompt: "Responde con precisión integrando al menos dos estructuras de C1 (subordinación, énfasis, inversión, mediación).",
+    expectedKeywords: ["although", "what really", "to put it another way"],
+  },
+  "obj-c1-7-2": {
+    prompt: "Completa (inversión): 'Rarely ___ such dedication.'",
+    expectedKeywords: ["have i seen"],
+  },
+  "obj-c1-7-3": {
+    prompt: "¿'Perfect timing' en el ejemplo de esta unidad fue literal o irónico? (en inglés)",
+    expectedKeywords: ["ironic"],
+  },
+  "obj-c1-7-4": {
+    prompt: "Escribe en inglés una colocación avanzada (reach a conclusion, draw a parallel, etc.).",
+    expectedKeywords: ["reach a conclusion", "draw a parallel"],
+  },
 };

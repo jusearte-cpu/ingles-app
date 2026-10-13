@@ -3816,6 +3816,276 @@ const C1_3_1 = (() => {
   return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
 })();
 
+// ======================= C1 · Módulo 4 · Unidad 1 =======================
+// "Telling the story" — recicla "pedir repetición" por vigésima novena vez.
+const C1_4_1 = (() => {
+  const unitId = "unit-c1-4-1";
+  const base = "c1-4-1";
+  const objs: Objective[] = [
+    { id: "obj-c1-4-1", stableCode: "C1.4.1", skill: "speaking", canDoStatement: "Puedo narrar una historia compleja manejando varios planos temporales.", levelCode: "C1" },
+    { id: "obj-c1-4-2", stableCode: "C1.4.2", skill: "grammar", canDoStatement: "Puedo combinar con fluidez varios tiempos verbales en una narración (pasado perfecto, pasado continuo, pasado simple).", levelCode: "C1" },
+    { id: "obj-c1-4-3", stableCode: "C1.4.3", skill: "reading", canDoStatement: "Puedo interpretar el tono y la actitud del narrador en un texto literario breve.", levelCode: "C1" },
+    { id: "obj-c1-4-4", stableCode: "C1.4.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario descriptivo/literario con precisión.", levelCode: "C1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "Telling the story", moduleTitle: "Módulo 4 — Narrativa y literatura accesible", levelCode: "C1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder narrar una historia combinando varios tiempos verbales con fluidez, e interpretar el tono de un narrador." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "reading", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "Texto", text: "By the time she arrived, the meeting had already ended. She had been rushing through traffic for an hour, and she was clearly exhausted." },
+      ],
+      notes: ["had already ended = pasado perfecto (antes de otro momento pasado).", "had been rushing = pasado perfecto continuo (duración antes de ese momento).", "was exhausted = pasado simple (estado en ese momento)."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Lectura en contexto", type: "contextualized_input", skill: "reading", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "Texto", text: "He had been dreaming of this moment for years. When it finally arrived, he just stood there, unable to speak, while everyone else was celebrating around him." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Cómo se siente el narrador sobre el personaje: emocionado, abrumado, indiferente? (en inglés)", objectiveId: "obj-c1-4-3", expectedKeywords: ["overwhelmed"] },
+        { id: "q2", prompt: "¿Qué hacían los demás mientras él no podía hablar? (en inglés)", objectiveId: "obj-c1-4-3", expectedKeywords: ["celebrating"] },
+      ],
+    }, objectiveIds: ["obj-c1-4-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "had been dreaming (pasado perfecto continuo)", note: "Duración antes de un momento pasado específico." },
+        { phrase: "was celebrating (pasado continuo)", note: "Acción en progreso simultánea a otra." },
+        { phrase: "stood, arrived (pasado simple)", note: "Eventos puntuales completados." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "By the time I arrived, the film ___ (already/start). (pasado perfecto)", answer: "had already started", hint: "antes de otro momento pasado" },
+        { id: "s2", template: "She ___ (work) all day when the phone rang. (pasado perfecto continuo)", answer: "had been working", hint: "duración previa" },
+        { id: "s3", template: "While they were talking, it ___ (start) to rain. (pasado simple, evento puntual)", answer: "started", hint: "pasado simple" },
+      ],
+    }, objectiveIds: ["obj-c1-4-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "reading", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 3, explica en inglés qué había estado haciendo el personaje y cómo se sentía cuando llegó el momento.",
+      expectedKeywords: ["had been dreaming", "overwhelmed"],
+    }, objectiveIds: ["obj-c1-4-1", "obj-c1-4-3"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Narra brevemente un momento importante de tu vida combinando al menos dos tiempos verbales de pasado (simple, continuo, perfecto). Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-c1-4-1", "obj-c1-4-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "Tell me about a moment when something finally happened after a long wait.",
+      instructions: "Narra la historia combinando tiempos verbales de pasado. Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (vigésima novena vez que practicas esta función).",
+      secondTutorLine: "Whch prt wr y mst nrvs abt beforehnd?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean"],
+      expectedOriginKeywords: ["had been", "had", "was"],
+      firstTaskLabel: "Narrar el momento",
+    }, objectiveIds: ["obj-c1-4-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= C1 · Módulo 5 · Unidad 1 =======================
+// "Negotiating common ground" — recicla "pedir repetición" por trigésima vez.
+const C1_5_1 = (() => {
+  const unitId = "unit-c1-5-1";
+  const base = "c1-5-1";
+  const objs: Objective[] = [
+    { id: "obj-c1-5-1", stableCode: "C1.5.1", skill: "speaking", canDoStatement: "Puedo negociar un acuerdo manejando objeciones con tacto.", levelCode: "C1" },
+    { id: "obj-c1-5-2", stableCode: "C1.5.2", skill: "grammar", canDoStatement: "Puedo usar condicionales mixtos complejos y modales de cortesía avanzada (Would you be willing to...?).", levelCode: "C1" },
+    { id: "obj-c1-5-3", stableCode: "C1.5.3", skill: "listening", canDoStatement: "Puedo entender una negociación con matices de tono (firmeza vs. flexibilidad).", levelCode: "C1" },
+    { id: "obj-c1-5-4", stableCode: "C1.5.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario de negociación avanzada (concession, leverage, common ground).", levelCode: "C1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "Negotiating common ground", moduleTitle: "Módulo 5 — Negociación compleja", levelCode: "C1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder negociar manejando objeciones con tacto, usando modales de cortesía avanzada y vocabulario de negociación." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "Would you be willing to extend the deadline by a week?" },
+        { speaker: "B", text: "If we had more budget, we could consider it, but as it stands, that's difficult." },
+        { speaker: "A", text: "I understand. Could we find some common ground, perhaps a partial extension?" },
+      ],
+      notes: ["Would you be willing to...? = forma muy educada de pedir algo delicado.", "If we had more budget, we could... = condicional mixto (hipótesis presente con efecto en una decisión).", "common ground, concession, leverage = vocabulario de negociación."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "I'm afraid we can't go any lower on the price." },
+        { speaker: "B", text: "I hear you, but would you consider throwing in free shipping as a concession?" },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿A es firme o flexible sobre el precio? (en inglés: firm/flexible)", objectiveId: "obj-c1-5-3", expectedKeywords: ["firm"] },
+        { id: "q2", prompt: "¿Qué concesión propone B? (en inglés)", objectiveId: "obj-c1-5-3", expectedKeywords: ["free shipping"] },
+      ],
+    }, objectiveIds: ["obj-c1-5-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "Would you be willing to...?", note: "Muy educado, para pedir algo que requiere esfuerzo del otro." },
+        { phrase: "If we had more budget, we could consider it.", note: "Condicional mixto: hipótesis presente con efecto en una decisión posible." },
+        { phrase: "Could we find some common ground?", note: "Busca un punto medio aceptable para ambos." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "___ you be willing to reconsider the terms? (muy educado)", answer: "Would", hint: "Would you be willing" },
+        { id: "s2", template: "If we ___ (have) more time, we could review it again.", answer: "had", hint: "condicional" },
+        { id: "s3", template: "Let's find some common ___ (terreno común).", answer: "ground", hint: "common ground" },
+      ],
+    }, objectiveIds: ["obj-c1-5-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye cómo A pide algo delicado y cómo B responde con tacto.",
+      expectedKeywords: ["would you be willing", "common ground"],
+    }, objectiveIds: ["obj-c1-5-1", "obj-c1-5-4"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Escribe una negociación breve donde pides algo delicado con tacto y propones un punto medio. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-c1-5-1", "obj-c1-5-2"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "We can't meet your original request, but we're open to alternatives. What would you propose?",
+      instructions: "Propón una alternativa con tacto. Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (trigésima vez que practicas esta función).",
+      secondTutorLine: "Tht culd wrk. Wht tmlne wre y thnkng?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean"],
+      expectedOriginKeywords: ["would you", "common ground", "consider"],
+      firstTaskLabel: "Proponer la alternativa",
+    }, objectiveIds: ["obj-c1-5-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= C1 · Módulo 6 · Unidad 1 =======================
+// "What the data really shows" — recicla "pedir repetición" por trigésima
+// primera vez.
+const C1_6_1 = (() => {
+  const unitId = "unit-c1-6-1";
+  const base = "c1-6-1";
+  const objs: Objective[] = [
+    { id: "obj-c1-6-1", stableCode: "C1.6.1", skill: "writing", canDoStatement: "Puedo presentar un informe breve con una conclusión basada en evidencia.", levelCode: "C1" },
+    { id: "obj-c1-6-2", stableCode: "C1.6.2", skill: "grammar", canDoStatement: "Puedo usar nominalización para un registro más formal (decide → decision, analyze → analysis).", levelCode: "C1" },
+    { id: "obj-c1-6-3", stableCode: "C1.6.3", skill: "reading", canDoStatement: "Puedo entender un informe técnico breve e identificar su conclusión principal.", levelCode: "C1" },
+    { id: "obj-c1-6-4", stableCode: "C1.6.4", skill: "vocabulary", canDoStatement: "Puedo usar vocabulario de informes (findings, trend, correlation).", levelCode: "C1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "What the data really shows", moduleTitle: "Módulo 6 — Informes técnicos", levelCode: "C1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "writing", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Vas a poder presentar un informe breve con una conclusión basada en evidencia, usando nominalización para un registro formal." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "reading", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "Texto", text: "The analysis of the findings reveals a clear correlation between the two variables. This trend suggests that further investigation is warranted." },
+      ],
+      notes: ["analyze → analysis, find → findings = nominalización (verbo a sustantivo, registro más formal).", "findings, trend, correlation = vocabulario de informes.", "reveals, suggests = verbos típicos para presentar conclusiones con cautela."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Lectura en contexto", type: "contextualized_input", skill: "reading", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "Texto", text: "The data indicates a steady decline over the past decade. This finding suggests the policy had limited long-term impact." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿Qué tendencia muestran los datos? (en inglés)", objectiveId: "obj-c1-6-3", expectedKeywords: ["decline"] },
+        { id: "q2", prompt: "¿Qué sugiere este hallazgo sobre la política? (en inglés)", objectiveId: "obj-c1-6-3", expectedKeywords: ["limited", "impact"] },
+      ],
+    }, objectiveIds: ["obj-c1-6-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "decide → decision, analyze → analysis, find → findings", note: "Nominalización: el sustantivo suena más formal/objetivo que el verbo." },
+        { phrase: "The analysis reveals... / The data suggests...", note: "Estructura típica de informes: sujeto impersonal + verbo de presentación de conclusión." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "We analyzed the data. → Our ___ of the data revealed a trend. (nominalización)", answer: "analysis", hint: "analyze → analysis" },
+        { id: "s2", template: "They decided to change the policy. → Their ___ to change the policy was based on evidence.", answer: "decision", hint: "decide → decision" },
+        { id: "s3", template: "The data shows a clear ___ (correlación) between the variables.", answer: "correlation", hint: "correlation" },
+      ],
+    }, objectiveIds: ["obj-c1-6-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "reading", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, explica en inglés qué revela el análisis y qué sugiere la tendencia.",
+      expectedKeywords: ["reveals", "correlation", "trend"],
+    }, objectiveIds: ["obj-c1-6-1", "obj-c1-6-4"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Escribe un informe breve (3-4 frases) con una conclusión basada en evidencia, usando al menos una nominalización. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-c1-6-1", "obj-c1-6-2"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "If you had to summarize a trend you've noticed in your own life or work, what would it be?",
+      instructions: "Presenta tu conclusión con un registro formal. Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (trigésima primera vez que practicas esta función).",
+      secondTutorLine: "Interstng trnd. Wht d y thnk is drvng tht?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean"],
+      expectedOriginKeywords: ["suggests", "reveals", "trend", "findings"],
+      firstTaskLabel: "Presentar tu conclusión",
+    }, objectiveIds: ["obj-c1-6-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
+// ======================= C1 · Módulo 7 · Unidad 1 =======================
+// "C1 in practice" — módulo de consolidación. Recicla "pedir aclaración" por
+// trigésima segunda vez, integrando varias estructuras de C1 a la vez.
+const C1_7_1 = (() => {
+  const unitId = "unit-c1-7-1";
+  const base = "c1-7-1";
+  const objs: Objective[] = [
+    { id: "obj-c1-7-1", stableCode: "C1.7.1", skill: "speaking", canDoStatement: "Puedo sostener una conversación extensa integrando precisión, matización y mediación.", levelCode: "C1" },
+    { id: "obj-c1-7-2", stableCode: "C1.7.2", skill: "grammar", canDoStatement: "Puedo combinar con fluidez varias estructuras de C1 (énfasis, subordinación, inversión) en un solo discurso.", levelCode: "C1" },
+    { id: "obj-c1-7-3", stableCode: "C1.7.3", skill: "listening", canDoStatement: "Puedo entender una conversación auténtica con humor o ironía sin apoyos.", levelCode: "C1" },
+    { id: "obj-c1-7-4", stableCode: "C1.7.4", skill: "vocabulary", canDoStatement: "Puedo usar colocaciones avanzadas de forma espontánea.", levelCode: "C1" },
+    REPETITION_OBJECTIVE,
+  ];
+  const unit: Unit = { id: unitId, title: "C1 in practice", moduleTitle: "Módulo 7 — Consolidación de C1", levelCode: "C1", sortOrder: 1 };
+  const acts: Activity[] = [
+    { id: `act-${base}-1`, unitId, stepNumber: 1, stepName: "Qué aprenderás", type: "info", skill: "speaking", pool: "practice", baseItemId: `${base}-step1`, content: { body: "Esta unidad integra lo aprendido en C1: precisión léxica, estructuras de énfasis, subordinación compleja, inversión y mediación, todo en una sola conversación extensa." }, objectiveIds: [] },
+    { id: `act-${base}-2`, unitId, stepNumber: 2, stepName: "Ejemplo resuelto", type: "worked_example", skill: "speaking", pool: "practice", baseItemId: `${base}-step2`, content: {
+      dialogue: [
+        { speaker: "A", text: "Although the proposal has merit, what really concerns me is the timeline — rarely have I seen a project this ambitious succeed on schedule." },
+        { speaker: "B", text: "To put it another way, you're not against the idea itself, just the pace. Given that we have flexibility on deadlines, would that ease your concern?" },
+      ],
+      notes: ["Although... what really concerns me is... = subordinación + estructura de énfasis combinadas.", "rarely have I seen... = inversión para dar énfasis.", "To put it another way... / Given that... = mediación y reformulación con precisión."],
+    }, objectiveIds: [] },
+    { id: `act-${base}-3`, unitId, stepNumber: 3, stepName: "Escucha en contexto", type: "contextualized_input", skill: "listening", pool: "practice", baseItemId: `${base}-step3`, content: {
+      dialogue: [
+        { speaker: "A", text: "Oh, perfect timing — the server crashed right before the demo. Couldn't have planned it better myself." },
+        { speaker: "B", text: "Well, at least it's memorable." },
+      ],
+      questions: [
+        { id: "q1", prompt: "¿'Perfect timing' se dice en serio o de forma irónica? (en inglés: literal/ironic)", objectiveId: "obj-c1-7-3", expectedKeywords: ["ironic"] },
+        { id: "q2", prompt: "¿Qué palabra confirma que B también capta el tono irónico? (en inglés)", objectiveId: "obj-c1-7-3", expectedKeywords: ["memorable"] },
+      ],
+    }, objectiveIds: ["obj-c1-7-3"] },
+    { id: `act-${base}-4`, unitId, stepNumber: 4, stepName: "Observa el lenguaje", type: "language_observation", skill: "grammar", pool: "practice", baseItemId: `${base}-step4`, content: {
+      highlights: [
+        { phrase: "Although X, what really matters is Y.", note: "Subordinación + énfasis, combinadas en una sola frase fluida." },
+        { phrase: "Rarely have I seen...", note: "Inversión para dar fuerza a una observación." },
+        { phrase: "To put it another way... Given that...", note: "Mediación y precisión trabajando juntas." },
+      ],
+    }, objectiveIds: [] },
+    { id: `act-${base}-5`, unitId, stepNumber: 5, stepName: "Práctica guiada", type: "guided_practice", skill: "grammar", pool: "practice", baseItemId: `${base}-step5`, content: {
+      sentences: [
+        { id: "s1", template: "___ the risks, the team decided to move forward. (a pesar de, + sustantivo)", answer: "Despite", hint: "despite + sustantivo" },
+        { id: "s2", template: "Rarely ___ such dedication. (have I seen)", answer: "have I seen", hint: "inversión" },
+        { id: "s3", template: "What really ___ is the long-term impact, not the short-term cost.", answer: "matters", hint: "énfasis" },
+      ],
+    }, objectiveIds: ["obj-c1-7-2"] },
+    { id: `act-${base}-6`, unitId, stepNumber: 6, stepName: "Recuperación sin apoyo", type: "unaided_retrieval", skill: "speaking", pool: "practice", baseItemId: `${base}-step6`, content: {
+      prompt: "Sin mirar el paso 2, reconstruye la conversación combinando al menos dos estructuras de C1 (subordinación, énfasis, inversión o mediación).",
+      expectedKeywords: ["although", "what really", "to put it another way"],
+    }, objectiveIds: ["obj-c1-7-1", "obj-c1-7-2"] },
+    { id: `act-${base}-7`, unitId, stepNumber: 7, stepName: "Producción", type: "production", skill: "writing", pool: "practice", baseItemId: `${base}-step7`, content: {
+      prompt: "Escribe un párrafo sobre un tema que te importe, combinando al menos dos estructuras de C1: subordinación compleja, énfasis, inversión, o una frase de mediación. Puedes grabarte o escribirlo.",
+    }, objectiveIds: ["obj-c1-7-1", "obj-c1-7-4"] },
+    { id: `act-${base}-8`, unitId, stepNumber: 8, stepName: "Tarea comunicativa", type: "communicative_task", skill: "speaking", pool: "practice", baseItemId: `${base}-step8`, content: {
+      tutorLine: "Looking back at everything we've discussed across these units, what's one thing you'd want people to really understand about you?",
+      instructions: "Responde integrando al menos dos estructuras de C1 (subordinación, énfasis, inversión, mediación). Luego el sistema va a decir algo difícil de entender — pide que te lo aclaren, en inglés (trigésima segunda y última vez que practicas esta función en este currículo, ahora con total naturalidad).",
+      secondTutorLine: "Tht's a thghtfl answr. Hw did y cme t realze tht abt yrself?",
+      expectedRepetitionKeywords: ["clarify", "elaborate", "could you explain", "what do you mean", "rephrase"],
+      expectedOriginKeywords: ["what really", "although", "given that"],
+      firstTaskLabel: "Responder con precisión",
+    }, objectiveIds: ["obj-c1-7-1", "obj-prea1-2-3"] },
+    { id: `act-${base}-9`, unitId, stepNumber: 9, stepName: "Retroalimentación", type: "feedback", skill: "speaking", pool: "practice", baseItemId: `${base}-step9`, content: {}, objectiveIds: [] },
+    scheduleStep(unitId, base, objs.map((o) => o.id)),
+    reviewStep(unitId, base, objs.map((o) => o.id)),
+  ];
+  return { objectives: objs, unit, activities: acts } satisfies UnitDefinition;
+})();
+
 // ======================= Banco de evaluación (separado de práctica) =======================
 // "Comprobación de nivel A1.1" — mismos objetivos que unit-a1-1-1, pero ítems
 // NUEVOS (no los mismos con nombres cambiados) y pool='assessment', así que
@@ -3906,6 +4176,10 @@ const ALL_UNITS: UnitDefinition[] = [
   C1_1_1,
   C1_2_1,
   C1_3_1,
+  C1_4_1,
+  C1_5_1,
+  C1_6_1,
+  C1_7_1,
 ];
 
 async function seed() {
