@@ -18,21 +18,21 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
   para el detalle de cómo quedó configurado y los problemas reales que
   aparecieron en el camino (vale la pena leerlo antes de repetir esto en otro
   proyecto).
-- **12 unidades reales en 6 niveles** (Pre-A1 → C1), 50 objetivos, 135
-  actividades — el arco completo del programa existe en forma de muestra, de
-  lo más básico (deletrear, colores) hasta lo más avanzado construido hasta
-  ahora (matización, ironía, estructuras de énfasis en C1). El objetivo
-  "pedir que me repitan/aclaren" se recicla **12 veces** cruzando los 6
-  niveles, con el registro subiendo de "repeat that" (Pre-A1) a "could you
-  clarify/elaborate" (B2-C1) — prueba real de reciclaje y complejidad
-  creciente, no solo diseño.
-  - **Etapa 3** (Pre-A1/A1/A2): 7 unidades en 2-3 módulos cada nivel.
-  - **Etapa 4** (B1/B2): 2 unidades de B1, 1 de B2 (el hito de autonomía).
-  - **Etapa 5** (C1): 1 unidad (el objetivo principal del programa).
-  - **Etapa 6** (C2): sin empezar (es la ampliación opcional).
-  - Sigue siendo una fracción pequeña de cada nivel completo según
-    `02-curriculum-matrix.md` (cada nivel real tendría 20-30+ unidades) — ver
-    `docs/06-roadmap.md` para el detalle exacto, sin inflar.
+- **Hito: los 31 módulos de Pre-A1 a C1 tienen contenido real.** 32 unidades,
+  130 objetivos, 355 actividades — cada uno de los 31 módulos diseñados en
+  `02-curriculum-matrix.md` (Pre-A1: 2, A1: 4, A2: 5, B1: 6, B2: 7, C1: 7)
+  tiene al menos una unidad completa, de lo más básico (deletrear, colores)
+  hasta lo más avanzado (negociación, informes técnicos, narrativa compleja,
+  consolidación de C1). El objetivo "pedir que me repitan/aclaren" se recicló
+  **32 veces** cruzando los 6 niveles, con el registro subiendo de "repeat
+  that" (Pre-A1) a "could you clarify/elaborate/rephrase" (B2-C1) — prueba
+  real de reciclaje y complejidad creciente, no solo diseño.
+  - Esto es **cobertura completa de amplitud, no de profundidad**: cada
+    módulo tiene 1 unidad donde un módulo maduro según la matriz tendría 2-4.
+    Sigue siendo honesto decir que el curso no está "completo" en el sentido
+    pleno — ver `docs/06-roadmap.md` para el detalle exacto, sin inflar.
+  - **Etapa 6** (C2): sin empezar (es la ampliación opcional, fuera del
+    alcance Pre-A1→C1).
 - **Costo:** ✅ cero, de forma permanente y por decisión explícita — ver
   `docs/decisions-log.md`. El tutor de IA es un simulador basado en reglas
   (no un modelo de pago), la voz es la del navegador, sin transcripción ni

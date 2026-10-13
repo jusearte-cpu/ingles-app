@@ -130,82 +130,48 @@ externos — no se ha probado con un proveedor de IA real todavía, solo con
 Supabase, que sí se probó incluyendo sus fallos reales: límite de envío de
 correos, IPv6, etc. — ver docs/SETUP-CLOUD.md).
 
-## Etapa 3 — Fundamentos, A1 y A2
+## Etapas 3-5 — Hito: los 31 módulos de Pre-A1 a C1 tienen contenido real
 
-**Estado: 🟡 iniciada, lejos de completa.** La matriz curricular completa de
-`02-curriculum-matrix.md` para Pre-A1, A1 y A2 pide, en total, 11 módulos con
-varias unidades cada uno. Lo que existe hoy, con contenido real (no relleno) y
-probado en el navegador:
+**Estado: ✅ cobertura completa de amplitud · 🟡 profundidad parcial.**
 
-- Pre-A1 · Módulo 1 · Unidad 1 — "Hello! Spelling and numbers" (alfabeto,
-  deletreo, números 0-20, saludos, primera introducción de "pedir repetición").
-- Pre-A1 · Módulo 2 · Unidad 1 — "Colors, numbers, and basic requests"
-  (colores, this/that, números 20-100, peticiones educadas).
-- A1 · Módulo 1 · Unidad 1 — "Nice to meet you" (presentarse, origen).
-- A1 · Módulo 1 · Unidad 2 — "My daily routine" (presente simple, rutinas,
-  frecuencia).
-- A1 · Módulo 2 · Unidad 1 — "At the store" (some/any, alimentos, precios).
-- A2 · Módulo 1 · Unidad 1 — "Last weekend" (pasado simple, narración,
-  conectores).
-- A2 · Módulo 2 · Unidad 1 — "At the restaurant" (would like, comparativos).
+`02-curriculum-matrix.md` diseña 31 módulos en total (Pre-A1: 2, A1: 4, A2: 5,
+B1: 6, B2: 7, C1: 7). A partir de esta sesión, **los 31 tienen al menos una
+unidad real** (10 pasos, diálogos propios, gramática en contexto, tarea
+comunicativa, evidencia evaluable) — no solo el primer módulo de cada nivel.
+32 unidades en total (A1 Módulo 1 tiene 2), 130 objetivos, 355 actividades.
 
-Eso es **7 unidades de las ~20-30 que tendría Pre-A1-A2 completo** según la
-matriz — ya con 2 de los módulos de cada nivel empezados, no solo el primero.
-Las unidades reciclan deliberadamente el objetivo "pedir que me repitan"
-(introducido en Pre-A1, retomado como transferencia en las otras 6 unidades de
-Pre-A1-A2, en contextos distintos cada vez, y de nuevo en la unidad de B1) — es
-una prueba real de que el reciclaje y la complejidad creciente que pide el
-encargo funcionan con el motor actual, no solo una promesa de diseño.
+El objetivo "pedir que me repitan/aclaren" se recicló **32 veces** cruzando
+los 6 niveles: empieza como "Can you repeat that?" en Pre-A1 y termina como
+"Could you clarify/elaborate/rephrase?" en C1 — mismo objetivo comunicativo
+subyacente, registro y naturalidad creciendo con el nivel. Es la prueba más
+directa de que el reciclaje y la complejidad creciente que pide el encargo
+funcionan con el motor real, no son solo una promesa de diseño.
 
-**Lo que falta para que la Etapa 3 esté realmente completa** (no es poco —
-dimensiona la magnitud real del trabajo, no una lista corta):
-- El resto de los Módulos 1-2 de Pre-A1/A1/A2 (más unidades por módulo) y los
-  Módulos 3-4 de A1 / 3-5 de A2 que todavía no existen (tecnología cotidiana,
-  trabajo simple, salud, planes, según `02-curriculum-matrix.md`).
-- Evaluaciones de nivel formales por módulo/nivel (hoy solo existe una
-  comprobación de ejemplo para A1.1 — `npm run check:coverage` lo confirma:
-  31 de 34 objetivos todavía sin evaluación formal, aunque sí con práctica).
+**Qué significa exactamente "cobertura completa de amplitud, profundidad
+parcial"** — para que quede clarísimo y no se confunda con "curso completo":
+cada uno de los 31 módulos tiene 1 unidad; un módulo maduro según la matriz
+curricular tendría 2-4. Es la diferencia entre un mapa con todas las ciudades
+marcadas (amplitud) y carreteras pavimentadas entre todas ellas (profundidad).
+Lo primero ya está. Lo segundo es, honestamente, muchas sesiones más de
+autoría — no algo que cupiera en esta continuación sin sacrificar calidad.
 
-Autoría de contenido de este tipo (diálogos, gramática en contexto,
-pronunciación, tareas) es trabajo genuinamente artesanal — no se puede generar
-en bloque sin revisar cada unidad. A este ritmo, completar Pre-A1-A2 es muchas
-sesiones más de trabajo, no algo que quepa en una sola continuación.
+**Lo que falta para "completo" en el sentido pleno:**
+- 2-3 unidades adicionales por módulo (de las 31) para alcanzar la densidad
+  real de la matriz — el trabajo más grande y más lento, porque es autoría
+  genuina, no generación en bloque (eso es justo lo que el encargo pide
+  evitar en su sección 13).
+- Evaluaciones de nivel formales por módulo (hoy solo hay 3 ítems de ejemplo
+  para A1.1 — `npm run check:coverage` lo confirma: 127 de 130 objetivos
+  todavía sin evaluación formal, aunque sí con práctica real).
+- Portafolio maduro y comprobaciones de retención reales — estas últimas
+  necesitan que pase tiempo de verdad usándola (el intervalo de 10+ días
+  entre evidencia y comprobación diferida no se puede simular honestamente).
 
 **Herramienta nueva:** [`scripts/check-coverage.ts`](../scripts/check-coverage.ts)
 (`npm run check:coverage`) — el script de verificación de cobertura prometido
-en `02-curriculum-matrix.md`, ya construido y corrido contra la base real: 0
-objetivos sin ninguna actividad.
-
-## Etapa 4 — B1 y B2
-
-**Estado: 🟡 apenas empezada, pero con presencia real en ambos niveles.**
-
-- B1 · Módulo 1 · Unidad 1 — "What's your opinion?" (dar y justificar
-  opiniones, presente perfecto vs. pasado simple).
-- B1 · Módulo 2 · Unidad 1 — "Have you ever...?" (presente perfecto de
-  experiencia, ever/never/already/yet).
-- B2 · Módulo 1 · Unidad 1 — "I might be wrong, but..." (matización de
-  argumentos, modales de deducción en pasado) — **primer contenido del hito
-  de autonomía del programa.**
-
-El resto de B1 (módulos 3-6) y el resto de B2 (módulos 2-7) siguen sin
-empezar. Declarar B2 "completo" exige que todos sus criterios de evidencia
-estén implementados y probados, no solo el contenido — eso sigue pendiente.
-
-## Etapa 5 — C1 y consolidación
-
-**Estado: 🟡 apenas empezada.**
-
-- C1 · Módulo 1 · Unidad 1 — "Precision and nuance" (estructuras de énfasis,
-  colocaciones avanzadas, identificar ironía/connotación en lectura sin
-  apoyos) — **primer contenido del objetivo principal del programa.**
-
-Falta el resto de los 7 módulos de C1, el portafolio maduro, las tareas
-avanzadas de mediación/argumentación, y el ciclo completo de comprobaciones de
-retención (hoy el repaso espaciado programa comprobaciones, pero a esta altura
-del proyecto ninguna unidad lleva suficiente tiempo sembrada como para que ya
-se hayan cumplido los 10+ días de intervalo que exige una comprobación
-diferida real — eso se vería con el tiempo, usando la app).
+en `02-curriculum-matrix.md`, ya construido y corrido contra la base real
+después de cada lote de unidades: 0 objetivos sin ninguna actividad, en los
+130 que existen hoy.
 
 ## Etapa 6 — Ampliaciones (opcional, a tu decisión)
 
