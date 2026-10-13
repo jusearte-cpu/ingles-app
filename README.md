@@ -18,17 +18,21 @@ interacción por encima de puntos, rachas o porcentajes de "contenido visto".
   para el detalle de cómo quedó configurado y los problemas reales que
   aparecieron en el camino (vale la pena leerlo antes de repetir esto en otro
   proyecto).
-- **Etapa 3** — Pre-A1/A1/A2: 🟡 iniciada, lejos de completa. 7 unidades reales
-  en 2 módulos cada uno de Pre-A1/A1/A2 (de ~20-30 que tendría cada nivel
-  completo según la matriz), que prueban que el motor escala entre niveles y
-  que el reciclaje de aprendizajes funciona de verdad (el objetivo "pedir
-  repetición" se recicla 8 veces en contextos distintos, cruzando incluso
-  hasta B1). El resto de módulos de estos tres niveles no existe todavía — ver
-  `docs/06-roadmap.md` para el detalle exacto, sin inflar.
-- **Etapa 4** (B1, B2) — 🟡 apenas empezada: 1 unidad real de B1 ("What's your
-  opinion?", presente perfecto vs. pasado simple, dar y justificar opiniones).
-  B2 sin empezar.
-- **Etapa 5-6** (C1, C2) — sin empezar.
+- **12 unidades reales en 6 niveles** (Pre-A1 → C1), 50 objetivos, 135
+  actividades — el arco completo del programa existe en forma de muestra, de
+  lo más básico (deletrear, colores) hasta lo más avanzado construido hasta
+  ahora (matización, ironía, estructuras de énfasis en C1). El objetivo
+  "pedir que me repitan/aclaren" se recicla **12 veces** cruzando los 6
+  niveles, con el registro subiendo de "repeat that" (Pre-A1) a "could you
+  clarify/elaborate" (B2-C1) — prueba real de reciclaje y complejidad
+  creciente, no solo diseño.
+  - **Etapa 3** (Pre-A1/A1/A2): 7 unidades en 2-3 módulos cada nivel.
+  - **Etapa 4** (B1/B2): 2 unidades de B1, 1 de B2 (el hito de autonomía).
+  - **Etapa 5** (C1): 1 unidad (el objetivo principal del programa).
+  - **Etapa 6** (C2): sin empezar (es la ampliación opcional).
+  - Sigue siendo una fracción pequeña de cada nivel completo según
+    `02-curriculum-matrix.md` (cada nivel real tendría 20-30+ unidades) — ver
+    `docs/06-roadmap.md` para el detalle exacto, sin inflar.
 - **Costo:** ✅ cero, de forma permanente y por decisión explícita — ver
   `docs/decisions-log.md`. El tutor de IA es un simulador basado en reglas
   (no un modelo de pago), la voz es la del navegador, sin transcripción ni

@@ -178,23 +178,34 @@ objetivos sin ninguna actividad.
 
 ## Etapa 4 — B1 y B2
 
-**Estado: 🟡 apenas empezada.** Una unidad real:
+**Estado: 🟡 apenas empezada, pero con presencia real en ambos niveles.**
 
 - B1 · Módulo 1 · Unidad 1 — "What's your opinion?" (dar y justificar
-  opiniones, presente perfecto vs. pasado simple, conectores de opinión). Es
-  la primera prueba de que el motor funciona también para un nivel más allá de
-  A2, no solo dentro de Pre-A1-A2.
+  opiniones, presente perfecto vs. pasado simple).
+- B1 · Módulo 2 · Unidad 1 — "Have you ever...?" (presente perfecto de
+  experiencia, ever/never/already/yet).
+- B2 · Módulo 1 · Unidad 1 — "I might be wrong, but..." (matización de
+  argumentos, modales de deducción en pasado) — **primer contenido del hito
+  de autonomía del programa.**
 
-El resto de B1 (módulos 2-6) y todo B2 siguen sin empezar. B2 se entrega con
-especial atención porque es el **hito de autonomía** del programa: todos los
-criterios de evidencia de B2 deben estar implementados y probados, no solo el
-contenido.
+El resto de B1 (módulos 3-6) y el resto de B2 (módulos 2-7) siguen sin
+empezar. Declarar B2 "completo" exige que todos sus criterios de evidencia
+estén implementados y probados, no solo el contenido — eso sigue pendiente.
 
 ## Etapa 5 — C1 y consolidación
 
-Completa el **objetivo principal** del programa. Incluye portafolio maduro, tareas
+**Estado: 🟡 apenas empezada.**
+
+- C1 · Módulo 1 · Unidad 1 — "Precision and nuance" (estructuras de énfasis,
+  colocaciones avanzadas, identificar ironía/connotación en lectura sin
+  apoyos) — **primer contenido del objetivo principal del programa.**
+
+Falta el resto de los 7 módulos de C1, el portafolio maduro, las tareas
 avanzadas de mediación/argumentación, y el ciclo completo de comprobaciones de
-retención (no solo evaluación inmediata).
+retención (hoy el repaso espaciado programa comprobaciones, pero a esta altura
+del proyecto ninguna unidad lleva suficiente tiempo sembrada como para que ya
+se hayan cumplido los 10+ días de intervalo que exige una comprobación
+diferida real — eso se vería con el tiempo, usando la app).
 
 ## Etapa 6 — Ampliaciones (opcional, a tu decisión)
 
