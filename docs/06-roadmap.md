@@ -139,41 +139,56 @@ probado en el navegador:
 
 - Pre-A1 · Módulo 1 · Unidad 1 — "Hello! Spelling and numbers" (alfabeto,
   deletreo, números 0-20, saludos, primera introducción de "pedir repetición").
+- Pre-A1 · Módulo 2 · Unidad 1 — "Colors, numbers, and basic requests"
+  (colores, this/that, números 20-100, peticiones educadas).
 - A1 · Módulo 1 · Unidad 1 — "Nice to meet you" (presentarse, origen).
 - A1 · Módulo 1 · Unidad 2 — "My daily routine" (presente simple, rutinas,
   frecuencia).
+- A1 · Módulo 2 · Unidad 1 — "At the store" (some/any, alimentos, precios).
 - A2 · Módulo 1 · Unidad 1 — "Last weekend" (pasado simple, narración,
   conectores).
+- A2 · Módulo 2 · Unidad 1 — "At the restaurant" (would like, comparativos).
 
-Eso es **4 unidades de las ~20-30 que tendría Pre-A1-A2 completo** según la
-matriz. Las unidades reciclan deliberadamente el objetivo "pedir que me
-repitan" (introducido en Pre-A1, retomado como transferencia en las otras 3
-unidades, en contextos distintos cada vez) — es una prueba real de que el
-reciclaje y la complejidad creciente que pide el encargo funcionan con el motor
-actual, no solo una promesa de diseño.
+Eso es **7 unidades de las ~20-30 que tendría Pre-A1-A2 completo** según la
+matriz — ya con 2 de los módulos de cada nivel empezados, no solo el primero.
+Las unidades reciclan deliberadamente el objetivo "pedir que me repitan"
+(introducido en Pre-A1, retomado como transferencia en las otras 6 unidades de
+Pre-A1-A2, en contextos distintos cada vez, y de nuevo en la unidad de B1) — es
+una prueba real de que el reciclaje y la complejidad creciente que pide el
+encargo funcionan con el motor actual, no solo una promesa de diseño.
 
 **Lo que falta para que la Etapa 3 esté realmente completa** (no es poco —
 dimensiona la magnitud real del trabajo, no una lista corta):
-- El resto del Módulo 1 y los Módulos 2-4 de A1 (vivienda, comida, tecnología
-  cotidiana, trabajo simple, según `02-curriculum-matrix.md`).
-- Los Módulos 2-5 de A2 (viajes, salud, restaurante, planes, tecnología).
-- El resto de Pre-A1 (Módulo 2).
+- El resto de los Módulos 1-2 de Pre-A1/A1/A2 (más unidades por módulo) y los
+  Módulos 3-4 de A1 / 3-5 de A2 que todavía no existen (tecnología cotidiana,
+  trabajo simple, salud, planes, según `02-curriculum-matrix.md`).
 - Evaluaciones de nivel formales por módulo/nivel (hoy solo existe una
-  comprobación de ejemplo para A1.1).
-- El script de verificación de cobertura (`docs/02-curriculum-matrix.md`
-  promete uno que detecte objetivos sin actividad/evaluación) — todavía no
-  existe como script ejecutable, solo como mecanismo de diseño.
+  comprobación de ejemplo para A1.1 — `npm run check:coverage` lo confirma:
+  31 de 34 objetivos todavía sin evaluación formal, aunque sí con práctica).
 
 Autoría de contenido de este tipo (diálogos, gramática en contexto,
 pronunciación, tareas) es trabajo genuinamente artesanal — no se puede generar
 en bloque sin revisar cada unidad. A este ritmo, completar Pre-A1-A2 es muchas
 sesiones más de trabajo, no algo que quepa en una sola continuación.
 
+**Herramienta nueva:** [`scripts/check-coverage.ts`](../scripts/check-coverage.ts)
+(`npm run check:coverage`) — el script de verificación de cobertura prometido
+en `02-curriculum-matrix.md`, ya construido y corrido contra la base real: 0
+objetivos sin ninguna actividad.
+
 ## Etapa 4 — B1 y B2
 
-Amplía escenarios, complejidad y práctica comunicativa. B2 se entrega con especial
-atención porque es el **hito de autonomía** del programa: todos los criterios de
-evidencia de B2 deben estar implementados y probados, no solo el contenido.
+**Estado: 🟡 apenas empezada.** Una unidad real:
+
+- B1 · Módulo 1 · Unidad 1 — "What's your opinion?" (dar y justificar
+  opiniones, presente perfecto vs. pasado simple, conectores de opinión). Es
+  la primera prueba de que el motor funciona también para un nivel más allá de
+  A2, no solo dentro de Pre-A1-A2.
+
+El resto de B1 (módulos 2-6) y todo B2 siguen sin empezar. B2 se entrega con
+especial atención porque es el **hito de autonomía** del programa: todos los
+criterios de evidencia de B2 deben estar implementados y probados, no solo el
+contenido.
 
 ## Etapa 5 — C1 y consolidación
 
